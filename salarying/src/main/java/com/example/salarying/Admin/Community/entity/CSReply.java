@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "cs")
+@Table(name = "cs_reply")
 public class CSReply {
 
     @Id
