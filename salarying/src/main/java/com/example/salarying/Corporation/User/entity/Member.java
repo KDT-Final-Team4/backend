@@ -55,4 +55,7 @@ public class Member {
 
     @Column(name = "type")
     private String type;
+
+    @Column(name = "member_role")
+    private String role;
 }
