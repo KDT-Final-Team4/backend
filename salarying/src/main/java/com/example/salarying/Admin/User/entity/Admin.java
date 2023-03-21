@@ -42,5 +42,7 @@ public class Admin {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModified;
 
+    @Column(name="admin_role")
+    private String role;
 
 }
