@@ -10,7 +10,9 @@ public enum UserExceptionType implements CustomExceptionType {
     NOT_EMAIL_FORMAT(-104, HttpStatus.BAD_REQUEST, "올바른 이메일 형식이 아닙니다."),
     NOT_PASSWORD_FORMAT(-105, HttpStatus.BAD_REQUEST, "올바른 비밀번호 형식이 아닙니다."),
     NOT_NUMBER_FORMAT(-106, HttpStatus.BAD_REQUEST, "올바른 전화번호 형식이 아닙니다."),
-    NOT_EXIST_NAME(-107, HttpStatus.BAD_REQUEST, "회사명이 입력되지 않았습니다.")
+    NOT_EXIST_NAME(-107, HttpStatus.BAD_REQUEST, "회사명이 입력되지 않았습니다."),
+    NOT_EXIST_ACCOUNT(-107, HttpStatus.BAD_REQUEST, "존재하지 않는 계정입니다."),
+    UNMATCHED_PASSWORD(-107, HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.")
     ;
 
     private int errorCode;
