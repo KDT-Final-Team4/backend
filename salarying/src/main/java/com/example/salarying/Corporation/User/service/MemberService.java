@@ -6,5 +6,5 @@ import com.example.salarying.Corporation.User.entity.Member;
 public interface MemberService {
     Member signUp(MemberDTO.SignUpRequest request);
 
-    Member findByUserByEmail(String email);
+    String login(MemberDTO.LoginRequest request);
 }
