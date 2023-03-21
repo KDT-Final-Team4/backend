@@ -1,6 +1,8 @@
 package com.example.salarying.global.config;
 
 
+import com.example.salarying.global.jwt.JwtAuthorizationFilter;
+import com.example.salarying.global.jwt.auth.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +21,9 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    //private final AuthTokenProvider authTokenProvider;
+    private final AuthTokenProvider authTokenProvider;
 
-    String[] permitUrl = {"/oauth2/**", "/", "/login/**", "/signUp/**", "/product", "/refresh", "/swagger-ui/**", "/api-docs/**"
+    String[] permitUrl = {"/oauth2/**", "/", "/users/login/**", "/signUp/**", "/swagger-ui/**", "/api-docs/**"
     ,"/swagger-ui/index.html"};
 
     @Bean
@@ -54,6 +56,15 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    public class customConfig extends AbstractHttpConfigurer<customConfig, HttpSecurity> {
+        @Override
+        public void configure(HttpSecurity http) throws Exception {
+            AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+            http
+                    .addFilterAfter(new JwtAuthorizationFilter(authenticationManager, authTokenProvider), CorsFilter.class);
+        }
     }
 
 
