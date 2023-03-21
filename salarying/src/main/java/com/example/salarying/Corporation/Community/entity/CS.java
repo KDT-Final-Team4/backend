@@ -41,7 +41,7 @@ public class CS {
     private Date postDate;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reply_id")
+    @JoinColumn(name = "cs_id")
     private List<CSReply> replies = new ArrayList<>();
 
 
