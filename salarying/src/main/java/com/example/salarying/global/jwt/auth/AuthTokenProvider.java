@@ -69,7 +69,7 @@ public class AuthTokenProvider {
     private String getTokenSubjectStr(Member member, JwtType jwtType) {
         ObjectMapper om = new ObjectMapper();
         try {
-            return om.writeValueAsString(new CustomUserDetails(member.getId(), member.getUserEmail(), jwtType));
+            return om.writeValueAsString(new CustomUserDetails(member.getId(), member.getUserEmail(), member.getRole(), jwtType));
         } catch (JsonProcessingException e) {
             log.debug(e.getMessage());
             throw new UserException(UserExceptionType.PARSING_FAIL);

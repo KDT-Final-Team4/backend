@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -58,4 +59,21 @@ public class Member {
 
     @Column(name = "member_role")
     private String role;
+
+    @Builder
+    public Member(String companyNm, String companyTel, String userEmail, String userPw, String role) {
+        this.companyNm = this.getCompanyNm();
+        this.companyTel = this.getCompanyTel();
+        this.userEmail = this.getUserEmail();
+        this.userPw = this.getUserPw();
+        this.role = this.getRole();
+    }
+
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        userPw = passwordEncoder.encode(userPw);
+    }
+
+    public void updatePassword(PasswordEncoder passwordEncoder, String newPw) {
+        this.userPw = passwordEncoder.encode(newPw);
+    }
 }

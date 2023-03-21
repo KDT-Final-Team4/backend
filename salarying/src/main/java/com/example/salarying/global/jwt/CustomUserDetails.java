@@ -1,5 +1,6 @@
 package com.example.salarying.global.jwt;
 
+import com.example.salarying.global.jwt.auth.RollType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,9 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Getter
 @Setter
@@ -20,6 +23,7 @@ import java.util.Collection;
 public class CustomUserDetails implements UserDetails {
     private Long userId; //pk
     private String email; //로그인 아이디
+    private String roll;
     private JwtType jwtType; //access 토큰인지 refresh 토큰인지
 
     public static CustomUserDetails createUserDetails(String subject) throws JsonProcessingException {
@@ -35,9 +39,11 @@ public class CustomUserDetails implements UserDetails {
         return jwtType;
     }
 
+    public String getRoll() { return roll; }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singleton(new SimpleGrantedAuthority(this.roll));
     }
 
     @Override
