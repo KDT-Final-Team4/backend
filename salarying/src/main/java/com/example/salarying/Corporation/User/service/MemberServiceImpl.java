@@ -18,6 +18,11 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * 사용자 정보를 확인하여 비밀번호 암호화 수행 후 DB에 저장
+     * @param request : 회사 정보를 가진 DTO
+     * @return : 저장된 사용자 정보 혹은 존재하는 email이 있으면 해당 예외타입 반환
+     */
     @Override
     public Member signUp(MemberDTO.SignUpRequest request) {
 
@@ -32,6 +37,11 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
+    /**
+     * 회원가입시 입력된 사용자 정보의 형식이 올바른지 확인하는 함수
+     * @param request : 입력된 사용자 정보
+     * @return 모든 값이 지정된 형식을
+     */
     public Boolean checkFormat(MemberDTO.SignUpRequest request){
         if(!request.getEmail().matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")){
             throw new UserException(UserExceptionType.NOT_EMAIL_FORMAT);
@@ -45,6 +55,7 @@ public class MemberServiceImpl implements MemberService{
             return true;
         }
     }
+
 
     @Override
     public Member findByUserByEmail(String email) {
