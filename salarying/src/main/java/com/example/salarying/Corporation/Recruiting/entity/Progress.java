@@ -28,11 +28,11 @@ public class Progress {
     private Boolean document;
 
     @Column(name="first_round")
-    private String firstRound;
+    private Boolean firstRound;
 
     @Column(name="second_round")
-    private String secondRound;
+    private Boolean secondRound;
 
     @Column(name="final")
-    private String finalRound;
+    private Boolean finalRound;
 }
