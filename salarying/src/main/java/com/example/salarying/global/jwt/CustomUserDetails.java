@@ -3,6 +3,7 @@ package com.example.salarying.global.jwt;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ import java.util.Collections;
 public class CustomUserDetails implements UserDetails {
     private Long userId; //pk
     private String email; //로그인 아이디
-    private String roll;
+    private String role;
     private JwtType jwtType; //access 토큰인지 refresh 토큰인지
 
     public static CustomUserDetails createUserDetails(String subject) throws JsonProcessingException {
@@ -38,11 +39,11 @@ public class CustomUserDetails implements UserDetails {
         return jwtType;
     }
 
-    public String getRoll() { return roll; }
+    public String getRole() { return role; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(this.roll));
+        return null;
     }
 
     @Override
