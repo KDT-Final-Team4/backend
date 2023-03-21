@@ -29,5 +29,14 @@ public class MemberDTO {
         }
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class LoginRequest{
+        private String email;
+        private String password;
+    }
+
 
 }

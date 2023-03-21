@@ -5,11 +5,12 @@ import com.example.salarying.Corporation.User.entity.Member;
 import com.example.salarying.Corporation.User.exception.UserException;
 import com.example.salarying.Corporation.User.exception.UserExceptionType;
 import com.example.salarying.Corporation.User.repository.MemberRepository;
+import com.example.salarying.global.jwt.auth.AuthToken;
+import com.example.salarying.global.jwt.auth.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -17,6 +18,7 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthTokenProvider authTokenProvider;
 
     /**
      * 사용자 정보를 확인하여 비밀번호 암호화 수행 후 DB에 저장
@@ -57,13 +59,19 @@ public class MemberServiceImpl implements MemberService{
     }
 
 
+    /**
+     * 로그인 DTO를 받아 멤버 테이블에 존재하면 access token 발급하는 함수
+     * @param request : 사용자 이메일, 비밀번호
+     * @return 로그인 완료 시 access token 반환
+     */
     @Override
-    public Member findByUserByEmail(String email) {
-        Optional<Member> member = memberRepository.findByUserEmail(email);
-        if (!member.isEmpty()) {
-            return member.get();
-        } else {
-            throw new UserException(UserExceptionType.ALREADY_EXIST);
-        }
+    public String login(MemberDTO.LoginRequest request) {
+        Member member = memberRepository.findByUserEmail(request.getEmail())
+                .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_ACCOUNT));
+
+        if(passwordEncoder.matches(request.getPassword(), member.getUserPw())){
+            AuthToken authToken = authTokenProvider.issueAccessToken(member);
+            return authToken.getToken();
+        }else throw new UserException(UserExceptionType.UNMATCHED_PASSWORD);
     }
 }

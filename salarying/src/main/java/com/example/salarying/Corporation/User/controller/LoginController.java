@@ -1,7 +1,6 @@
 package com.example.salarying.Corporation.User.controller;
 
 import com.example.salarying.Corporation.User.dto.MemberDTO;
-import com.example.salarying.Corporation.User.entity.Member;
 import com.example.salarying.Corporation.User.service.MemberService;
 import com.example.salarying.global.dto.ResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,4 +25,16 @@ public class LoginController {
         memberService.signUp(request);
         return new ResponseDTO<>().ok(null, "회원가입 성공");
     }
+
+    /**
+     * 사용자 로그인 기능
+     * @param request : 이메일, 비밀번호를 가진 DTO
+     * @return 로그인 성공 시 access token 반환
+     */
+    @Operation(summary = "로그인 API", description = "이메일과 비밀번호로 로그인하기")
+    @PostMapping("/users/login")
+    public ResponseDTO<?> login(MemberDTO.LoginRequest request){
+        return new ResponseDTO<>().ok(memberService.login(request), "로그인 성공");
+    }
+
 }
