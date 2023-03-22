@@ -16,9 +16,9 @@ public class ApplicantServiceImpl implements ApplicantService {
 
     private final ApplicantRepository applicantRepository;
     @Override
-    public List<ApplicantDTO.ApplicantResponse> findApplicantByRecruitingId(Long user_id, Long recruiting_id) {
-        List<ApplicantDTO.ApplicantResponse> applicantResponseList = applicantRepository.findApplicantByRecruitingId(recruiting_id)
-                                                                                            .stream().filter(en->en.getRecruiting().getMember().getId()==user_id)
+    public List<ApplicantDTO.ApplicantResponse> findApplicantByRecruitingId(Long userId, Long recruitingId) {
+        List<ApplicantDTO.ApplicantResponse> applicantResponseList = applicantRepository.findApplicantByRecruitingId(recruitingId)
+                                                                                            .stream().filter(en->en.getRecruiting().getMember().getId()==userId)
                                                                                                 .map(entity->new ApplicantDTO.ApplicantResponse(entity))
                                                                                                 .collect(Collectors.toList());
         return applicantResponseList;

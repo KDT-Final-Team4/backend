@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ApplicantService {
 
-    List<ApplicantDTO.ApplicantResponse> findApplicantByRecruitingId(Long user_id,Long recruiting_id);
+    List<ApplicantDTO.ApplicantResponse> findApplicantByRecruitingId(Long userId,Long recruitingId);
 }
