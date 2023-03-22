@@ -1,5 +1,6 @@
 package com.example.salarying.global.exception;
 
+import com.example.salarying.Corporation.Recruiting.exception.RecruitingException;
 import com.example.salarying.Corporation.User.exception.UserException;
 import com.example.salarying.global.dto.ErrorDTO;
 import com.example.salarying.global.exception.base.CustomException;
@@ -36,6 +37,16 @@ public class CustomExceptionHandler implements ErrorController {
         return new ResponseEntity(error ,ce.getExceptionType().getHttpStatus());
     }
 
+    @ExceptionHandler(value = RecruitingException.class)
+    public ResponseEntity handleUserException(RecruitingException ce){
+        ErrorDTO error = ErrorDTO.builder()
+                .errorCode(ce.getExceptionType().getErrorCode())
+                .errorMessage(ce.getExceptionType().getMessage())
+                .httpStatus(ce.getExceptionType().getHttpStatus())
+                .build();
+
+        return new ResponseEntity(error ,ce.getExceptionType().getHttpStatus());
+    }
 
 
 
