@@ -1,8 +1,10 @@
 package com.example.salarying.global.jwt.auth;
 
+import com.example.salarying.Admin.User.entity.Admin;
 import com.example.salarying.Corporation.User.entity.Member;
 import com.example.salarying.Corporation.User.exception.UserException;
 import com.example.salarying.Corporation.User.exception.UserExceptionType;
+import com.example.salarying.global.jwt.CustomAdminDetails;
 import com.example.salarying.global.jwt.CustomUserDetails;
 import com.example.salarying.global.jwt.JwtConfig;
 import com.example.salarying.global.jwt.JwtType;
@@ -49,6 +51,16 @@ public class AuthTokenProvider {
         return authToken;
     }
 
+    public AuthToken issueAdminAccessToken(Admin admin) {
+        String subject = getAdminTokenSubjectStr(admin, JwtType.ACCESS);
+        Date expiryDate = Date.from(
+                Instant.now().plusSeconds(jwtConfig.getAccessExpiry()));
+
+        AuthToken authToken = createAuthToken(subject, expiryDate);
+        log.info("issueAccessToken.AuthToken.getToken(): {} ", authToken.getToken());
+        return authToken;
+    }
+
     public AuthToken issueRefreshToken(Member member) {
         String subject = getTokenSubjectStr(member, JwtType.REFRESH);
         Date expiryDate = Date.from(
@@ -76,6 +88,16 @@ public class AuthTokenProvider {
         }
     }
 
+    private String getAdminTokenSubjectStr(Admin admin, JwtType jwtType) {
+        ObjectMapper om = new ObjectMapper();
+        try {
+            return om.writeValueAsString(new CustomUserDetails(admin.getId(), admin.getAdminEmail(), admin.getRole(), jwtType));
+        } catch (JsonProcessingException e) {
+            log.debug(e.getMessage());
+            throw new UserException(UserExceptionType.PARSING_FAIL);
+        }
+    }
+
     /**
      * jwt 검증 후 아이디(이메일) 추출
      * 여기서 JwtException 발생하면 호출한 곳으로 돌아가므로, 호출한 곳(filter)에서는 예외처리 필수
@@ -85,8 +107,16 @@ public class AuthTokenProvider {
     public UsernamePasswordAuthenticationToken getAuthentication(AuthToken authToken) throws JsonProcessingException {
         if(authToken.validate()){
             Claims claims = authToken.getClaimsFromToken(); //에러 발생 가능
-            CustomUserDetails userDetails = CustomUserDetails.createUserDetails(claims.getSubject());
-            return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            if(claims.containsKey("Id")){
+                CustomAdminDetails adminDetails = CustomAdminDetails.createUserDetails(claims.getSubject());
+                System.out.println(claims.getSubject());
+                return new UsernamePasswordAuthenticationToken(adminDetails, null, adminDetails.getAuthorities());
+            }
+            else {
+                CustomUserDetails userDetails = CustomUserDetails.createUserDetails(claims.getSubject());
+                System.out.println(claims.getSubject());
+                return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            }
         } else {
             return null;
         }
