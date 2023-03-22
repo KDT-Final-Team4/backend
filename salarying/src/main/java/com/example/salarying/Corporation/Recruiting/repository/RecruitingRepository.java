@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RecruitingRepository extends JpaRepository<Recruiting,Long> {
 
-    List<Recruiting> findRecruitingByMemberId(Long user_id);
+    List<Recruiting> findRecruitingByMemberId(Long userId);
 
 
 }

@@ -22,7 +22,7 @@ public class RecruitingController {
     private final RecruitingService recruitingService;
 
     /**
-     *
+     * 기업id로 채용공고 리스트를 출력하는 API
      * @param customUserDetails: 로그인한 기업회원
      * @return: 기업별 채용공고 리스트 출력
      */
@@ -35,7 +35,7 @@ public class RecruitingController {
     }
 
     /**
-     *
+     * 기업id로 채용공고를 등록하는 API
      * @param customUserDetails: 로그인한 기업회원
      * @param request: 등록하고자 하는 채용공고 정보 DTO
      * @return: 등록된 채용공고 DTO

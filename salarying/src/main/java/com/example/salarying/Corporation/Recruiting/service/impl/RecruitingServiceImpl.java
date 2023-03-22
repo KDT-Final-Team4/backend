@@ -32,20 +32,20 @@ public class RecruitingServiceImpl implements RecruitingService {
     private final MemberRepository memberRepository;
 
     /**
-     *
-     * @param user_id : 기업회원 id
+     * 기업id로 채용공고 리스트 출력
+     * @param userId : 기업회원 id
      * @return: 해당기업 채용공고 리스트
      */
     @Override
-    public List<RecruitingDTO.RecruitingResponse> findRecruitingByMemberId(Long user_id) {
-        List<RecruitingDTO.RecruitingResponse> recruitingResponseList = recruitingRepository.findRecruitingByMemberId(user_id)
+    public List<RecruitingDTO.RecruitingResponse> findRecruitingByMemberId(Long userId) {
+        List<RecruitingDTO.RecruitingResponse> recruitingResponseList = recruitingRepository.findRecruitingByMemberId(userId)
                 .stream().map(entity->new RecruitingDTO.RecruitingResponse(entity))
                 .collect(Collectors.toList());
         return recruitingResponseList;
     }
 
     /**
-     *
+     * 기업id로 채용공고 등록
      * @param userId: 기업회원 id
      * @param request: 등록하고자 하는 채용공고 정보 DTO
      * @return: 등록한 채용절차 정보
@@ -71,7 +71,7 @@ public class RecruitingServiceImpl implements RecruitingService {
 
 
     /**
-     *
+     * DTO형식 체크 기능
      * @param request: 등록하고자 하는 채용공고 정보 DTO
      * @return: 공고명,직무 작성안되어 있거나, 채용절차 없을시 false/ 잘 작성되어 있으면  true
      */
