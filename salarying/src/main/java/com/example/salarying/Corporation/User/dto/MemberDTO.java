@@ -15,15 +15,15 @@ public class MemberDTO {
     public static class SignUpRequest{
         private String email;
         private String password;
-        private String companyNm;
-        private String companyTel;
+        private String companyName;
+        private String companyPhoneNumber;
 
         public Member toEntity(){
             return Member.builder()
-                    .userEmail(this.email)
-                    .userPw(this.password)
-                    .companyNm(this.companyNm)
-                    .companyTel(this.companyTel)
+                    .email(this.email)
+                    .password(this.password)
+                    .companyName(this.companyName)
+                    .companyPhoneNumber(this.companyPhoneNumber)
                     .role("USER")
                     .build();
         }

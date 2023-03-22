@@ -25,7 +25,7 @@ public class AdminServiceImpl implements AdminService{
         Admin admin = adminRepository.findByAdminEmail(request.getEmail())
                 .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_ACCOUNT));
 
-        if(passwordEncoder.matches(request.getPassword(),admin.getAdminPw())){
+        if(passwordEncoder.matches(request.getPassword(),admin.getAdminPassword())){
             AuthToken authToken = authTokenProvider.issueAdminAccessToken(admin);
             return authToken.getToken();
         }else throw new UserException(UserExceptionType.UNMATCHED_PASSWORD);

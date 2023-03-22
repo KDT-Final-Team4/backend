@@ -28,7 +28,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Member signUp(MemberDTO.SignUpRequest request) {
 
-        if(checkFormat(request) && memberRepository.findByUserEmail(request.getEmail()).isEmpty()){
+        if(checkFormat(request) && memberRepository.findByEmail(request.getEmail()).isEmpty()){
             Member newMember = request.toEntity();
             newMember.encodePassword(passwordEncoder);
             memberRepository.save(newMember);
@@ -49,9 +49,9 @@ public class MemberServiceImpl implements MemberService{
             throw new UserException(UserExceptionType.NOT_EMAIL_FORMAT);
         } else if (!request.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")) { //최소 8글자, 글자 1개, 숫자 1개, 특수문자 1개
             throw new UserException(UserExceptionType.NOT_PASSWORD_FORMAT);
-        } else if (request.getCompanyNm()==null) {
+        } else if (request.getCompanyName()==null) {
             throw new UserException(UserExceptionType.NOT_EXIST_NAME);
-        } else if (!request.getCompanyTel().matches("\\d{3}-?\\d{4}-?\\d{4}")) {
+        } else if (!request.getCompanyPhoneNumber().matches("\\d{3}-?\\d{4}-?\\d{4}")) {
             throw new UserException(UserExceptionType.NOT_NUMBER_FORMAT);
         } else{
             return true;
@@ -66,10 +66,10 @@ public class MemberServiceImpl implements MemberService{
      */
     @Override
     public String login(MemberDTO.LoginRequest request) {
-        Member member = memberRepository.findByUserEmail(request.getEmail())
+        Member member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_ACCOUNT));
 
-        if(passwordEncoder.matches(request.getPassword(), member.getUserPw())){
+        if(passwordEncoder.matches(request.getPassword(), member.getPassword())){
             AuthToken authToken = authTokenProvider.issueAccessToken(member);
             return authToken.getToken();
         }else throw new UserException(UserExceptionType.UNMATCHED_PASSWORD);

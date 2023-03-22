@@ -26,8 +26,8 @@ public class ApplicantDTO {
         private String status;
 
         public ApplicantResponse(Applicant applicant){
-            this.applicantNm = applicant.getApplicantNm();
-            this.applicantTel = applicant.getApplicantTel();
+            this.applicantNm = applicant.getApplicantName();
+            this.applicantTel = applicant.getApplicantPhoneNumber();
             this.applicantEmail = applicant.getApplicantEmail();
             this.progress = applicant.getProgress();
             this.status = applicant.getStatus();
