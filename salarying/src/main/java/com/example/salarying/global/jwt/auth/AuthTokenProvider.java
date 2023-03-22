@@ -86,7 +86,7 @@ public class AuthTokenProvider {
         if(authToken.validate()){
             Claims claims = authToken.getClaimsFromToken(); //에러 발생 가능
             CustomUserDetails userDetails = CustomUserDetails.createUserDetails(claims.getSubject());
-            return new UsernamePasswordAuthenticationToken(userDetails, null, AuthorityUtils.NO_AUTHORITIES);
+            return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         } else {
             return null;
         }

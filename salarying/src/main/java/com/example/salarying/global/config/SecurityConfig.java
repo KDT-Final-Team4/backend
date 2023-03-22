@@ -2,6 +2,7 @@ package com.example.salarying.global.config;
 
 
 import com.example.salarying.global.jwt.JwtAuthorizationFilter;
+import com.example.salarying.global.jwt.JwtExceptionEntryPoint;
 import com.example.salarying.global.jwt.auth.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -40,12 +41,12 @@ public class SecurityConfig {
                 .permitAll()
                 .anyRequest().authenticated();
 
-//        http
-//                .apply(new customConfig());
+        http
+                .apply(new customConfig());
 
-       // http
-                //.exceptionHandling()
-                //.authenticationEntryPoint(new JwtExceptionEntryPoint()); //예외처리
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(new JwtExceptionEntryPoint());
 
         http
                 .logout();
