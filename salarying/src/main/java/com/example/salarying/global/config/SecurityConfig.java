@@ -24,7 +24,7 @@ public class SecurityConfig {
 
     private final AuthTokenProvider authTokenProvider;
 
-    String[] permitUrl = {"/oauth2/**", "/", "/users/login/**", "/signUp/**", "/swagger-ui/**", "/api-docs/**"
+    String[] permitUrl = {"/oauth2/**", "/", "/users/login/**","/admin/login/**", "/signUp/**", "/swagger-ui/**", "/api-docs/**"
     ,"/swagger-ui/index.html"};
 
     @Bean
