@@ -29,7 +29,7 @@ public class Recruiting {
     private Member member;
 
     @NotNull
-    @Column(name="recruiting_title")
+    @Column(name="title")
     private String title;
 
     @Temporal(TemporalType.TIMESTAMP)

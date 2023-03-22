@@ -22,16 +22,16 @@ public class Employee {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @NotNull
     @Column(name="employee_name")
-    private String employeeNm;
+    private String employeeName;
 
     @NotNull
-    @Column(name="employee_tel")
-    private String employeeTel;
+    @Column(name="employee_phone_number")
+    private String employeePhoneNumber;
 
     @NotNull
     @Column(name="employee_email")

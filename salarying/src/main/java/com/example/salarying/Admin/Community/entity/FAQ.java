@@ -28,11 +28,11 @@ public class FAQ {
     private Admin admin;
 
     @NotNull
-    @Column(name="FAQ_question")
+    @Column(name="question")
     private String question;
 
     @NotNull
-    @Column(name="FAQ_answer")
+    @Column(name="answer")
     private String answer;
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -27,11 +27,11 @@ public class Applicant {
 
     @NotNull
     @Column(name="applicant_name")
-    private String applicantNm;
+    private String applicantName;
 
     @NotNull
-    @Column(name="applicant_tel")
-    private String applicantTel;
+    @Column(name="applicant_phone_number")
+    private String applicantPhoneNumber;
 
     @NotNull
     @Column(name="applicant_email")

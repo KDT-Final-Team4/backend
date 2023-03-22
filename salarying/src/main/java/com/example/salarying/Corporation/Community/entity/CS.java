@@ -31,10 +31,10 @@ public class CS {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(name = "cs_title")
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "cs_content")
+    @Column(name = "content")
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)

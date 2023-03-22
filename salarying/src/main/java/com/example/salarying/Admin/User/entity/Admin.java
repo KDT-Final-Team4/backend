@@ -22,18 +22,18 @@ public class Admin {
     @Column(name="admin_id")
     private Long id;
 
-    @Column(name="admin_name")
-    private String adminNm;
+    @Column(name="name")
+    private String adminName;
 
-    @Column(name="admin_type")
+    @Column(name="type")
     private String adminType;
 
     @NotNull
-    @Column(name="admin_pw")
-    private String adminPw;
+    @Column(name="password")
+    private String adminPassword;
 
     @NotNull
-    @Column(name="admin_email")
+    @Column(name="email")
     private String adminEmail;
 
     @Temporal(TemporalType.TIMESTAMP)

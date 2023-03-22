@@ -16,12 +16,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "Announcement")
+@Table(name = "Notice")
 public class Notice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="announce_id")
+    @Column(name="notice_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,11 +29,11 @@ public class Notice {
     private Admin admin;
 
     @NotNull
-    @Column(name="announce_title")
+    @Column(name="title")
     private String title;
 
     @NotNull
-    @Column(name="announce_content")
+    @Column(name="content")
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -24,15 +24,15 @@ public class Progress {
     @JoinColumn(name = "recruiting_id")
     private Recruiting recruiting;
 
-    @Column(name="document")
-    private Boolean document;
+    @Column(name="has_document")
+    private Boolean hasDocument;
 
-    @Column(name="first_round")
-    private Boolean firstRound;
+    @Column(name="has_first_round")
+    private Boolean hasFirstRound;
 
-    @Column(name="second_round")
-    private Boolean secondRound;
+    @Column(name="has_second_round")
+    private Boolean hasSecondRound;
 
-    @Column(name="final")
-    private Boolean finalRound;
+    @Column(name="has_final")
+    private Boolean hasFinalRound;
 }

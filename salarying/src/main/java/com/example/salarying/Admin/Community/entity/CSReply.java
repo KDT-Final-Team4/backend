@@ -27,7 +27,7 @@ public class CSReply {
     @JoinColumn(name="admin_id")
     private Admin admin;
 
-    @Column(name = "reply_content")
+    @Column(name = "answer")
     private String answer;
 
     @Temporal(TemporalType.TIMESTAMP)

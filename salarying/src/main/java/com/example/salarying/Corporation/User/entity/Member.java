@@ -31,19 +31,25 @@ public class Member {
 
     @NotNull
     @Column(name="company_name")
-    private String companyNm;
+    private String companyName;
 
     @NotNull
-    @Column(name="company_tel")
-    private String companyTel;
+    @Column(name="company_phone_number")
+    private String companyPhoneNumber;
 
     @NotNull
-    @Column(name="member_email")
-    private String userEmail;
+    @Column(name="email")
+    private String email;
 
     @NotNull
-    @Column(name="member_pw")
-    private String userPw;
+    @Column(name="password")
+    private String password;
+
+    @Column(name="name")
+    private String name;
+
+    @Column(name="position")
+    private String position;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastSignIn;
@@ -61,19 +67,19 @@ public class Member {
     private String role;
 
     @Builder
-    public Member(String companyNm, String companyTel, String userEmail, String userPw, String role) {
-        this.companyNm = this.getCompanyNm();
-        this.companyTel = this.getCompanyTel();
-        this.userEmail = this.getUserEmail();
-        this.userPw = this.getUserPw();
+    public Member(String companyName, String companyPhoneNumber, String email, String password, String role) {
+        this.companyName = this.getCompanyName();
+        this.companyPhoneNumber = this.getCompanyPhoneNumber();
+        this.email = this.getEmail();
+        this.password = this.getPassword();
         this.role = this.getRole();
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
-        userPw = passwordEncoder.encode(userPw);
+        password = passwordEncoder.encode(password);
     }
 
-    public void updatePassword(PasswordEncoder passwordEncoder, String newPw) {
-        this.userPw = passwordEncoder.encode(newPw);
+    public void updatePassword(PasswordEncoder passwordEncoder, String newPassword) {
+        this.password = passwordEncoder.encode(newPassword);
     }
 }
