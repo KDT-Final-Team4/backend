@@ -15,7 +15,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -57,7 +57,7 @@ public class AuthTokenProvider {
                 Instant.now().plusSeconds(jwtConfig.getAccessExpiry()));
 
         AuthToken authToken = createAuthToken(subject, expiryDate);
-        log.info("issueAccessToken.AuthToken.getToken(): {} ", authToken.getToken());
+        log.info("issueAdminAccessToken.AuthToken.getToken(): {} ", authToken.getToken());
         return authToken;
     }
 
@@ -91,7 +91,7 @@ public class AuthTokenProvider {
     private String getAdminTokenSubjectStr(Admin admin, JwtType jwtType) {
         ObjectMapper om = new ObjectMapper();
         try {
-            return om.writeValueAsString(new CustomUserDetails(admin.getId(), admin.getAdminEmail(), admin.getRole(), jwtType));
+            return om.writeValueAsString(new CustomAdminDetails(admin.getId(), admin.getAdminEmail(), admin.getRole(), jwtType));
         } catch (JsonProcessingException e) {
             log.debug(e.getMessage());
             throw new UserException(UserExceptionType.PARSING_FAIL);
@@ -107,7 +107,7 @@ public class AuthTokenProvider {
     public UsernamePasswordAuthenticationToken getAuthentication(AuthToken authToken) throws JsonProcessingException {
         if(authToken.validate()){
             Claims claims = authToken.getClaimsFromToken(); //에러 발생 가능
-            if(claims.containsKey("Id")){
+            if(claims.getSubject().contains("ADMIN")){
                 CustomAdminDetails adminDetails = CustomAdminDetails.createUserDetails(claims.getSubject());
                 System.out.println(claims.getSubject());
                 return new UsernamePasswordAuthenticationToken(adminDetails, null, adminDetails.getAuthorities());
