@@ -22,7 +22,7 @@ public class ApplicantController {
     private final ApplicantService applicantService;
 
     @Operation(summary = "지원자 리스트 출력")
-    @GetMapping("/applicants")
+    @GetMapping("/users/applicants")
     public ResponseDTO<?> showApplicantList(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestParam("recruiting_id") Long id){
         List<ApplicantDTO.ApplicantResponse> applicantResponseList = applicantService.findApplicantByRecruitingId(customUserDetails.getUserId(),id);
         return new ResponseDTO<>().ok(applicantResponseList,"정상출력 데이터");

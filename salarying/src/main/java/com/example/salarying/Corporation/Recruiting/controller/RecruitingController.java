@@ -27,8 +27,7 @@ public class RecruitingController {
      * @return: 기업별 채용공고 리스트 출력
      */
     @Operation(summary = "채용공고 리스트 출력")
-    @PreAuthorize("hasAnyRole('USER')")
-    @GetMapping("/recruiting")
+    @GetMapping("/users/recruiting")
     public ResponseDTO<?> showRecruitingList(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         List<RecruitingDTO.RecruitingResponse> recruitingResponseList = recruitingService.findRecruitingByMemberId(customUserDetails.getUserId());
         return new ResponseDTO<>().ok(recruitingResponseList,"정상출력 데이터");
@@ -41,8 +40,7 @@ public class RecruitingController {
      * @return: 등록된 채용공고 DTO
      */
     @Operation(summary = "기업별 채용공고 등록")
-    @PreAuthorize("hasAnyRole('USER')")
-    @PostMapping("/recruiting")
+    @PostMapping("/users/recruiting")
     public ResponseDTO<?> insertRecruiting(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody RecruitingDTO.RecruitingRequest request){
         RecruitingDTO.RecruitingResponse responseDTO = recruitingService.insertRecruiting(customUserDetails.getUserId(),request);
         return new ResponseDTO<>().ok(responseDTO,"정상출력 데이터");

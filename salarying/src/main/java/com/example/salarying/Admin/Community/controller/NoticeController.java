@@ -6,7 +6,6 @@ import com.example.salarying.global.dto.ResponseDTO;
 import com.example.salarying.global.jwt.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +24,6 @@ public class NoticeController {
      * @return : 등록된 공지사항 DTO
      */
     @Operation(summary = "공지사항 등록")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/admin/notice")
     public ResponseDTO<?> insertNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.NoticeRequest request) {
         NoticeDTO.NoticeResponse responseDTO = noticeService.insertNotice(userDetails.getUserId(), request);
