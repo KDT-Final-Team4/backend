@@ -4,7 +4,6 @@ import com.example.salarying.Admin.User.entity.Admin;
 import com.example.salarying.Corporation.User.entity.Member;
 import com.example.salarying.Corporation.User.exception.UserException;
 import com.example.salarying.Corporation.User.exception.UserExceptionType;
-import com.example.salarying.global.jwt.CustomAdminDetails;
 import com.example.salarying.global.jwt.CustomUserDetails;
 import com.example.salarying.global.jwt.JwtConfig;
 import com.example.salarying.global.jwt.JwtType;
@@ -15,7 +14,6 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -61,15 +59,6 @@ public class AuthTokenProvider {
         return authToken;
     }
 
-    public AuthToken issueRefreshToken(Member member) {
-        String subject = getTokenSubjectStr(member, JwtType.REFRESH);
-        Date expiryDate = Date.from(
-                Instant.now().plusSeconds(jwtConfig.getRefreshExpiry()));
-
-        AuthToken authToken = createAuthToken(subject, expiryDate);
-        log.info("issueRefreshToken.AuthToken.getToken(): {} ", authToken.getToken());
-        return authToken;
-    }
 
     /**
      * 토큰 생성 시 호출되는 메서드
@@ -91,7 +80,7 @@ public class AuthTokenProvider {
     private String getAdminTokenSubjectStr(Admin admin, JwtType jwtType) {
         ObjectMapper om = new ObjectMapper();
         try {
-            return om.writeValueAsString(new CustomAdminDetails(admin.getId(), admin.getAdminEmail(), admin.getRole(), jwtType));
+            return om.writeValueAsString(new CustomUserDetails(admin.getId(), admin.getAdminEmail(), admin.getRole(), jwtType));
         } catch (JsonProcessingException e) {
             log.debug(e.getMessage());
             throw new UserException(UserExceptionType.PARSING_FAIL);
@@ -107,16 +96,8 @@ public class AuthTokenProvider {
     public UsernamePasswordAuthenticationToken getAuthentication(AuthToken authToken) throws JsonProcessingException {
         if(authToken.validate()){
             Claims claims = authToken.getClaimsFromToken(); //에러 발생 가능
-            if(claims.getSubject().contains("ADMIN")){
-                CustomAdminDetails adminDetails = CustomAdminDetails.createUserDetails(claims.getSubject());
-                System.out.println(claims.getSubject());
-                return new UsernamePasswordAuthenticationToken(adminDetails, null, adminDetails.getAuthorities());
-            }
-            else {
-                CustomUserDetails userDetails = CustomUserDetails.createUserDetails(claims.getSubject());
-                System.out.println(claims.getSubject());
-                return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            }
+            CustomUserDetails userDetails = CustomUserDetails.createUserDetails(claims.getSubject());
+            return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         } else {
             return null;
         }
