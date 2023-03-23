@@ -8,15 +8,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown =true)
 public class CustomUserDetails implements UserDetails {
     private Long userId; //pk
     private String email; //로그인 아이디
@@ -24,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
     private JwtType jwtType; //access 토큰인지 refresh 토큰인지
 
     public static CustomUserDetails createUserDetails(String subject) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new CustomUserDetailsModule());
         return objectMapper.readValue(subject, CustomUserDetails.class);
     }
 
@@ -40,7 +44,10 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+
+        HashSet<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(this.role));
+        return authorities;
     }
 
     @Override
