@@ -36,7 +36,7 @@ public class NoticeServiceImpl implements NoticeService {
             noticeRepository.save(notice);
             return new NoticeDTO.NoticeResponse(notice);
         } else {
-            throw new UserException(UserExceptionType.NOT_EXIST_ACCOUNT);
+            throw new UserException(UserExceptionType.NOT_LOGGED_IN);
         }
     }
 }

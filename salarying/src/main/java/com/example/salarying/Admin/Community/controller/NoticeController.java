@@ -26,7 +26,7 @@ public class NoticeController {
      */
     @Operation(summary = "공지사항 등록")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping("/notice")
+    @PostMapping("/admin/notice")
     public ResponseDTO<?> insertNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.NoticeRequest request) {
         NoticeDTO.NoticeResponse responseDTO = noticeService.insertNotice(userDetails.getUserId(), request);
         return new ResponseDTO<>().ok(responseDTO, "공지사항 등록 완료");
