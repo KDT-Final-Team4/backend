@@ -82,4 +82,50 @@ public class MemberServiceImpl implements MemberService{
             return response;
         }else throw new UserException(UserExceptionType.UNMATCHED_PASSWORD);
     }
+
+    /**
+     * 비밀번호 재확인 기능
+     * @param Id : 사용자 ID
+     * @param request : 비밀번호
+     * @return : 비밀번호 일치 여부
+     */
+    @Override
+    public String checkPassword(Long Id, MemberDTO.CheckRequest request) {
+        Member member = memberRepository.findById(Id)
+                .orElseThrow(()-> new UserException(UserExceptionType.NOT_LOGGED_IN));
+
+        if(passwordEncoder.matches(request.getPassword(), member.getPassword())){
+            return "비밀번호가 일치합니다.";
+        }
+        else {
+            throw  new UserException(UserExceptionType.UNMATCHED_PASSWORD);
+        }
+    }
+
+    /**
+     * 기업회원 비밀번호 변경 함수
+     * @param Id : 사용자 ID
+     * @param request : 새로운 비밀번호
+     * @return : 비밀번호 변경 성공 여부
+     */
+    @Override
+    public String changePassword(Long Id, MemberDTO.ChangeRequest request) {
+        Member member = memberRepository.findById(Id)
+                .orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+
+        if(passwordEncoder.matches(request.getPassword(),member.getPassword())){
+            throw new UserException(UserExceptionType.ALREADY_USED);
+        }
+
+        if(request.getPassword() != null && !request.getPassword().equals("")){
+            String newPw = passwordEncoder.encode(request.getPassword());
+            member.setPassword(newPw);
+            member.setLastModified(new Date());
+            memberRepository.save(member);
+            return "비밀번호 변경 성공";
+        }
+        else{
+            throw new UserException(UserExceptionType.EMPTY_PASSWORD);
+        }
+    }
 }
