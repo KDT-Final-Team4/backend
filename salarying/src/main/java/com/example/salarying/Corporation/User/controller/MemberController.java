@@ -26,9 +26,21 @@ public class MemberController {
      * @return : 비밀번호 일치 여부
      */
     @Operation(summary = "비밀번호 확인 API", description = "비밀번호 변경 전 사용자 확인을 위한 비밀번호 재입력")
-    @PostMapping("/admin/password")
+    @PostMapping("/users/password")
     public ResponseDTO<?> checkPassword(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody MemberDTO.CheckRequest request) {
         return new ResponseDTO<>().ok(null, memberService.checkPassword(customUserDetails.getUserId(), request));
+    }
+
+    /**
+     * 기업회원 비밀번호 변경 API
+     * @param customUserDetails : 회원 정보를 찾기 위한 ID
+     * @param request : 새로운 비밀번호
+     * @return : 비밀번호 변경 완료 여부
+     */
+    @Operation(summary = "비밀번호 변경 API", description = "새로운 비밀번호 저장")
+    @PutMapping("/users/password")
+    public ResponseDTO<?> changePassword(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody MemberDTO.ChangeRequest request) {
+        return new ResponseDTO<>().ok(null, memberService.changePassword(customUserDetails.getUserId(), request));
     }
 
 }

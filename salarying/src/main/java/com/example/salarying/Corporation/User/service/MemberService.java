@@ -10,5 +10,5 @@ public interface MemberService {
 
     String checkPassword(Long Id, MemberDTO.CheckRequest request);
 
-
+    String changePassword(Long Id, MemberDTO.ChangeRequest request);
 }
