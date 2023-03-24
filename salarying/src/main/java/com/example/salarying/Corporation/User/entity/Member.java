@@ -2,10 +2,7 @@ package com.example.salarying.Corporation.User.entity;
 
 import com.example.salarying.Admin.User.entity.Admin;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -14,6 +11,7 @@ import java.util.Date;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -68,11 +66,11 @@ public class Member {
 
     @Builder
     public Member(String companyName, String companyPhoneNumber, String email, String password, String role) {
-        this.companyName = this.getCompanyName();
-        this.companyPhoneNumber = this.getCompanyPhoneNumber();
-        this.email = this.getEmail();
-        this.password = this.getPassword();
-        this.role = this.getRole();
+        this.companyName = companyName;
+        this.companyPhoneNumber = companyPhoneNumber;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
