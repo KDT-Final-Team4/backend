@@ -53,4 +53,32 @@ public class AdminServiceImpl implements AdminService{
         }
     }
 
+    /**
+     * 사용자 비밀번호 변경 함수
+     * @param Id : 사용자 ID
+     * @param request : 새로운 비밀번호
+     * @return : 변경 성공 여부
+     */
+    @Override
+    @Transactional
+    public String changePassword(Long Id, AdminDTO.ChangeRequest request) {
+        Admin admin = adminRepository.findAdminById(Id)
+                .orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+
+        if(passwordEncoder.matches(request.getPassword(),admin.getAdminPassword())){
+            throw new UserException(UserExceptionType.ALREADY_USED);
+        }
+
+        if(request.getPassword() != null && !request.getPassword().equals("")){
+            String newPw = passwordEncoder.encode(request.getPassword());
+            admin.setAdminPassword(newPw);
+            admin.setLastModified(new Date());
+            adminRepository.save(admin);
+            return "비밀번호 변경 성공";
+        }
+        else{
+            throw new UserException(UserExceptionType.EMPTY_PASSWORD);
+        }
+    }
+
 }

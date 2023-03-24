@@ -29,4 +29,16 @@ public class AdminController {
     public ResponseDTO<?> checkPassword(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody AdminDTO.CheckRequest request) {
         return new ResponseDTO<>().ok(null, adminService.checkPassword(customUserDetails.getUserId(), request));
     }
+
+    /**
+     * 관리자 비밀번호 변경 API
+     * @param customUserDetails : 관리자 정보를 찾기 위한 ID
+     * @param request : 새로운 비밀번호
+     * @return : 비밀번호 변경 완료 여부
+     */
+    @Operation(summary = "비밀번호 변경 API", description = "새로운 비밀번호 저장")
+    @PutMapping("/admin/password")
+    public ResponseDTO<?> changePassword(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody AdminDTO.ChangeRequest request) {
+        return new ResponseDTO<>().ok(null, adminService.changePassword(customUserDetails.getUserId(), request));
+    }
 }

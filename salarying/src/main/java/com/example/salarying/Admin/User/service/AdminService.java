@@ -8,4 +8,6 @@ public interface AdminService {
 
     String checkPassword(Long Id, AdminDTO.CheckRequest request);
 
+    String changePassword(Long Id, AdminDTO.ChangeRequest request);
+
 }
