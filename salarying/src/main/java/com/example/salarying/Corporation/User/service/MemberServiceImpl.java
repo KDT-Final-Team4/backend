@@ -82,4 +82,17 @@ public class MemberServiceImpl implements MemberService{
             return response;
         }else throw new UserException(UserExceptionType.UNMATCHED_PASSWORD);
     }
+
+    @Override
+    public String checkPassword(Long Id, MemberDTO.CheckRequest request) {
+        Member member = memberRepository.findById(Id)
+                .orElseThrow(()-> new UserException(UserExceptionType.NOT_LOGGED_IN));
+
+        if(passwordEncoder.matches(request.getPassword(), member.getPassword())){
+            return "비밀번호가 일치합니다.";
+        }
+        else {
+            throw  new UserException(UserExceptionType.UNMATCHED_PASSWORD);
+        }
+    }
 }

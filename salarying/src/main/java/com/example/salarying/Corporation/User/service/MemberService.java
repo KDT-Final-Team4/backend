@@ -7,4 +7,8 @@ public interface MemberService {
     Member signUp(MemberDTO.SignUpRequest request);
 
     MemberDTO.LoginResponse login(MemberDTO.LoginRequest request);
+
+    String checkPassword(Long Id, MemberDTO.CheckRequest request);
+
+
 }
