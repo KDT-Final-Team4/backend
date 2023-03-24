@@ -23,14 +23,24 @@ public class AdminServiceImpl implements AdminService{
     private final AuthTokenProvider authTokenProvider;
 
 
+    /**
+     * 관리자 로그인 기능구현
+     * @param request : 관리자 email, password
+     * @return : accces token
+     * passwordEncoder를 통해 비밀번호 확인 후 해당 멤버의 마지막 로그인 시간 update
+     */
     @Override
-    public String login(AdminDTO.LoginRequest request) {
+    @Transactional
+    public AdminDTO.LoginResponse login(AdminDTO.LoginRequest request) {
         Admin admin = adminRepository.findByAdminEmail(request.getEmail())
                 .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_ACCOUNT));
 
         if(passwordEncoder.matches(request.getPassword(),admin.getAdminPassword())){
+            admin.setLastSignIn(new Date());
             AuthToken authToken = authTokenProvider.issueAdminAccessToken(admin);
-            return authToken.getToken();
+            adminRepository.save(admin);
+            AdminDTO.LoginResponse response = new AdminDTO.LoginResponse(authToken.getToken(), admin);
+            return response;
         }else throw new UserException(UserExceptionType.UNMATCHED_PASSWORD);
     }
 
