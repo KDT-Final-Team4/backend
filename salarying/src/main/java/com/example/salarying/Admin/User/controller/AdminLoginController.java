@@ -15,6 +15,11 @@ public class AdminLoginController {
 
     private AdminService adminService;
 
+    /**
+     * 관리자 로그인 API
+     * @param request : 관리자 로그인 DTO
+     * @return : access token
+     */
     @Operation(summary = "관리자 로그인 API", description = "이메일과 비밀번호로 로그인하기")
     @PostMapping("/admin/login")
     public ResponseDTO<?> login(@RequestBody AdminDTO.LoginRequest request){
