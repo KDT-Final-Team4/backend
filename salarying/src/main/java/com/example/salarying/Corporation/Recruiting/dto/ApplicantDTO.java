@@ -2,10 +2,7 @@ package com.example.salarying.Corporation.Recruiting.dto;
 
 
 import com.example.salarying.Corporation.Recruiting.entity.Applicant;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 public class ApplicantDTO {
 
@@ -34,5 +31,19 @@ public class ApplicantDTO {
         }
 
 
+    }
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SelectionRequest {
+
+
+        private Long id;
+
+        private String progress;
+
+        private String status;
     }
 }
