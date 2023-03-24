@@ -10,6 +10,9 @@ import com.example.salarying.global.jwt.auth.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 
 @RequiredArgsConstructor
@@ -26,11 +29,13 @@ public class MemberServiceImpl implements MemberService{
      * @return : 저장된 사용자 정보 혹은 존재하는 email이 있으면 해당 예외타입 반환
      */
     @Override
+    @Transactional
     public Member signUp(MemberDTO.SignUpRequest request) {
 
         if(checkFormat(request) && memberRepository.findByEmail(request.getEmail()).isEmpty()){
             Member newMember = request.toEntity();
             newMember.encodePassword(passwordEncoder);
+            newMember.setLastModified(new Date());
             memberRepository.save(newMember);
             return newMember;
         }
@@ -65,13 +70,16 @@ public class MemberServiceImpl implements MemberService{
      * @return 로그인 완료 시 access token 반환
      */
     @Override
-    public String login(MemberDTO.LoginRequest request) {
+    @Transactional
+    public MemberDTO.LoginResponse login(MemberDTO.LoginRequest request) {
         Member member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_ACCOUNT));
-
         if(passwordEncoder.matches(request.getPassword(), member.getPassword())){
+            member.setLastSignIn(new Date());
             AuthToken authToken = authTokenProvider.issueAccessToken(member);
-            return authToken.getToken();
+            memberRepository.save(member);
+            MemberDTO.LoginResponse response = new MemberDTO.LoginResponse(authToken.getToken(), member);
+            return response;
         }else throw new UserException(UserExceptionType.UNMATCHED_PASSWORD);
     }
 }
