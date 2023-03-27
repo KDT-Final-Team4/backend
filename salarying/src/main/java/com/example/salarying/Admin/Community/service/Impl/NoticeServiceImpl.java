@@ -2,6 +2,8 @@ package com.example.salarying.Admin.Community.service.Impl;
 
 import com.example.salarying.Admin.Community.dto.NoticeDTO;
 import com.example.salarying.Admin.Community.entity.Notice;
+import com.example.salarying.Admin.Community.exception.CommunityException;
+import com.example.salarying.Admin.Community.exception.CommunityExceptionType;
 import com.example.salarying.Admin.Community.repository.NoticeRepository;
 import com.example.salarying.Admin.Community.service.NoticeService;
 import com.example.salarying.Admin.User.entity.Admin;
@@ -11,7 +13,9 @@ import com.example.salarying.Corporation.User.exception.UserExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +26,6 @@ public class NoticeServiceImpl implements NoticeService {
 
     /**
      * 관리자 공지사항 등록
-     *
      * @param adminId 관지라 id
      * @param request 등록하고자 하는 공지사항 정보 DTO
      * @return 등록한 공지사항 정보
@@ -39,4 +42,31 @@ public class NoticeServiceImpl implements NoticeService {
             throw new UserException(UserExceptionType.NOT_LOGGED_IN);
         }
     }
+    /**
+     * 공지사항 목록 조회
+     * @return 공지사항 목록
+     */
+    @Override
+    public List<NoticeDTO.NoticeList> noticeList() {
+        List<Notice> noticeList = noticeRepository.findAll();
+        return noticeList.stream()
+                .map(NoticeDTO.NoticeList::new)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 공지사항 상세 정보 조회
+     * @param id : 공지사항 id
+     * @return : 공지사항 상세 정보
+     */
+    @Override
+    public NoticeDTO.NoticeResponse noticeDetail(Long id) {
+
+        Notice notice = noticeRepository.findNoticeById(id);
+        if (notice == null) {
+            throw new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE);
+        }
+        return new NoticeDTO.NoticeResponse(notice);
+    }
+
 }
