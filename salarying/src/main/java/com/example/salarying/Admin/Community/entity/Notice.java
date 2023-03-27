@@ -21,7 +21,7 @@ public class Notice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="notice_id")
+    @Column(name = "notice_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,13 +29,16 @@ public class Notice {
     private Admin admin;
 
     @NotNull
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
     @NotNull
-    @Column(name="content")
+    @Column(name = "content")
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date postDate;
+
+    @Column(name = "status")
+    private Boolean status;
 }
