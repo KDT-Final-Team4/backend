@@ -24,7 +24,7 @@ public class TermsDTO {
         @Schema(name = "title", example = "서비스 이용 약관 임시 버전")
         private String title;
         @Schema(name = "version", example = "1.1")
-        private Float version;
+        private String version;
         @Schema(name = "content")
         private String content;
 

@@ -16,12 +16,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "agreement")
+@Table(name = "terms")
 public class Terms {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="agreement_id")
+    @Column(name="terms_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,7 +38,7 @@ public class Terms {
     private String agreementContent;
 
     @Column(name="version")
-    private Float version;
+    private String version;
 
     @Column(name="status")
     private String status;
