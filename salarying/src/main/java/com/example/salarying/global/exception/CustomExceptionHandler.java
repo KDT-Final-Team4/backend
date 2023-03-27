@@ -1,5 +1,6 @@
 package com.example.salarying.global.exception;
 
+import com.example.salarying.Admin.Community.exception.CommunityException;
 import com.example.salarying.Corporation.Recruiting.exception.RecruitingException;
 import com.example.salarying.Corporation.User.exception.UserException;
 import com.example.salarying.global.dto.ErrorDTO;
@@ -16,38 +17,46 @@ public class CustomExceptionHandler implements ErrorController {
 
     //custom exception 처리 핸들러
     @ExceptionHandler(value = UserException.class)
-    public ResponseEntity handleUserException(CustomException ce){
+    public ResponseEntity handleUserException(CustomException ce) {
         ErrorDTO error = ErrorDTO.builder()
                 .errorCode(ce.getExceptionType().getErrorCode())
                 .errorMessage(ce.getExceptionType().getMessage())
                 .httpStatus(ce.getExceptionType().getHttpStatus())
                 .build();
 
-        return new ResponseEntity(error ,ce.getExceptionType().getHttpStatus());
+        return new ResponseEntity(error, ce.getExceptionType().getHttpStatus());
     }
 
     @ExceptionHandler(value = GlobalException.class)
-    public ResponseEntity handleGlobalException(GlobalException ce){
+    public ResponseEntity handleGlobalException(GlobalException ce) {
         ErrorDTO error = ErrorDTO.builder()
                 .errorCode(ce.getExceptionType().getErrorCode())
                 .errorMessage(ce.getExceptionType().getMessage())
                 .httpStatus(ce.getExceptionType().getHttpStatus())
                 .build();
 
-        return new ResponseEntity(error ,ce.getExceptionType().getHttpStatus());
+        return new ResponseEntity(error, ce.getExceptionType().getHttpStatus());
     }
 
     @ExceptionHandler(value = RecruitingException.class)
-    public ResponseEntity handleUserException(RecruitingException ce){
+    public ResponseEntity handleUserException(RecruitingException ce) {
         ErrorDTO error = ErrorDTO.builder()
                 .errorCode(ce.getExceptionType().getErrorCode())
                 .errorMessage(ce.getExceptionType().getMessage())
                 .httpStatus(ce.getExceptionType().getHttpStatus())
                 .build();
 
-        return new ResponseEntity(error ,ce.getExceptionType().getHttpStatus());
+        return new ResponseEntity(error, ce.getExceptionType().getHttpStatus());
     }
 
+    @ExceptionHandler(value = CommunityException.class)
+    public ResponseEntity handleUserException(CommunityException ce) {
+        ErrorDTO error = ErrorDTO.builder()
+                .errorCode(ce.getExceptionType().getErrorCode())
+                .errorMessage(ce.getExceptionType().getMessage())
+                .httpStatus(ce.getExceptionType().getHttpStatus())
+                .build();
 
-
+        return new ResponseEntity(error, ce.getExceptionType().getHttpStatus());
+    }
 }
