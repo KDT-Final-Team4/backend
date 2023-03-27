@@ -74,6 +74,7 @@ public class Member {
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
         password = passwordEncoder.encode(password);
+        this.lastModified = new Date();
     }
 
     public void updatePassword(PasswordEncoder passwordEncoder, String newPassword) {
