@@ -47,7 +47,7 @@ public class NoticeController {
      */
     @Operation(summary = "공지사항 정보 조회")
     @GetMapping("/notice/{id}")
-    public ResponseDTO<?> noticeDetail(@RequestParam("id") Long id) {
+    public ResponseDTO<?> noticeDetail(@PathVariable("id") Long id) {
         NoticeDTO.NoticeResponse response = noticeService.noticeDetail(id);
         return new ResponseDTO<>().ok(response, "정상출력");
     }
