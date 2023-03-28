@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -84,25 +85,24 @@ public class NoticeServiceImpl implements NoticeService {
         noticeRepository.delete(notice);
     }
 
-    /**
-     * 공지사항 수정
-     * @param adminId : 관리자 id
-     * @param update  : 공지사항 정보수정
-     */
-    @Override
-    @Transactional
-    public void updateNotice(Long adminId, NoticeDTO.Update update) {
-        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        if (checkUpdateDTO(update)) {
-            Notice notice = noticeRepository.findNoticeById(update.getId());
-            notice.update(
-                    update.getTitle(),
-                    update.getContent(),
-                    update.getStatus()
-            );
-            noticeRepository.save(notice);
-        }
-    }
+//    /**
+//     * 공지사항 수정
+//     * @param adminId : 관리자 id
+//     * @param update  : 공지사항 정보수정
+//     */
+//    @Override
+//    @Transactional
+//    public void updateNotice(Long adminId, NoticeDTO.Update update) {
+//        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+//        if (checkUpdateDTO(update)) {
+//            Notice notice = noticeRepository.findNoticeById(update.getId());
+//
+//            update.setContent(update.toEntity().getContent());
+//            update.setTitle(update.toEntity().getTitle());
+//            update.setStatus(update.toEntity().getStatus());
+//            noticeRepository.save();
+//        }
+//    }
 
     public Boolean checkUpdateDTO(NoticeDTO.Update update) {
         if (update.getTitle() == null || update.getTitle().equals("")) {

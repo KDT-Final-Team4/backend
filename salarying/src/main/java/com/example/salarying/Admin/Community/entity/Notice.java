@@ -43,10 +43,4 @@ public class Notice {
 
     @Column(name = "status")
     private Boolean status;
-
-    public void update(String title, String content, boolean status) {
-        this.title = title;
-        this.content = content;
-        this.status = status;
-    }
 }
