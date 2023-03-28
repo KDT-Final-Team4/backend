@@ -70,14 +70,13 @@ public class NoticeController {
     /**
      * 공지사항 수정 API
      * @param userDetails : 로그인한 관리자
-     * @param id : 수정할 공지사항 ID
      * @param update : 수정 하는 공지사항 DTO
      * @return : 수정 성공 메시지
      */
     @Operation(summary = "공지사항 수정")
     @PutMapping("/notice/{id}")
-    public ResponseDTO<?> updateNotice(@AuthenticationPrincipal CustomUserDetails userDetails,@PathVariable Long id, @RequestBody NoticeDTO.Update update) {
-        noticeService.updateNotice(userDetails.getUserId(), id, update);
+    public ResponseDTO<?> updateNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.Update update) {
+        noticeService.updateNotice(userDetails.getUserId() ,update);
         return new ResponseDTO<>().ok(null, "공지사항 수정 되었습니다.");
     }
 }
