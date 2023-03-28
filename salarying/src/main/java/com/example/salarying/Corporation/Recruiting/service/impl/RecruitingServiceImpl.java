@@ -87,4 +87,19 @@ public class RecruitingServiceImpl implements RecruitingService {
         }
     }
 
+    /**
+     * 채용공고 id로 채용공고 정보 찾기
+     * @param recruitingId: 채용공고 id
+     * @return: 채용공고 정보
+     */
+    @Override
+    public Recruiting findById(Long recruitingId) {
+        Optional<Recruiting> recruitingOptional = recruitingRepository.findById(recruitingId);
+        if(recruitingOptional.isPresent()){
+            return recruitingOptional.get();
+        }else{
+            throw new RecruitingException(RecruitingExceptionType.NOT_EXIST);
+        }
+    }
+
 }
