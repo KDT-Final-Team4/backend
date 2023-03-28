@@ -44,7 +44,8 @@ public class Notice {
     @Column(name = "status")
     private Boolean status;
 
-    public void update(String title, String content, boolean status) {
+    public void update(Long id, String title, String content, boolean status) {
+        this.id = id;
         if (title.equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_TITLE);
         } else {
@@ -57,5 +58,4 @@ public class Notice {
         }
         this.status = status;
     }
-
 }
