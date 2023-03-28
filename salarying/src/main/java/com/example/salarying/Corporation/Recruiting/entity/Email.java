@@ -25,9 +25,16 @@ public class Email {
     @JoinColumn(name = "applicant_id")
     private Applicant applicant;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recruiting_id")
+    private Recruiting recruiting;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date sendDate;
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "progress")
+    private String progress;
 }
