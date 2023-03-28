@@ -85,15 +85,17 @@ public class NoticeDTO {
     @NoArgsConstructor
     @Builder
     public static class Update {
+        private Long id;
         private String title;
         private String content;
         private Boolean status;
 
         public Notice toEntity() {
             return Notice.builder()
-                    .title(title)
-                    .content(content)
-                    .status(status)
+                    .id(this.id)
+                    .title(this.title)
+                    .content(this.content)
+                    .status(this.status)
                     .build();
         }
     }
