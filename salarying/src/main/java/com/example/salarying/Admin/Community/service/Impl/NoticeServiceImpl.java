@@ -26,7 +26,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     /**
      * 관리자 공지사항 등록
-     * @param adminId 관지라 id
+     * @param adminId 관리자 id
      * @param request 등록하고자 하는 공지사항 정보 DTO
      * @return 등록한 공지사항 정보
      */
@@ -42,6 +42,7 @@ public class NoticeServiceImpl implements NoticeService {
             throw new UserException(UserExceptionType.NOT_LOGGED_IN);
         }
     }
+
     /**
      * 공지사항 목록 조회
      * @return 공지사항 목록
@@ -67,6 +68,53 @@ public class NoticeServiceImpl implements NoticeService {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE);
         }
         return new NoticeDTO.NoticeResponse(notice);
+    }
+
+    /**
+     * 공지사항 삭제
+     * @param adminId  : 관리자 id
+     * @param noticeId : 삭제할 notice id
+     */
+    @Override
+    public void deleteNotice(Long adminId, Long noticeId) {
+        Optional<Admin> admin = adminRepository.findById(adminId);
+        Notice notice = noticeRepository.findNoticeById(noticeId);
+
+        if (admin.isPresent()) {
+            if (notice != null) {
+                noticeRepository.delete(notice);
+            } else {
+                throw new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE);
+            }
+        } else {
+            throw new UserException(UserExceptionType.NOT_LOGGED_IN);
+        }
+    }
+
+    /**
+     * 공지사항 수정
+     * @param adminId : 관리자 id
+     * @param id      : 수정할 notice id
+     * @param update  : 공지사항 정보수정
+     */
+    @Override
+    public void updateNotice(Long adminId, Long id, NoticeDTO.Update update) {
+        Optional<Admin> admin = adminRepository.findById(adminId);
+        if (admin.isPresent()) {
+            Notice notice = noticeRepository.findNoticeById(id);
+            if (notice != null) {
+                notice.update(
+                        update.toEntity().getTitle(),
+                        update.toEntity().getContent(),
+                        update.toEntity().getStatus()
+                );
+                noticeRepository.save(notice);
+            } else {
+                throw new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE);
+            }
+        } else {
+            throw new UserException(UserExceptionType.NOT_LOGGED_IN);
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 public interface NoticeService {
     NoticeDTO.NoticeResponse insertNotice(Long adminId, NoticeDTO.NoticeRequest request);
     List<NoticeDTO.NoticeList> noticeList();
-
     NoticeDTO.NoticeResponse noticeDetail(Long id);
+    void deleteNotice(Long adminId, Long noticeId);
+    void updateNotice(Long adminId, Long id, NoticeDTO.Update update);
 }
