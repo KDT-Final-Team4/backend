@@ -1,6 +1,7 @@
 package com.example.salarying.global.exception;
 
 import com.example.salarying.Admin.Community.exception.CommunityException;
+import com.example.salarying.Admin.Terms.exception.TermsException;
 import com.example.salarying.Corporation.Recruiting.exception.EmailException;
 import com.example.salarying.Corporation.Recruiting.exception.RecruitingException;
 import com.example.salarying.Corporation.User.exception.UserException;
@@ -63,6 +64,17 @@ public class CustomExceptionHandler implements ErrorController {
 
     @ExceptionHandler(value = EmailException.class)
     public ResponseEntity handleUserException(EmailException ce){
+        ErrorDTO error = ErrorDTO.builder()
+                .errorCode(ce.getExceptionType().getErrorCode())
+                .errorMessage(ce.getExceptionType().getMessage())
+                .httpStatus(ce.getExceptionType().getHttpStatus())
+                .build();
+
+        return new ResponseEntity(error, ce.getExceptionType().getHttpStatus());
+    }
+
+    @ExceptionHandler(value = TermsException.class)
+    public ResponseEntity handleTermsException(TermsException ce) {
         ErrorDTO error = ErrorDTO.builder()
                 .errorCode(ce.getExceptionType().getErrorCode())
                 .errorMessage(ce.getExceptionType().getMessage())
