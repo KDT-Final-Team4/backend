@@ -15,7 +15,13 @@ public class TermsController {
 
     private final TermsService termsService;
 
-    @Operation(summary = "서비스 이용 약관 등록 API", description = "새로운 서비스 이용 약관 생성")
+    /**
+     * 약관 등록 API
+     * @param userDetails : 작성자 이메일
+     * @param request : 제목, 내용, 버전, 타입
+     * @return : 약관 등록 성공 여부
+     */
+    @Operation(summary = "약관 등록 API", description = "새로운 약관 생성")
     @PostMapping("/terms")
     public ResponseDTO<?> AddTerms(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody TermsDTO.AddTermRequest request){
         termsService.insertTerm(userDetails.getUserId(), request);
