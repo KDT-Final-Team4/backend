@@ -3,22 +3,25 @@ package com.example.salarying.Corporation.Recruiting.exception;
 import com.example.salarying.global.exception.base.CustomExceptionType;
 import org.springframework.http.HttpStatus;
 
-public enum RecruitingExceptionType implements CustomExceptionType {
+public enum EmailExceptionType implements CustomExceptionType {
 
-    NOT_EXIST_TITLE(-201, HttpStatus.BAD_REQUEST, "공고제목이 입력되지 않았습니다."),
-    NOT_EXIST_TASK(-202, HttpStatus.BAD_REQUEST, "직무가 입력되지 않았습니다."),
-    NOT_EXIST_PROGRESS(-203, HttpStatus.BAD_REQUEST, "채용전형이 입력되지 않았습니다."),
+    NOT_EXIST_SUBJECT(-401, HttpStatus.BAD_REQUEST, "메일제목이 없습니다"),
+    NOT_EXIST_CONTENT(-402, HttpStatus.BAD_REQUEST, "메일내용이 없습니다"),
+    NOT_EXIST_EMAIL(-403, HttpStatus.BAD_REQUEST, "이메일이 없습니다."),
 
-    NOT_EXIST(-204, HttpStatus.BAD_REQUEST, "해당 채용공고가 없습니다.")
+    NOT_EMAIL_FORMAT(-404, HttpStatus.BAD_REQUEST, "올바른 이메일형식이 아닙니다."),
+
+    NOT_EXIST_APPLICANT(-404, HttpStatus.BAD_REQUEST, "해당 지원자가 없습니다.")
 
 
-    ;
+
+            ;
 
     private int errorCode;
     private HttpStatus httpStatus;
     private String errorMsg;
 
-    RecruitingExceptionType(int errorCode, HttpStatus httpStatus, String errorMsg){
+    EmailExceptionType(int errorCode, HttpStatus httpStatus, String errorMsg){
         this.errorCode = errorCode;
         this.httpStatus = httpStatus;
         this.errorMsg = errorMsg;
