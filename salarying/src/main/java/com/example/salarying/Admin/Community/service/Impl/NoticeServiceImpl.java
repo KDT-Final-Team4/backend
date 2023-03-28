@@ -80,40 +80,34 @@ public class NoticeServiceImpl implements NoticeService {
         Optional<Admin> admin = adminRepository.findById(adminId);
         Notice notice = noticeRepository.findNoticeById(noticeId);
 
-        if (admin.isPresent()) {
-            if (notice != null) {
-                noticeRepository.delete(notice);
-            } else {
-                throw new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE);
-            }
+        admin.orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        if (notice != null) {
+            noticeRepository.delete(notice);
         } else {
-            throw new UserException(UserExceptionType.NOT_LOGGED_IN);
+            throw new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE);
         }
     }
 
     /**
      * 공지사항 수정
      * @param adminId : 관리자 id
-     * @param id      : 수정할 notice id
      * @param update  : 공지사항 정보수정
      */
     @Override
-    public void updateNotice(Long adminId, Long id, NoticeDTO.Update update) {
+    public void updateNotice(Long adminId, NoticeDTO.Update update) {
         Optional<Admin> admin = adminRepository.findById(adminId);
-        if (admin.isPresent()) {
-            Notice notice = noticeRepository.findNoticeById(id);
-            if (notice != null) {
-                notice.update(
-                        update.toEntity().getTitle(),
-                        update.toEntity().getContent(),
-                        update.toEntity().getStatus()
-                );
-                noticeRepository.save(notice);
-            } else {
-                throw new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE);
-            }
+        admin.orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Notice notice = noticeRepository.findNoticeById(update.getId());
+        if (notice == null) {
+            throw new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE);
         } else {
-            throw new UserException(UserExceptionType.NOT_LOGGED_IN);
+            notice.update(
+                    update.toEntity().getId(),
+                    update.toEntity().getTitle(),
+                    update.toEntity().getContent(),
+                    update.toEntity().getStatus()
+            );
+            noticeRepository.save(notice);
         }
     }
 
