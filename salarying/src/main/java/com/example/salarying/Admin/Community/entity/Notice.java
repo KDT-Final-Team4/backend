@@ -44,18 +44,9 @@ public class Notice {
     @Column(name = "status")
     private Boolean status;
 
-    public void update(Long id, String title, String content, boolean status) {
-        this.id = id;
-        if (title.equals("")) {
-            throw new CommunityException(CommunityExceptionType.NOT_EXIST_TITLE);
-        } else {
-            this.title = title;
-        }
-        if (content.equals("")) {
-            throw new CommunityException(CommunityExceptionType.NOT_EXIST_CONTENT);
-        } else {
-            this.content = content;
-        }
+    public void update(String title, String content, boolean status) {
+        this.title = title;
+        this.content = content;
         this.status = status;
     }
 }
