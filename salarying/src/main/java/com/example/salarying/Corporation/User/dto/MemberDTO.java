@@ -24,6 +24,10 @@ public class MemberDTO {
         private String companyName;
         @Schema(name = "companyPhoneNumber", example = "010-1234-1234")
         private String companyPhoneNumber;
+        @Schema(name = "name", example = "김나나")
+        private String name;
+        @Schema(name = "position", example = "대표")
+        private String position;
 
         public Member toEntity(){
             return Member.builder()
@@ -31,6 +35,8 @@ public class MemberDTO {
                     .password(this.password)
                     .companyName(this.companyName)
                     .companyPhoneNumber(this.companyPhoneNumber)
+                    .name(this.name)
+                    .position(this.position)
                     .lastModified(new Date())
                     .role("USER")
                     .build();

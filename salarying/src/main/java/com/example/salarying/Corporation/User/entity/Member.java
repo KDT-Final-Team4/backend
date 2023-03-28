@@ -11,7 +11,6 @@ import java.util.Date;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -75,9 +74,15 @@ public class Member {
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
         password = passwordEncoder.encode(password);
+        this.lastModified = new Date();
     }
 
     public void updatePassword(PasswordEncoder passwordEncoder, String newPassword) {
         this.password = passwordEncoder.encode(newPassword);
+        this.lastModified = new Date();
+    }
+
+    public void updateLoginDate(){
+        this.lastSignIn = new Date();
     }
 }

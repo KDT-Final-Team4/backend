@@ -24,7 +24,7 @@ public class SecurityConfig {
 
     private final AuthTokenProvider authTokenProvider;
 
-    String[] permitUrl = {"/oauth2/**", "/", "/users/login/**","/admin/login/**", "/signUp/**", "/swagger-ui/**", "/api-docs/**"
+    String[] permitUrl = {"/oauth2/**", "/", "/users/login/**","/admin/login/**", "/signup/**", "/swagger-ui/**", "/api-docs/**"
     ,"/swagger-ui/index.html"};
 
     @Bean
@@ -40,6 +40,9 @@ public class SecurityConfig {
                 .authorizeRequests().antMatchers(permitUrl)
                 .permitAll()
                 .antMatchers("/admin/*").hasAuthority("ADMIN")
+                .antMatchers("/notice/*").hasAnyAuthority("ADMIN","USER")
+                .antMatchers("/recruit/*").hasAnyAuthority("USER")
+                .antMatchers("/applicants/*").hasAnyAuthority("USER")
                 .antMatchers("/users/*").hasAuthority("USER")
                 .anyRequest().authenticated();
 

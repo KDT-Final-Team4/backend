@@ -21,7 +21,7 @@ public class LoginController {
      * @return 회원가입 성공 시 HttpsStatus를 200번으로 반환, 이외의 예외들은 각각의 메세지와 함께 400번 반환
      */
     @Operation(summary = "회원가입 API", description = "회사 관련 모든 정보 받아오기")
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public ResponseDTO<?> singUp(@RequestBody MemberDTO.SignUpRequest request){
         memberService.signUp(request);
         return new ResponseDTO<>().ok(null, "회원가입 성공");

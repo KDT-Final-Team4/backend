@@ -35,7 +35,6 @@ public class MemberServiceImpl implements MemberService{
         if(checkFormat(request) && memberRepository.findByEmail(request.getEmail()).isEmpty()){
             Member newMember = request.toEntity();
             newMember.encodePassword(passwordEncoder);
-            newMember.setLastModified(new Date());
             memberRepository.save(newMember);
             return newMember;
         }
@@ -75,7 +74,7 @@ public class MemberServiceImpl implements MemberService{
         Member member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_ACCOUNT));
         if(passwordEncoder.matches(request.getPassword(), member.getPassword())){
-            member.setLastSignIn(new Date());
+            member.updateLoginDate();
             AuthToken authToken = authTokenProvider.issueAccessToken(member);
             memberRepository.save(member);
             MemberDTO.LoginResponse response = new MemberDTO.LoginResponse(authToken.getToken(), member);
@@ -118,9 +117,7 @@ public class MemberServiceImpl implements MemberService{
         }
 
         if(request.getPassword() != null && !request.getPassword().equals("")){
-            String newPw = passwordEncoder.encode(request.getPassword());
-            member.setPassword(newPw);
-            member.setLastModified(new Date());
+            member.updatePassword(passwordEncoder, request.getPassword());
             memberRepository.save(member);
             return "비밀번호 변경 성공";
         }
