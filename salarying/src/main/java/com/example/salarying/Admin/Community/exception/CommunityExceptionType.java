@@ -7,7 +7,7 @@ public enum CommunityExceptionType implements CustomExceptionType {
 
     NOT_EXIST_TITLE(-301, HttpStatus.BAD_REQUEST, "공지사항 제목이 입력되지 않았습니다."),
     NOT_EXIST_CONTENT(-302, HttpStatus.BAD_REQUEST, "공지사항 내용이 입력되지 않았습니다."),
-    NOT_EXIST_NOTICE(303, HttpStatus.BAD_REQUEST, "공지사항이 없습니다.")
+    NOT_EXIST_NOTICE(-303, HttpStatus.BAD_REQUEST, "공지사항이 없습니다."),
 
     ;
 

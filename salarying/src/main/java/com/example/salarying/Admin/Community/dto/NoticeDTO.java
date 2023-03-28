@@ -17,6 +17,7 @@ public class NoticeDTO {
         private String content;
 
         private Boolean status;
+
         public Notice toEntity(Admin admin) {
             return Notice.builder()
                     .admin(admin)
@@ -51,6 +52,7 @@ public class NoticeDTO {
             this.status = notice.getStatus();
         }
     }
+
     @Getter
     @Setter
     @AllArgsConstructor
@@ -67,6 +69,34 @@ public class NoticeDTO {
             this.adminName = notice.getAdmin().getAdminName();
             this.role = notice.getAdmin().getRole();
             this.status = notice.getStatus();
+        }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DeleteRequest {
+        private Long Id;
+    }
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class Update {
+        private Long id;
+        private String title;
+        private String content;
+        private Boolean status;
+
+        public Notice toEntity() {
+            return Notice.builder()
+                    .id(this.id)
+                    .title(this.title)
+                    .content(this.content)
+                    .status(this.status)
+                    .build();
         }
     }
 }

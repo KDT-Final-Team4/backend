@@ -19,6 +19,7 @@ public class NoticeController {
 
     /**
      * 관리자 id로 공지사항 등록 API
+     *
      * @param userDetails : 로그인한 관리자
      * @param request     : 등록할 공지사항 정보 DTO
      * @return : 등록된 공지사항 DTO
@@ -29,6 +30,7 @@ public class NoticeController {
         NoticeDTO.NoticeResponse responseDTO = noticeService.insertNotice(userDetails.getUserId(), request);
         return new ResponseDTO<>().ok(responseDTO, "공지사항 등록 완료");
     }
+
     /**
      * 공지사항 목록 조회 API
      * @return : 공지사항 전체 목록
@@ -51,4 +53,30 @@ public class NoticeController {
         NoticeDTO.NoticeResponse response = noticeService.noticeDetail(id);
         return new ResponseDTO<>().ok(response, "정상출력");
     }
+
+    /**
+     * 공지사항 삭제 API
+     * @param userDetails : 로그인한 관리자
+     * @param request     : 삭제하고자 하는 공지사항 ID DTO
+     * @return : 삭제 성공 메시지
+     */
+    @Operation(summary = "공지사항 삭제")
+    @DeleteMapping("/notice")
+    public ResponseDTO<?> deleteNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.DeleteRequest request) {
+        noticeService.deleteNotice(userDetails.getUserId(), request.getId());
+        return new ResponseDTO<>().ok(null, "삭제 되었습니다.");
+    }
+
+//    /**
+//     * 공지사항 수정 API
+//     * @param userDetails : 로그인한 관리자
+//     * @param update : 수정 하는 공지사항 DTO
+//     * @return : 수정 성공 메시지
+//     */
+//    @Operation(summary = "공지사항 수정")
+//    @PutMapping("/notice/{id}")
+//    public ResponseDTO<?> updateNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.Update update) {
+//        noticeService.updateNotice(userDetails.getUserId() ,update);
+//        return new ResponseDTO<>().ok(null, "공지사항 수정 되었습니다.");
+//    }
 }

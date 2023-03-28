@@ -1,5 +1,7 @@
 package com.example.salarying.Admin.Community.entity;
 
+import com.example.salarying.Admin.Community.exception.CommunityException;
+import com.example.salarying.Admin.Community.exception.CommunityExceptionType;
 import com.example.salarying.Admin.User.entity.Admin;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
