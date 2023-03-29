@@ -9,4 +9,6 @@ public interface EmailService {
 
     Boolean checkEmailDTO(EmailDTO.EmailRequest request);
 
+    List<EmailDTO.EmailResponse> findEmailByMemberId(Long userId);
+
 }

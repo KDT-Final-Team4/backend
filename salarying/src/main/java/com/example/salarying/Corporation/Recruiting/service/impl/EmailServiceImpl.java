@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -83,6 +84,21 @@ public class EmailServiceImpl implements EmailService {
             return true;
         }
     }
+
+    /**
+     * 기업회원 id에 따른 메일 전송 내역 리스트 출력
+     * @param userId: 로그인 기업회원 id
+     * @return: 메일 전송 내역 리스트
+     */
+    @Override
+    public List<EmailDTO.EmailResponse> findEmailByMemberId(Long userId) {
+        List<EmailDTO.EmailResponse> emailResponseList = emailRepository.findEmailByRecruiting_Member_Id(userId)
+                                                                        .stream().map(en->new EmailDTO.EmailResponse(en))
+                                                                        .collect(Collectors.toList());
+        return emailResponseList;
+    }
+
+
 }
 
 
