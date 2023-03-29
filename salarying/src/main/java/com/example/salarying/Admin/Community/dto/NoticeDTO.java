@@ -79,6 +79,7 @@ public class NoticeDTO {
     public static class DeleteRequest {
         private Long Id;
     }
+
     @Getter
     @Setter
     @NoArgsConstructor
@@ -87,5 +88,15 @@ public class NoticeDTO {
         private Long id;
         private String title;
         private String content;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class StatusRequest {
+        private Long id;
+        private Boolean status;
     }
 }
