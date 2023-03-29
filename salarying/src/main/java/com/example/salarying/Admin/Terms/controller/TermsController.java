@@ -28,4 +28,11 @@ public class TermsController {
         return new ResponseDTO<>().ok(null, "약관 등록 완료");
 
     }
+
+    @Operation(summary = "약관 리스트 출력 API", description = "약관별 리스트 출력")
+    @GetMapping("/terms")
+    public ResponseDTO<?> ListTerms(@RequestParam String type){
+        return new ResponseDTO<>().ok(termsService.termsList(type), "리스트 출력 완료");
+
+    }
 }
