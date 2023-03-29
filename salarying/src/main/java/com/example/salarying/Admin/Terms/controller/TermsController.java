@@ -35,4 +35,11 @@ public class TermsController {
         return new ResponseDTO<>().ok(termsService.termsList(type), "리스트 출력 완료");
 
     }
+
+    @Operation(summary = "약관 상태 변경 API", description = "약관 공개 여부 상태 변경")
+    @PostMapping("/terms/status")
+    public ResponseDTO<?> changeStatus(@RequestBody TermsDTO.StatusRequest request){
+        return new ResponseDTO<>().ok(null, termsService.changeStatus(request));
+
+    }
 }

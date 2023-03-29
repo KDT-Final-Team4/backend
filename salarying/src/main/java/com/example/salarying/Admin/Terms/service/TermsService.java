@@ -9,4 +9,6 @@ public interface TermsService {
     String insertTerm(Long Id, TermsDTO.AddTermRequest request);
 
     List<TermsDTO.TermsListResponse> termsList(String type);
+
+    String changeStatus(TermsDTO.StatusRequest request);
 }

@@ -64,6 +64,27 @@ public class TermsServiceImpl implements TermsService{
         return termsListResponses;
     }
 
+    @Override
+    @Transactional
+    public String changeStatus(TermsDTO.StatusRequest request) {
+
+        Terms terms = termsRepository.findById(request.getId())
+                .orElseThrow(()-> new TermsException(TermsExceptionType.NOT_EXIST));
+
+        if(request.getStatus().equals(terms.getStatus())) throw new TermsException(TermsExceptionType.CHECK_STATUS);
+
+        if(request.getStatus().equals("공개") && termsRepository.existsByTypeAndStatus(terms.getType(), request.getStatus()))
+        {
+            throw new TermsException(TermsExceptionType.CHECK_OTHERS);
+        }
+        else
+        {
+            terms.update(request.getStatus());
+            termsRepository.save(terms);
+            return "변경 완료";
+        }
+    }
+
     public String findType(String keyword){
         String type = "";
         switch(keyword) {
