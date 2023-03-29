@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 
 public enum TermsExceptionType implements CustomExceptionType {
     ALREADY_EXIST(-201,HttpStatus.BAD_REQUEST,"해당 버전의 약관이 이미 존재합니다"),
-    INVALID_TYPE(-202,HttpStatus.BAD_REQUEST,"존재하지 않는 약관 타입입니다.");
+    INVALID_TYPE(-202,HttpStatus.BAD_REQUEST,"존재하지 않는 약관 타입입니다."),
+    NOT_EXIST(-203,HttpStatus.BAD_REQUEST,"존재하지 않는 약관입니다."),
+    CHECK_STATUS(-204,HttpStatus.BAD_REQUEST,"이미 설정한 status 값도 동일합니다."),
+    CHECK_OTHERS(-205,HttpStatus.BAD_REQUEST,"이미 공개된 약관이 존재합니다.");
 
 
     private int errorCode;
