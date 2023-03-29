@@ -26,7 +26,7 @@ public class ApplicantController {
      * @return: 기업의 채용공고별 지원자 리스트 출력
      */
     @Operation(summary = "지원자 리스트 출력")
-    @GetMapping("/users/applicants")
+    @GetMapping("/applicants")
     public ResponseDTO<?> showApplicantList(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestParam("recruiting_id") Long id){
         List<ApplicantDTO.ApplicantResponse> applicantResponseList = applicantService.findApplicantByRecruitingId(customUserDetails.getUserId(),id);
         return new ResponseDTO<>().ok(applicantResponseList,"정상출력 데이터");
@@ -39,7 +39,7 @@ public class ApplicantController {
      * @return: 조건에 해당하는 지원자 리스트
      */
     @Operation(summary = "채용전형과 합격여부와 일치하는 지원자 리스트 출력")
-    @PostMapping("/users/applicants/selection")
+    @PostMapping("/applicants/selection")
     public ResponseDTO<?> showSelectedApplicantList(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody ApplicantDTO.SelectionRequest request){
         List<ApplicantDTO.ApplicantResponse> applicantResponseList = applicantService.findApplicantByRecruitingIdAndProgressAndStatus(customUserDetails.getUserId(), request);
         return new ResponseDTO<>().ok(applicantResponseList,"정상출력 데이터");
