@@ -9,5 +9,5 @@ public interface NoticeService {
     List<NoticeDTO.NoticeList> noticeList();
     NoticeDTO.NoticeResponse noticeDetail(Long id);
     void deleteNotice(Long adminId, Long noticeId);
-//    void updateNotice(Long adminId, NoticeDTO.Update update);
+    void updateNotice(Long adminId, NoticeDTO.UpdateRequest request);
 }
