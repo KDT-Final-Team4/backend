@@ -6,6 +6,7 @@ import com.example.salarying.global.dto.ResponseDTO;
 import com.example.salarying.global.jwt.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,5 +29,16 @@ public class EmailController {
     public ResponseDTO<?> sendEmail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody List<EmailDTO.EmailRequest> requestList){
         emailService.sendAndSaveEmail(customUserDetails.getUserId(),requestList);
         return new ResponseDTO<>().ok("발송완료","메일이 발송되었습니다.");
+    }
+
+    /**
+     * 기업회원 id에 따른 메일 전송 내역 출력 API
+     * @param customUserDetails: 로그인 기업회원 id
+     * @return: 메일 전송 내역
+     */
+    @GetMapping("/applicants/message")
+    public ResponseDTO<?> showEmail(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        List<EmailDTO.EmailResponse> emailResponseList = emailService.findEmailByMemberId(customUserDetails.getUserId());
+        return new ResponseDTO<>().ok(emailResponseList,"정상출력");
     }
 }
