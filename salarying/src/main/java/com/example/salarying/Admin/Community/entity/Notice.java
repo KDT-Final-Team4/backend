@@ -40,8 +40,12 @@ public class Notice {
     private Boolean status;
 
     public void update(String title, String content) {
-        this.title =title;
+        this.title = title;
         this.content = content;
+    }
+
+    public void statusUpdate(Boolean status) {
+        this.status = status;
     }
 
 }
