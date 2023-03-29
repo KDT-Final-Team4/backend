@@ -19,7 +19,6 @@ public class NoticeController {
 
     /**
      * 관리자 id로 공지사항 등록 API
-     *
      * @param userDetails : 로그인한 관리자
      * @param request     : 등록할 공지사항 정보 DTO
      * @return : 등록된 공지사항 DTO
@@ -70,13 +69,25 @@ public class NoticeController {
     /**
      * 공지사항 수정 API
      * @param userDetails : 로그인한 관리자
-     * @param request : 수정 하는 공지사항 DTO
+     * @param request     : 수정 하는 공지사항 DTO
      * @return : 수정 성공 메시지
      */
     @Operation(summary = "공지사항 수정")
     @PutMapping("/notice/{id}")
     public ResponseDTO<?> updateNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.UpdateRequest request) {
-        noticeService.updateNotice(userDetails.getUserId() ,request);
+        noticeService.updateNotice(userDetails.getUserId(), request);
         return new ResponseDTO<>().ok(null, "공지사항 수정 되었습니다.");
+    }
+
+    /**
+     * 공지사항 상태 수정 API
+     * @param userDetails : 로그인한 관리자
+     * @param request     : 수정하는 공지사항 상태 DTO
+     * @return : 수정 성공 메시지
+     */
+    @PatchMapping("/notice/status")
+    public ResponseDTO<?> changeStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.StatusRequest request) {
+        noticeService.changeStatus(userDetails.getUserId(), request);
+        return new ResponseDTO<>().ok(null, "수정 되었습니다.");
     }
 }
