@@ -46,4 +46,8 @@ public class Terms {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
+    public void update(String status){
+        this.status = status;
+    }
+
 }
