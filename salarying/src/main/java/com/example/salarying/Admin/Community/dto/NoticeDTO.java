@@ -81,22 +81,11 @@ public class NoticeDTO {
     }
     @Getter
     @Setter
-    @AllArgsConstructor
     @NoArgsConstructor
-    @Builder
-    public static class Update {
+    @AllArgsConstructor
+    public static class UpdateRequest {
         private Long id;
         private String title;
         private String content;
-        private Boolean status;
-
-        public Notice toEntity() {
-            return Notice.builder()
-                    .id(this.id)
-                    .title(this.title)
-                    .content(this.content)
-                    .status(this.status)
-                    .build();
-        }
     }
 }
