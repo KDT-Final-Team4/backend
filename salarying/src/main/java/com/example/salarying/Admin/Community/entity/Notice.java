@@ -1,13 +1,8 @@
 package com.example.salarying.Admin.Community.entity;
 
-import com.example.salarying.Admin.Community.exception.CommunityException;
-import com.example.salarying.Admin.Community.exception.CommunityExceptionType;
 import com.example.salarying.Admin.User.entity.Admin;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -43,4 +38,10 @@ public class Notice {
 
     @Column(name = "status")
     private Boolean status;
+
+    public void update(String title, String content) {
+        this.title =title;
+        this.content = content;
+    }
+
 }

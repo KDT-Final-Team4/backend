@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,29 +84,34 @@ public class NoticeServiceImpl implements NoticeService {
         noticeRepository.delete(notice);
     }
 
-//    /**
-//     * 공지사항 수정
-//     * @param adminId : 관리자 id
-//     * @param update  : 공지사항 정보수정
-//     */
-//    @Override
-//    @Transactional
-//    public void updateNotice(Long adminId, NoticeDTO.Update update) {
-//        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-//        if (checkUpdateDTO(update)) {
-//            Notice notice = noticeRepository.findNoticeById(update.getId());
-//
-//            update.setContent(update.toEntity().getContent());
-//            update.setTitle(update.toEntity().getTitle());
-//            update.setStatus(update.toEntity().getStatus());
-//            noticeRepository.save();
-//        }
-//    }
+    /**
+     * 공지사항 수정
+     * @param adminId : 관리자 id
+     * @param request : 공지사항 정보수정
+     */
+    @Override
+    @Transactional
+    public void updateNotice(Long adminId, NoticeDTO.UpdateRequest request) {
 
-    public Boolean checkUpdateDTO(NoticeDTO.Update update) {
-        if (update.getTitle() == null || update.getTitle().equals("")) {
+        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE));
+        if (checkUpdateDTO(request)) {
+            notice.update(
+                    request.getTitle(),
+                    request.getContent()
+            );
+            noticeRepository.save(notice);
+        }
+    }
+
+    /** DTO 형식 체크 메서드
+     * @param request : 수정 하고자 하는 공지사항 정보 DTO
+     * @return : 공지사항 제목,내용 없으면 false / 있으면 true
+     */
+    public Boolean checkUpdateDTO(NoticeDTO.UpdateRequest request) {
+        if (request.getTitle() == null || request.getTitle().equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_TITLE);
-        } else if (update.getContent() == null || update.getContent().equals("")) {
+        } else if (request.getContent() == null || request.getContent().equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_CONTENT);
         } else {
             return true;
