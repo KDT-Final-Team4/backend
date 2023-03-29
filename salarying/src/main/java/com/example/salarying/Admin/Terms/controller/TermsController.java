@@ -42,4 +42,11 @@ public class TermsController {
         return new ResponseDTO<>().ok(null, termsService.changeStatus(request));
 
     }
+
+    @Operation(summary = "약관 상세보기 API", description = "약관 상세 보기")
+    @GetMapping("/terms/detail/{Id}")
+    public ResponseDTO<?> showTerm(@PathVariable Long Id){
+        return new ResponseDTO<>().ok(termsService.showDetail(Id), "약관 출력 완료");
+
+    }
 }

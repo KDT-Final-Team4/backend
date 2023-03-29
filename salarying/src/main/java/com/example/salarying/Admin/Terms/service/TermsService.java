@@ -11,4 +11,6 @@ public interface TermsService {
     List<TermsDTO.TermsListResponse> termsList(String type);
 
     String changeStatus(TermsDTO.StatusRequest request);
+
+    TermsDTO.DetailResponse showDetail(Long Id);
 }

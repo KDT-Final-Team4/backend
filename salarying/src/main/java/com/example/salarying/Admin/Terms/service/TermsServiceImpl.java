@@ -85,6 +85,15 @@ public class TermsServiceImpl implements TermsService{
         }
     }
 
+    @Override
+    public TermsDTO.DetailResponse showDetail(Long Id) {
+        Terms terms = termsRepository.findById(Id)
+                .orElseThrow(()-> new TermsException(TermsExceptionType.NOT_EXIST));
+
+        TermsDTO.DetailResponse response = new TermsDTO.DetailResponse(terms);
+        return response;
+    }
+
     public String findType(String keyword){
         String type = "";
         switch(keyword) {
