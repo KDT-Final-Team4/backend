@@ -51,6 +51,11 @@ public class TermsServiceImpl implements TermsService{
         }
     }
 
+    /**
+     * 약관 타입 리스트 생성 함수
+     * @param keyword : 약관 타입
+     * @return : 해당 약관 타입의 List
+     */
     @Override
     public List<TermsDTO.TermsListResponse> termsList(String keyword) {
 
@@ -64,6 +69,12 @@ public class TermsServiceImpl implements TermsService{
         return termsListResponses;
     }
 
+    /**
+     * 약관 공개 여부 상태 변경 함수
+     * 해당 약관 공개 설정 요청 시 이미 공개된 해당 타입의 약관이 존재하는 경우 변경 불가
+     * @param request : 약관 변경 요청 DTO(Id, status)
+     * @return : 변경 완료
+     */
     @Override
     @Transactional
     public String changeStatus(TermsDTO.StatusRequest request) {
@@ -85,6 +96,11 @@ public class TermsServiceImpl implements TermsService{
         }
     }
 
+    /**
+     * 약관 상세 내용 가져오는 함수
+     * @param Id : 약관 Id
+     * @return : 약관 상세 내용(작성자, 상태, 제목, 내용, 버전)
+     */
     @Override
     public TermsDTO.DetailResponse showDetail(Long Id) {
         Terms terms = termsRepository.findById(Id)
@@ -94,6 +110,11 @@ public class TermsServiceImpl implements TermsService{
         return response;
     }
 
+    /**
+     * 약관 타입 찾는 함수
+     * @param keyword : 전달된 약관 keyword
+     * @return : 약관 타임 풀네임
+     */
     public String findType(String keyword){
         String type = "";
         switch(keyword) {
