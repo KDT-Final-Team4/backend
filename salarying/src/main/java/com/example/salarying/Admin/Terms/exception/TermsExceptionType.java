@@ -4,7 +4,8 @@ import com.example.salarying.global.exception.base.CustomExceptionType;
 import org.springframework.http.HttpStatus;
 
 public enum TermsExceptionType implements CustomExceptionType {
-    ALREADY_EXIST(-201,HttpStatus.BAD_REQUEST,"해당 버전의 약관이 이미 존재합니다");
+    ALREADY_EXIST(-201,HttpStatus.BAD_REQUEST,"해당 버전의 약관이 이미 존재합니다"),
+    INVALID_TYPE(-202,HttpStatus.BAD_REQUEST,"존재하지 않는 약관 타입입니다.");
 
 
     private int errorCode;
