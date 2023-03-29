@@ -3,10 +3,7 @@ package com.example.salarying.Admin.Terms.dto;
 import com.example.salarying.Admin.Terms.entity.Terms;
 import com.example.salarying.Admin.User.entity.Admin;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -39,5 +36,48 @@ public class TermsDTO {
                     .date(new Date())
                     .build();
         }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @Schema(name = "약관 리스트 응답 DTO", description = "타입 별 약관 리스트")
+    public static class TermsListResponse {
+
+        @Schema(name = "terms_id", example = "1")
+        private Long Id;
+        @Schema(name = "status", example = "비공개")
+        private String status;
+        @Schema(name = "title", example = "서비스 이용 약관 임시 버전")
+        private String title;
+        @Schema(name = "version", example = "1.1")
+        private String version;
+        @Schema(name = "writer", example = "박혁거세")
+        private String name;
+
+        public TermsListResponse(Terms terms) {
+            this.Id = terms.getId();
+            this.status = terms.getStatus();
+            this.title = terms.getAgreementTitle();
+            this.version = terms.getVersion();
+            this.name = terms.getAdmin().getAdminName();
+        }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @Schema(name = "약관 상태 변경 DTO", description = "약관의 공개 여부를 설정하는 status 값 변경")
+    public static class StatusRequest {
+
+        @Schema(name = "status", example = "공개")
+        private String status;
+        @Schema(name = "terms_id", example = "1")
+        private Long Id;
+
     }
 }

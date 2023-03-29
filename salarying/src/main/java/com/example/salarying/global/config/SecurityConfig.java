@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers("/admin/*").hasAuthority("ADMIN")
                 .antMatchers("/notice/*").hasAnyAuthority("ADMIN","USER")
-                .antMatchers("/recruit/*").hasAnyAuthority("USER")
+                .antMatchers("/recruiting/*").hasAnyAuthority("USER")
                 .antMatchers("/applicants/*").hasAnyAuthority("USER")
                 .antMatchers("/users/*").hasAuthority("USER")
                 .anyRequest().authenticated();
