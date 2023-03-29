@@ -24,7 +24,7 @@ public class EmailController {
      * @param requestList: 이메일 요청 DTO 리스트
      * @return: "발송완료","메일이 발송되었습니다."
      */
-    @PostMapping("/users/applicants/message")
+    @PostMapping("/applicants/message")
     public ResponseDTO<?> sendEmail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody List<EmailDTO.EmailRequest> requestList){
         emailService.sendAndSaveEmail(customUserDetails.getUserId(),requestList);
         return new ResponseDTO<>().ok("발송완료","메일이 발송되었습니다.");
