@@ -17,6 +17,8 @@ public class RecruitingDTO {
     public static class RecruitingResponse {
 
 
+        private Long id;
+
         private String title;
 
         private Date postDate;
@@ -26,6 +28,7 @@ public class RecruitingDTO {
         private String status;
 
         public RecruitingResponse(Recruiting recruiting) {
+            this.id = recruiting.getId();
             this.title = recruiting.getTitle();
             this.postDate = recruiting.getPostDate();
             this.task = recruiting.getTask();
