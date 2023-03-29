@@ -91,7 +91,7 @@ public class TermsDTO {
 
         @Schema(name = "status", example = "공개")
         private String status;
-        @Schema(name = "type", example = "공개")
+        @Schema(name = "type", example = "서비스 이용약관")
         private String type;
         @Schema(name = "version", example = "공개")
         private String version;
@@ -99,7 +99,7 @@ public class TermsDTO {
         private String name;
         @Schema(name = "title", example = "제목")
         private String title;
-        @Schema(name = "content", example = "박혁거세")
+        @Schema(name = "content", example = "내용")
         private String content;
 
         public DetailResponse(Terms terms) {
@@ -110,5 +110,23 @@ public class TermsDTO {
             this.title = terms.getAgreementTitle();
             this.content = terms.getAgreementContent();
         }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @Schema(name = "약관 수정 요청 DTO", description = "약관 수정")
+    public static class UpdateRequest {
+
+        @Schema(name = "Id", example = "1")
+        private Long Id;
+        @Schema(name = "version", example = "1.0")
+        private String version;
+        @Schema(name = "title", example = "제목")
+        private String title;
+        @Schema(name = "content", example = "내용")
+        private String content;
     }
 }
