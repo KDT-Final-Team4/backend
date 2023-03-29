@@ -10,4 +10,5 @@ public interface NoticeService {
     NoticeDTO.NoticeResponse noticeDetail(Long id);
     void deleteNotice(Long adminId, Long noticeId);
     void updateNotice(Long adminId, NoticeDTO.UpdateRequest request);
+    void changeStatus(Long adminId, NoticeDTO.StatusRequest request);
 }

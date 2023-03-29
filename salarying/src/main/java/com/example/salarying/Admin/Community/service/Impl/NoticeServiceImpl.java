@@ -104,6 +104,19 @@ public class NoticeServiceImpl implements NoticeService {
         }
     }
 
+    /**
+     * 공지사항 상태 변경
+     * @param adminId : 관리자 id
+     * @param request : 공지사항 상태 수정
+     */
+    @Override
+    public void changeStatus(Long adminId, NoticeDTO.StatusRequest request) {
+        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE));
+        notice.statusUpdate(request.getStatus());
+        noticeRepository.save(notice);
+    }
+
     /** DTO 형식 체크 메서드
      * @param request : 수정 하고자 하는 공지사항 정보 DTO
      * @return : 공지사항 제목,내용 없으면 false / 있으면 true
