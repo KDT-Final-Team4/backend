@@ -110,6 +110,23 @@ public class TermsServiceImpl implements TermsService{
         return response;
     }
 
+    @Override
+    @Transactional
+    public String updateTerm(Long adminId, TermsDTO.UpdateRequest request) {
+
+        Admin admin = adminRepository.findAdminById(adminId)
+                .orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+
+        Terms terms = termsRepository.findById(request.getId())
+                .orElseThrow(() -> new TermsException(TermsExceptionType.NOT_EXIST));
+
+        terms.modify(admin, request);
+
+        termsRepository.save(terms);
+
+        return "변경 완료";
+    }
+
     /**
      * 약관 타입 찾는 함수
      * @param keyword : 전달된 약관 keyword

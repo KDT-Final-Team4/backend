@@ -65,4 +65,12 @@ public class TermsController {
         return new ResponseDTO<>().ok(termsService.showDetail(Id), "약관 출력 완료");
 
     }
+
+    @Operation(summary = "약관 수정 API", description = "약관 내용 수정")
+    @PutMapping("/terms")
+    public ResponseDTO<?> updateTerm(@AuthenticationPrincipal CustomUserDetails userDetails, TermsDTO.UpdateRequest request){
+        termsService.updateTerm(userDetails.getUserId(), request);
+        return new ResponseDTO<>().ok(null, "변경 완료");
+
+    }
 }

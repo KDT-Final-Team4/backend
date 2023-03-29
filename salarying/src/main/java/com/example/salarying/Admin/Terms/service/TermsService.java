@@ -13,4 +13,6 @@ public interface TermsService {
     String changeStatus(TermsDTO.StatusRequest request);
 
     TermsDTO.DetailResponse showDetail(Long Id);
+
+    String updateTerm(Long adminId, TermsDTO.UpdateRequest request);
 }
