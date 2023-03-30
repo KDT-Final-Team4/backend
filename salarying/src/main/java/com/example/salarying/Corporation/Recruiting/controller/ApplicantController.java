@@ -45,4 +45,11 @@ public class ApplicantController {
         return new ResponseDTO<>().ok(applicantResponseList,"정상출력 데이터");
     }
 
+    @Operation(summary = "채용공고에 지원자 등록")
+    @PostMapping("/applicants")
+    public ResponseDTO<?> insertApplicant(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody ApplicantDTO.ApplicantRequest request){
+        ApplicantDTO.ApplicantResponse applicantResponse = applicantService.insertApplicant(customUserDetails.getUserId(), request);
+        return new ResponseDTO<>().ok(applicantResponse,"정상출력 데이터");
+    }
+
 }
