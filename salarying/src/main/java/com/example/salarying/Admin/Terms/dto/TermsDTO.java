@@ -74,6 +74,8 @@ public class TermsDTO {
     @Schema(name = "약관 상태 변경 DTO", description = "약관의 공개 여부를 설정하는 status 값 변경")
     public static class StatusRequest {
 
+        @Schema(name = "force", example = "false")
+        private Boolean force;
         @Schema(name = "status", example = "공개")
         private String status;
         @Schema(name = "terms_id", example = "1")
