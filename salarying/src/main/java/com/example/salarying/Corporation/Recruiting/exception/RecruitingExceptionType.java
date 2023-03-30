@@ -9,7 +9,12 @@ public enum RecruitingExceptionType implements CustomExceptionType {
     NOT_EXIST_TASK(-202, HttpStatus.BAD_REQUEST, "직무가 입력되지 않았습니다."),
     NOT_EXIST_PROGRESS(-203, HttpStatus.BAD_REQUEST, "채용전형이 입력되지 않았습니다."),
 
-    NOT_EXIST(-204, HttpStatus.BAD_REQUEST, "해당 채용공고가 없습니다.")
+    NOT_EXIST(-204, HttpStatus.BAD_REQUEST, "해당 채용공고가 없습니다."),
+
+    NOT_EXIST_ID(-205, HttpStatus.BAD_REQUEST, "채용공고를 입력해주세요."),
+
+    NOT_STATUS_FORMAT(-206, HttpStatus.BAD_REQUEST, "올바른 전형을 입력해주세요.")
+
 
 
     ;
