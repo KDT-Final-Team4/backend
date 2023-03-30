@@ -84,16 +84,29 @@ public class TermsServiceImpl implements TermsService{
 
         if(request.getStatus().equals(terms.getStatus())) throw new TermsException(TermsExceptionType.CHECK_STATUS);
 
-        if(request.getStatus().equals("공개") && termsRepository.existsByTypeAndStatus(terms.getType(), request.getStatus()))
-        {
-            throw new TermsException(TermsExceptionType.CHECK_OTHERS);
+        if(terms.getStatus().equals("공개")){
+            throw  new TermsException(TermsExceptionType.MUST_OPEN);
         }
-        else
-        {
-            terms.update(request.getStatus());
-            termsRepository.save(terms);
-            return "변경 완료";
+
+        if(request.getForce()){
+            if(request.getStatus().equals("공개") && termsRepository.existsByTypeAndStatus(terms.getType(), request.getStatus()) && request.getForce())
+            {
+                Terms old = termsRepository.findByTypeAndStatus(terms.getType(), request.getStatus());
+                old.update("비공개");
+                terms.update(request.getStatus());
+                termsRepository.save(old);
+            }
         }
+        else{
+            if(request.getStatus().equals("공개") || termsRepository.existsByTypeAndStatus(terms.getType(), request.getStatus()) && request.getForce())
+            {
+                throw new TermsException(TermsExceptionType.CHECK_OTHERS);
+            }
+        }
+        terms.update(request.getStatus());
+        termsRepository.save(terms);
+        return "변경 완료";
+
     }
 
     /**

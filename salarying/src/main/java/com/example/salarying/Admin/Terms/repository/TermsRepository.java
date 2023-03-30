@@ -16,4 +16,6 @@ public interface TermsRepository extends JpaRepository<Terms, Long> {
 
     Boolean existsByTypeAndStatus(String type, String status);
 
+    Terms findByTypeAndStatus(String type, String status);
+
 }
