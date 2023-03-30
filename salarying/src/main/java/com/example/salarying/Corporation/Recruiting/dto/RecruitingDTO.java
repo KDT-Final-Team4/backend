@@ -63,7 +63,7 @@ public class RecruitingDTO {
                     .title(title)
                     .postDate(new Date())
                     .task(task)
-                    .status("서류심사").build();
+                    .status("채용중").build();
         }
 
         public Progress toProgressEntity(Recruiting recruiting) {
