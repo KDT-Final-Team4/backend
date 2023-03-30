@@ -66,6 +66,12 @@ public class TermsController {
 
     }
 
+    /**
+     * 약관 내용 수정 API
+     * @param userDetails : 작성자 입력을 위한 사용자 정보
+     * @param request : 변경 요청 DTO
+     * @return : 변경완료
+     */
     @Operation(summary = "약관 수정 API", description = "약관 내용 수정")
     @PutMapping("/terms")
     public ResponseDTO<?> updateTerm(@AuthenticationPrincipal CustomUserDetails userDetails, TermsDTO.UpdateRequest request){

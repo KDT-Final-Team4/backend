@@ -110,6 +110,12 @@ public class TermsServiceImpl implements TermsService{
         return response;
     }
 
+    /**
+     * 약관 수정하는 함수
+     * @param adminId : 작성자 정보를 위한 사용자 Id
+     * @param request : 약관 변경 요청 DTO
+     * @return : 변경완료
+     */
     @Override
     @Transactional
     public String updateTerm(Long adminId, TermsDTO.UpdateRequest request) {
