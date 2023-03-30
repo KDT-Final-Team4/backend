@@ -13,5 +13,6 @@ public interface RecruitingRepository extends JpaRepository<Recruiting,Long> {
 
     Optional<Recruiting> findRecruitingByIdAndMember_IdAndStatus(Long recruitingId, Long userId,String status);
 
+    Optional<Recruiting> findRecruitingByIdAndAndMember_Id(Long recruitingId, Long userId);
 
 }
