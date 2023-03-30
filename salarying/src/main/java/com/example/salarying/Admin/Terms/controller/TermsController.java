@@ -79,4 +79,16 @@ public class TermsController {
         return new ResponseDTO<>().ok(null, "변경 완료");
 
     }
+
+    /**
+     * 약관 삭제 API
+     * @param userDetails : 사용자 확인을 위한 userDetails
+     * @param Id : 약관 Id
+     * @return : 삭제 완료
+     */
+    @Operation(summary = "약관 삭제 API", description = "약관 삭제")
+    @DeleteMapping("/terms/{Id}")
+    public ResponseDTO<?> deleteTerm(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long Id){
+        return new ResponseDTO<>().ok(null,termsService.deleteTerm(userDetails.getUserId(), Id));
+    }
 }

@@ -15,4 +15,6 @@ public interface TermsService {
     TermsDTO.DetailResponse showDetail(Long Id);
 
     String updateTerm(Long adminId, TermsDTO.UpdateRequest request);
+
+    String deleteTerm(Long userId, Long termId);
 }

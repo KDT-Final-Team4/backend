@@ -8,7 +8,9 @@ public enum TermsExceptionType implements CustomExceptionType {
     INVALID_TYPE(-202,HttpStatus.BAD_REQUEST,"존재하지 않는 약관 타입입니다."),
     NOT_EXIST(-203,HttpStatus.BAD_REQUEST,"존재하지 않는 약관입니다."),
     CHECK_STATUS(-204,HttpStatus.BAD_REQUEST,"이미 설정한 status 값도 동일합니다."),
-    CHECK_OTHERS(-205,HttpStatus.BAD_REQUEST,"이미 공개된 약관이 존재합니다.");
+    CHECK_OTHERS(-205,HttpStatus.BAD_REQUEST,"이미 공개된 약관이 존재합니다."),
+    NO_AUTHORITY(-206, HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다"),
+    IS_OPENED(-207, HttpStatus.BAD_REQUEST, "공개된 약관은 삭제할 수 없습니다.");
 
 
     private int errorCode;
