@@ -11,4 +11,6 @@ public interface ApplicantRepository extends JpaRepository<Applicant,Long> {
     List<Applicant> findApplicantByRecruitingId(Long recruiting_Id);
 
     Optional<Applicant> findApplicantByApplicantEmailAndRecruitingAndProgressAndStatus(String email, Recruiting recruiting,String progress,String status);
+
+    boolean existsApplicantByApplicantEmailAndRecruiting_Id(String Email,Long recruitingId);
 }

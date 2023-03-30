@@ -2,6 +2,7 @@ package com.example.salarying.global.exception;
 
 import com.example.salarying.Admin.Community.exception.CommunityException;
 import com.example.salarying.Admin.Terms.exception.TermsException;
+import com.example.salarying.Corporation.Recruiting.exception.ApplicantException;
 import com.example.salarying.Corporation.Recruiting.exception.EmailException;
 import com.example.salarying.Corporation.Recruiting.exception.RecruitingException;
 import com.example.salarying.Corporation.User.exception.UserException;
@@ -41,7 +42,7 @@ public class CustomExceptionHandler implements ErrorController {
     }
 
     @ExceptionHandler(value = RecruitingException.class)
-    public ResponseEntity handleUserException(RecruitingException ce) {
+    public ResponseEntity handleRecruitingException(RecruitingException ce) {
         ErrorDTO error = ErrorDTO.builder()
                 .errorCode(ce.getExceptionType().getErrorCode())
                 .errorMessage(ce.getExceptionType().getMessage())
@@ -63,7 +64,7 @@ public class CustomExceptionHandler implements ErrorController {
     }
 
     @ExceptionHandler(value = EmailException.class)
-    public ResponseEntity handleUserException(EmailException ce){
+    public ResponseEntity handleEmailException(EmailException ce){
         ErrorDTO error = ErrorDTO.builder()
                 .errorCode(ce.getExceptionType().getErrorCode())
                 .errorMessage(ce.getExceptionType().getMessage())
@@ -75,6 +76,17 @@ public class CustomExceptionHandler implements ErrorController {
 
     @ExceptionHandler(value = TermsException.class)
     public ResponseEntity handleTermsException(TermsException ce) {
+        ErrorDTO error = ErrorDTO.builder()
+                .errorCode(ce.getExceptionType().getErrorCode())
+                .errorMessage(ce.getExceptionType().getMessage())
+                .httpStatus(ce.getExceptionType().getHttpStatus())
+                .build();
+
+        return new ResponseEntity(error, ce.getExceptionType().getHttpStatus());
+    }
+
+    @ExceptionHandler(value = ApplicantException.class)
+    public ResponseEntity handleApplicantException(ApplicantException ce) {
         ErrorDTO error = ErrorDTO.builder()
                 .errorCode(ce.getExceptionType().getErrorCode())
                 .errorMessage(ce.getExceptionType().getMessage())

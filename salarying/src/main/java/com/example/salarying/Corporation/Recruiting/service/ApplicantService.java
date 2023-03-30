@@ -9,4 +9,9 @@ public interface ApplicantService {
     List<ApplicantDTO.ApplicantResponse> findApplicantByRecruitingId(Long userId,Long recruitingId);
 
     List<ApplicantDTO.ApplicantResponse> findApplicantByRecruitingIdAndProgressAndStatus(Long userId, ApplicantDTO.SelectionRequest request);
+
+    ApplicantDTO.ApplicantResponse insertApplicant(Long userId,ApplicantDTO.ApplicantRequest request);
+
+    Boolean checkApplicantRequestDTO(ApplicantDTO.ApplicantRequest request);
+
 }
