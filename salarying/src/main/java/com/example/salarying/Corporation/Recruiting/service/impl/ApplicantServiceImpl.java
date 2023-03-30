@@ -68,7 +68,7 @@ public class ApplicantServiceImpl implements ApplicantService {
     @Override
     public ApplicantDTO.ApplicantResponse insertApplicant(Long userId, ApplicantDTO.ApplicantRequest request) {
 
-        Recruiting recruiting = recruitingRepository.findRecruitingByIdAndMember_IdAndStatus(request.getRecruitingId(), userId,"채용중")
+        Recruiting recruiting = recruitingRepository.findRecruitingByIdAndMember_IdAndStatus(request.getRecruitingId(), userId,"서류심사")
                 .orElseThrow(() -> new RecruitingException(RecruitingExceptionType.NOT_EXIST));
 
         if (checkApplicantRequestDTO(request)&&!applicantRepository.existsApplicantByApplicantEmailAndRecruiting_Id(request.getEmail(), request.getRecruitingId())) {
