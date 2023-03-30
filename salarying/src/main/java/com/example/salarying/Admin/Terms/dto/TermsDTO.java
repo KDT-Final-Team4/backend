@@ -80,4 +80,53 @@ public class TermsDTO {
         private Long Id;
 
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @Schema(name = "약관 상세 출력 응답 DTO", description = "약관 id값으로 해당 정보 모두 출력")
+    public static class DetailResponse {
+
+        @Schema(name = "status", example = "공개")
+        private String status;
+        @Schema(name = "type", example = "서비스 이용약관")
+        private String type;
+        @Schema(name = "version", example = "공개")
+        private String version;
+        @Schema(name = "writer", example = "박혁거세")
+        private String name;
+        @Schema(name = "title", example = "제목")
+        private String title;
+        @Schema(name = "content", example = "내용")
+        private String content;
+
+        public DetailResponse(Terms terms) {
+            this.status = terms.getStatus();
+            this.type = terms.getType();
+            this.version = terms.getVersion();
+            this.name = terms.getAdmin().getAdminName();
+            this.title = terms.getAgreementTitle();
+            this.content = terms.getAgreementContent();
+        }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @Schema(name = "약관 수정 요청 DTO", description = "약관 수정")
+    public static class UpdateRequest {
+
+        @Schema(name = "Id", example = "1")
+        private Long Id;
+        @Schema(name = "version", example = "1.0")
+        private String version;
+        @Schema(name = "title", example = "제목")
+        private String title;
+        @Schema(name = "content", example = "내용")
+        private String content;
+    }
 }

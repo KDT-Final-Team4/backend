@@ -2,6 +2,7 @@ package com.example.salarying.Admin.Terms.entity;
 
 
 
+import com.example.salarying.Admin.Terms.dto.TermsDTO;
 import com.example.salarying.Admin.User.entity.Admin;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +49,13 @@ public class Terms {
 
     public void update(String status){
         this.status = status;
+    }
+
+    public void modify(Admin admin, TermsDTO.UpdateRequest request){
+        this.admin = admin;
+        this.agreementTitle = request.getTitle();
+        this.agreementContent = request.getContent();
+        this.version = request.getVersion();
     }
 
 }
