@@ -134,6 +134,33 @@ public class TermsServiceImpl implements TermsService{
     }
 
     /**
+     * 약관 삭제하는 함수
+     * 약관이 공개인 경우, 약관의 작성자와 삭제하려는 사용자가 다른 경우 삭제 불가
+     * @param userId : 사용자 확인을 위한 사용자 Id
+     * @param termId : 약관 Id
+     * @return : 삭제 완료
+     */
+    @Override
+    public String deleteTerm(Long userId, Long termId) {
+
+        Admin admin = adminRepository.findAdminById(userId)
+                .orElseThrow(()->new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Terms terms = termsRepository.findById(termId)
+                .orElseThrow(()-> new TermsException(TermsExceptionType.NOT_EXIST));
+
+        if(terms.getStatus().equals("공개")) throw new TermsException(TermsExceptionType.IS_OPENED);
+
+        if(userId == terms.getAdmin().getId() || admin.getRole().equals("SUPERADMIN")){
+            termsRepository.delete(terms);
+            return "삭제 완료";
+        }
+        else {
+            throw new TermsException(TermsExceptionType.NO_AUTHORITY);
+        }
+    }
+
+
+    /**
      * 약관 타입 찾는 함수
      * @param keyword : 전달된 약관 keyword
      * @return : 약관 타임 풀네임
