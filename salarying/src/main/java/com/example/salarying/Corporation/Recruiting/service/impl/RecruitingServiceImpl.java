@@ -102,4 +102,41 @@ public class RecruitingServiceImpl implements RecruitingService {
         }
     }
 
+    /**
+     * 채용공고 전형 수정
+     * @param userId
+     * @param request
+     * @return
+     */
+    @Transactional
+    @Override
+    public RecruitingDTO.RecruitingResponse updateStatus(Long userId, RecruitingDTO.StatusRequest request) {
+
+        checkStatusDTO(request);
+
+        Recruiting recruiting = recruitingRepository.findRecruitingByIdAndAndMember_Id(request.getRecruitingId(), userId)
+                            .orElseThrow(()->new RecruitingException(RecruitingExceptionType.NOT_EXIST));
+
+        recruiting.update(request.getStatus());
+        return new RecruitingDTO.RecruitingResponse(recruitingRepository.save(recruiting));
+
+    }
+
+    /**
+     * status 요청 DTO 형식체크
+     * @param request: 채용공고id와 status가 담긴 DTO
+     * @return 수정된 채용공고 정보
+     */
+    public Boolean checkStatusDTO(RecruitingDTO.StatusRequest request){
+        if(request.getRecruitingId()==null){
+            throw new RecruitingException(RecruitingExceptionType.NOT_EXIST_ID);
+        } else if (request.getStatus()==null||request.getStatus().equals("")) {
+            throw new RecruitingException(RecruitingExceptionType.NOT_EXIST_PROGRESS);
+        } else if (!(request.getStatus().equals("1차전형")||request.getStatus().equals("2차전형")||request.getStatus().equals("최종전형")||request.getStatus().equals("채용완료"))){
+            throw new RecruitingException(RecruitingExceptionType.NOT_STATUS_FORMAT);
+        }else{
+            return true;
+        }
+    }
+
 }

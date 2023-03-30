@@ -41,4 +41,8 @@ public class Recruiting {
 
     @Column(name="status")
     private String status;
+
+    public void update(String status){
+        this.status = status;
+    }
 }
