@@ -2,6 +2,7 @@ package com.example.salarying.Corporation.Recruiting.dto;
 
 
 import com.example.salarying.Corporation.Recruiting.entity.Applicant;
+import com.example.salarying.Corporation.Recruiting.entity.Recruiting;
 import lombok.*;
 
 public class ApplicantDTO {
@@ -45,5 +46,32 @@ public class ApplicantDTO {
         private String progress;
 
         private String status;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ApplicantRequest {
+
+
+        private Long recruitingId;
+
+        private String email;
+
+        private String name;
+
+        private String number;
+
+        public Applicant toEntity(Recruiting recruiting){
+            return Applicant.builder()
+                    .recruiting(recruiting)
+                    .applicantName(name)
+                    .applicantPhoneNumber(number)
+                    .applicantEmail(email)
+                    .progress("서류전형")
+                    .build();
+        }
     }
 }
