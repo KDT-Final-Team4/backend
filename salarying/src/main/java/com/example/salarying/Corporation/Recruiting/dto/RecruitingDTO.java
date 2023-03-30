@@ -63,7 +63,7 @@ public class RecruitingDTO {
                     .title(title)
                     .postDate(new Date())
                     .task(task)
-                    .status("채용중").build();
+                    .status("서류심사").build();
         }
 
         public Progress toProgressEntity(Recruiting recruiting) {
@@ -77,6 +77,20 @@ public class RecruitingDTO {
         }
 
         }
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class StatusRequest {
+
+
+        private Long recruitingId;
+
+        private String status;
+
+
+    }
 
     }
 
