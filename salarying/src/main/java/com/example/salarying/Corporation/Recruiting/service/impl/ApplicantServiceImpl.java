@@ -3,8 +3,7 @@ package com.example.salarying.Corporation.Recruiting.service.impl;
 
 import com.example.salarying.Corporation.Recruiting.dto.ApplicantDTO;
 import com.example.salarying.Corporation.Recruiting.entity.Recruiting;
-import com.example.salarying.Corporation.Recruiting.exception.RecruitingException;
-import com.example.salarying.Corporation.Recruiting.exception.RecruitingExceptionType;
+import com.example.salarying.Corporation.Recruiting.exception.*;
 import com.example.salarying.Corporation.Recruiting.repository.ApplicantRepository;
 import com.example.salarying.Corporation.Recruiting.repository.RecruitingRepository;
 import com.example.salarying.Corporation.Recruiting.service.ApplicantService;
@@ -59,4 +58,49 @@ public class ApplicantServiceImpl implements ApplicantService {
 
         return applicantResponseList;
     }
+
+    /**
+     * 지원자 등록하는 기능
+     * @param userId: 기업회원 id
+     * @param request: 지원자 정보를 담은 DTO
+     * @return: 등록된 지원자 정보
+     */
+    @Override
+    public ApplicantDTO.ApplicantResponse insertApplicant(Long userId, ApplicantDTO.ApplicantRequest request) {
+
+        Recruiting recruiting = recruitingRepository.findRecruitingByIdAndMember_IdAndStatus(request.getRecruitingId(), userId,"채용중")
+                .orElseThrow(() -> new RecruitingException(RecruitingExceptionType.NOT_EXIST));
+
+        if (checkApplicantRequestDTO(request)&&!applicantRepository.existsApplicantByApplicantEmailAndRecruiting_Id(request.getEmail(), request.getRecruitingId())) {
+            return new ApplicantDTO.ApplicantResponse(applicantRepository.save(request.toEntity(recruiting)));
+        }else {
+            throw new ApplicantException(ApplicantExceptionType.ALREADY_EXIST_APPLICANT);
+        }
+    }
+
+    /**
+     * 지원자 요청 DTO 형식 체크
+     * @param request: 지원자 정보를 담은 DTO
+     * @return: 올바른 형식-true/ 아니면 예외처리
+     */
+    @Override
+    public Boolean checkApplicantRequestDTO(ApplicantDTO.ApplicantRequest request) {
+        if (request.getRecruitingId()==null) {
+            throw new ApplicantException(ApplicantExceptionType.NOT_EXIST_RECRUITING);
+        } else if (request.getName() == null || request.getName().equals("")) {
+            throw new ApplicantException(ApplicantExceptionType.NOT_EXIST_NAME);
+        } else if (request.getNumber() == null || request.getNumber().equals("")) {
+            throw new ApplicantException(ApplicantExceptionType.NOT_EXIST_PHONE);
+        } else if(!request.getNumber().matches("\\d{3}-?\\d{4}-?\\d{4}")){
+            throw new ApplicantException(ApplicantExceptionType.NOT_PHONE_FORMAT);
+        } else if (request.getEmail().isEmpty()) {
+            throw new ApplicantException(ApplicantExceptionType.NOT_EXIST_EMAIL);
+        } else if (!request.getEmail().matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
+            throw new ApplicantException(ApplicantExceptionType.NOT_EMAIL_FORMAT);
+        } else {
+            return true;
+        }
+    }
+
+
 }
