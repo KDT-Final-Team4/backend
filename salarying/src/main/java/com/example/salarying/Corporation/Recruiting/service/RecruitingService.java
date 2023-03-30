@@ -15,4 +15,8 @@ public interface RecruitingService {
     Boolean checkRecruitingDTO(RecruitingDTO.RecruitingRequest request);
 
     Recruiting findById(Long recruitingId);
+
+    RecruitingDTO.RecruitingResponse updateStatus(Long userId, RecruitingDTO.StatusRequest request);
+
+    Boolean checkStatusDTO(RecruitingDTO.StatusRequest request);
 }
