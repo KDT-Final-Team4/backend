@@ -39,11 +39,8 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests().antMatchers(permitUrl)
                 .permitAll()
-                .antMatchers("/admin/*").hasAuthority("ADMIN")
-                .antMatchers("/notice/*").hasAnyAuthority("ADMIN","USER")
-                .antMatchers("/recruiting/*").hasAnyAuthority("USER")
-                .antMatchers("/applicants/*").hasAnyAuthority("USER")
-                .antMatchers("/users/*").hasAuthority("USER")
+                .antMatchers("/terms/**", "/admin/*").hasAnyAuthority("ADMIN","SUPERADMIN")
+                .antMatchers("/applicants/**","/recruiting/**","/users/**").hasAuthority("USER")
                 .anyRequest().authenticated();
 
         http

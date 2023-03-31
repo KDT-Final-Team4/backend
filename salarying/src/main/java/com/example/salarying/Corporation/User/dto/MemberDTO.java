@@ -39,6 +39,7 @@ public class MemberDTO {
                     .position(this.position)
                     .lastModified(new Date())
                     .role("USER")
+                    .status("일반")
                     .build();
         }
     }

@@ -21,7 +21,7 @@ public class TermsController {
      * @param request : 제목, 내용, 버전, 타입
      * @return : 약관 등록 성공 여부
      */
-    @Operation(summary = "약관 등록 API", description = "새로운 약관 생성")
+    @Operation(summary = "약관 등록 API", description = "새로운 약관 생성 FOR ADMIN, SUPERADMIN")
     @PostMapping("/terms")
     public ResponseDTO<?> AddTerms(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody TermsDTO.AddTermRequest request){
         termsService.insertTerm(userDetails.getUserId(), request);
@@ -34,7 +34,7 @@ public class TermsController {
      * @param type : 약관 타입(service, privacy, information, marketing)
      * @return : 약관 리스트 출력
      */
-    @Operation(summary = "약관 리스트 출력 API", description = "약관별 리스트 출력")
+    @Operation(summary = "약관 리스트 출력 API", description = "약관별 리스트 출력 FOR ADMIN, SUPERADMIN")
     @GetMapping("/terms")
     public ResponseDTO<?> ListTerms(@RequestParam String type){
         return new ResponseDTO<>().ok(termsService.termsList(type), "리스트 출력 완료");
@@ -47,7 +47,7 @@ public class TermsController {
      * @param request : 상태 변경 요청 DTO(약관 Id, status)
      * @return : 변경완료
      */
-    @Operation(summary = "약관 상태 변경 API", description = "약관 공개 여부 상태 변경")
+    @Operation(summary = "약관 상태 변경 API", description = "약관 공개 여부 상태 변경 FOR ADMIN, SUPERADMIN")
     @PostMapping("/terms/status")
     public ResponseDTO<?> changeStatus(@RequestBody TermsDTO.StatusRequest request){
         return new ResponseDTO<>().ok(null, termsService.changeStatus(request));
@@ -59,7 +59,7 @@ public class TermsController {
      * @param Id : 약관 Id
      * @return : 약관 상세 내용 출력
      */
-    @Operation(summary = "약관 상세보기 API", description = "약관 상세 보기")
+    @Operation(summary = "약관 상세보기 API", description = "약관 상세 보기 FOR ADMIN, SUPERADMIN")
     @GetMapping("/terms/detail/{Id}")
     public ResponseDTO<?> showTerm(@PathVariable Long Id){
         return new ResponseDTO<>().ok(termsService.showDetail(Id), "약관 출력 완료");
@@ -72,7 +72,7 @@ public class TermsController {
      * @param request : 변경 요청 DTO
      * @return : 변경완료
      */
-    @Operation(summary = "약관 수정 API", description = "약관 내용 수정")
+    @Operation(summary = "약관 수정 API", description = "약관 내용 수정 FOR ADMIN, SUPERADMIN")
     @PutMapping("/terms")
     public ResponseDTO<?> updateTerm(@AuthenticationPrincipal CustomUserDetails userDetails, TermsDTO.UpdateRequest request){
         termsService.updateTerm(userDetails.getUserId(), request);
@@ -86,7 +86,7 @@ public class TermsController {
      * @param Id : 약관 Id
      * @return : 삭제 완료
      */
-    @Operation(summary = "약관 삭제 API", description = "약관 삭제")
+    @Operation(summary = "약관 삭제 API", description = "약관 삭제 FOR ADMIN, SUPERADMIN")
     @DeleteMapping("/terms/{Id}")
     public ResponseDTO<?> deleteTerm(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long Id){
         return new ResponseDTO<>().ok(null,termsService.deleteTerm(userDetails.getUserId(), Id));
