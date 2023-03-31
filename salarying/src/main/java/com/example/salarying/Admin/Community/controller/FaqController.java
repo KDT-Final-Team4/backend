@@ -64,4 +64,12 @@ public class FaqController {
         FaqDTO.DetailResponse response = faqService.faqDetail(id);
         return new ResponseDTO<>().ok(response, "정상 출력");
     }
+
+    @Operation(summary = "FAQ 정보 수정", description = "FAQ 내용 수정 FOR ADMIN, SUPERADMIN")
+    @PutMapping("/faq")
+    public ResponseDTO<?> updateFaq(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody FaqDTO.UpdateFaqRequest request) {
+        faqService.updateFaq(userDetails.getUserId(), request);
+        return new ResponseDTO<>().ok(null, "수정 완료");
+    }
+
 }
