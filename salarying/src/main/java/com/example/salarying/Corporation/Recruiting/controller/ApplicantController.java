@@ -45,11 +45,30 @@ public class ApplicantController {
         return new ResponseDTO<>().ok(applicantResponseList,"정상출력 데이터");
     }
 
+    /**
+     * 채용공고에 지원자 등록
+     * @param customUserDetails: 로그인 기업회원
+     * @param request: 지원자 정보 담은 DTO
+     * @return 등록된 지원자 정보
+     */
     @Operation(summary = "채용공고에 지원자 등록")
     @PostMapping("/applicants")
     public ResponseDTO<?> insertApplicant(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody ApplicantDTO.ApplicantRequest request){
         ApplicantDTO.ApplicantResponse applicantResponse = applicantService.insertApplicant(customUserDetails.getUserId(), request);
         return new ResponseDTO<>().ok(applicantResponse,"정상출력 데이터");
+    }
+
+    /**
+     * 채용단계에 따른 지원자 progress, status값 수정
+     * @param customUserDetails: 로그인 기업회원
+     * @param request: 수정할 내용 담은 DTO
+     * @return: 수정된 지원자 정보
+     */
+    @Operation(summary = "지원자 progress,status값 수정")
+    @PutMapping("/applicants")
+    public ResponseDTO<?> updateStatus(@AuthenticationPrincipal CustomUserDetails customUserDetails, ApplicantDTO.ResultRequest request){
+        ApplicantDTO.ApplicantResponse applicantResponse = applicantService.updateApplicant(customUserDetails.getUserId(),request);
+        return new ResponseDTO<>().ok(applicantResponse,"수정완료");
     }
 
 }
