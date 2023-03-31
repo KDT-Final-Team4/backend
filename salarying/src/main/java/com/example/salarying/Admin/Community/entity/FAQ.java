@@ -37,4 +37,10 @@ public class FAQ {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date postDate;
+
+    @Column(name="status")
+    private Boolean status;
+
+    @Column(name = " category")
+    private String category;
 }
