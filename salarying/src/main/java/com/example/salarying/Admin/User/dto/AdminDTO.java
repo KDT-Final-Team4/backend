@@ -1,6 +1,7 @@
 package com.example.salarying.Admin.User.dto;
 
 import com.example.salarying.Admin.User.entity.Admin;
+import com.example.salarying.Corporation.User.entity.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -53,5 +54,22 @@ public class AdminDTO {
     @Schema(name = "새로운 비밀번호 DTO", description = "비밀번호 변경을 위한 새로운 비밀번호")
     public static class ChangeRequest{
         private String password;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Schema(name = "담당 기업 응답 DTO", description = "관리자 별 담당 기업 리스트 DTO")
+    public static class ListResponse{
+        private String company_name;
+        private String name;
+        private String position;
+
+        public ListResponse(Member member) {
+            this.company_name = member.getCompanyName();
+            this.name = member.getName();
+            this.position = member.getPosition();
+        }
     }
 }
