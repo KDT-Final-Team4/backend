@@ -52,4 +52,11 @@ public class FaqController {
         faqService.changeStatus(userDetails.getUserId(), request);
         return new ResponseDTO<>().ok(null, "수정 되었습니다.");
     }
+
+    @Operation(summary = "FAQ 상세정보 조회", description = "FAQ 상세 보기 FOR ADMIN, SUPERADMIN, USER")
+    @GetMapping("/faq/{id}")
+    public ResponseDTO<?> faqDetail(@PathVariable("id") Long id) {
+        FaqDTO.DetailResponse response = faqService.faqDetail(id);
+        return new ResponseDTO<>().ok(response, "정상 출력");
+    }
 }

@@ -8,4 +8,5 @@ public interface FaqService {
     void insertFaq(Long adminId, FaqDTO.InsertFaqRequest request);
     List<FaqDTO.FAQListResponse> faqList();
     void changeStatus(Long adminId, FaqDTO.FaqStatusRequest request);
+    FaqDTO.DetailResponse faqDetail(Long id);
 }

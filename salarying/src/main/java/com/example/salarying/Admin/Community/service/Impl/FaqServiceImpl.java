@@ -62,6 +62,12 @@ public class FaqServiceImpl implements FaqService {
         faqRepository.save(faq);
     }
 
+    @Override
+    public FaqDTO.DetailResponse faqDetail(Long id) {
+        FAQ faq = faqRepository.findById(id).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        return new FaqDTO.DetailResponse(faq);
+    }
+
     /**
      * DTO 형식 체크 메서드
      *
