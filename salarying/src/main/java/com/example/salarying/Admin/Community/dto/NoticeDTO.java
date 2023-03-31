@@ -16,15 +16,13 @@ public class NoticeDTO {
         private String title;
         private String content;
 
-        private Boolean status;
-
         public Notice toEntity(Admin admin) {
             return Notice.builder()
                     .admin(admin)
                     .title(title)
                     .content(content)
                     .postDate(new Date())
-                    .status(status)
+                    .status(true)
                     .build();
         }
 
