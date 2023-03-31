@@ -93,7 +93,7 @@ public class NoticeDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class StatusRequest {
+    public static class NoticeStatusRequest {
         private Long id;
         private Boolean status;
     }

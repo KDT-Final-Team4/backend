@@ -29,4 +29,28 @@ public class FaqDTO {
 
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class FAQListResponse {
+        private String question;
+        private String answer;
+        private String category;
+
+        public FAQListResponse(FAQ faq) {
+            this.question = faq.getQuestion();
+            this.answer = faq.getAnswer();
+            this.category = faq.getCategory();
+        }
+    }
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class FaqStatusRequest {
+        private Long id;
+        private Boolean status;
+    }
 }

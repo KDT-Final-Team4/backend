@@ -13,6 +13,9 @@ import com.example.salarying.Corporation.User.exception.UserExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class FaqServiceImpl implements FaqService {
@@ -35,7 +38,33 @@ public class FaqServiceImpl implements FaqService {
     }
 
     /**
+     * FAQ 목록 조회
+     * @return FAQ 목록
+     */
+    @Override
+    public List<FaqDTO.FAQListResponse> faqList() {
+        List<FAQ> faqList = faqRepository.findAll();
+        return faqList.stream()
+                .map(FaqDTO.FAQListResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * FAQ 상태 변경
+     * @param adminId : 관리자 id
+     * @param request : FAQ 상태 수정
+     */
+    @Override
+    public void changeStatus(Long adminId, FaqDTO.FaqStatusRequest request) {
+        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        FAQ faq = faqRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        faq.statusUpdate(request.getStatus());
+        faqRepository.save(faq);
+    }
+
+    /**
      * DTO 형식 체크 메서드
+     *
      * @param request : 등록 하고자 하는 FAQ 정보 DTO
      * @return : FAQ 질문,답변,카테고리 없으면 false / 있으면 true
      */
