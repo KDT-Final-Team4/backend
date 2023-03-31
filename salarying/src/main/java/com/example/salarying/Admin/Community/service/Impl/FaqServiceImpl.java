@@ -62,6 +62,11 @@ public class FaqServiceImpl implements FaqService {
         faqRepository.save(faq);
     }
 
+    /**
+     * FAQ 상세 내용 가져오는 함수
+     * @param id : FAQ Id
+     * @return : FAQ 상세 내용 (질문, 답변, 작성자, 작성날짜)
+     */
     @Override
     public FaqDTO.DetailResponse faqDetail(Long id) {
         FAQ faq = faqRepository.findById(id).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));

@@ -53,6 +53,11 @@ public class FaqController {
         return new ResponseDTO<>().ok(null, "수정 되었습니다.");
     }
 
+    /**
+     * FAQ 내용 상세 출력 API
+     * @param id : FAQ Id
+     * @return : FAQ 상세 내용 출력
+     */
     @Operation(summary = "FAQ 상세정보 조회", description = "FAQ 상세 보기 FOR ADMIN, SUPERADMIN, USER")
     @GetMapping("/faq/{id}")
     public ResponseDTO<?> faqDetail(@PathVariable("id") Long id) {
