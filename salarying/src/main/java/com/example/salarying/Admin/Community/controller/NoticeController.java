@@ -87,7 +87,7 @@ public class NoticeController {
      */
     @Operation(summary = "공지사항 상태 수정")
     @PutMapping("/notice/status")
-    public ResponseDTO<?> changeStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.StatusRequest request) {
+    public ResponseDTO<?> changeStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.NoticeStatusRequest request) {
         noticeService.changeStatus(userDetails.getUserId(), request);
         return new ResponseDTO<>().ok(null, "수정 되었습니다.");
     }

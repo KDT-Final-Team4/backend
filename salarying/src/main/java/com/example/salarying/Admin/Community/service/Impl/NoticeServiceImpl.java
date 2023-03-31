@@ -66,7 +66,7 @@ public class NoticeServiceImpl implements NoticeService {
 
         Notice notice = noticeRepository.findNoticeById(id);
         if (notice == null) {
-            throw new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE);
+            throw new CommunityException(CommunityExceptionType.NOT_EXIST);
         }
         return new NoticeDTO.NoticeResponse(notice);
     }
@@ -80,7 +80,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional
     public void deleteNotice(Long adminId, Long noticeId) {
         adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        Notice notice = noticeRepository.findById(noticeId).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE));
+        Notice notice = noticeRepository.findById(noticeId).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
         noticeRepository.delete(notice);
     }
 
@@ -94,7 +94,7 @@ public class NoticeServiceImpl implements NoticeService {
     public void updateNotice(Long adminId, NoticeDTO.UpdateRequest request) {
 
         adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE));
+        Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
         if (checkUpdateDTO(request)) {
             notice.update(
                     request.getTitle(),
@@ -110,9 +110,9 @@ public class NoticeServiceImpl implements NoticeService {
      * @param request : 공지사항 상태 수정
      */
     @Override
-    public void changeStatus(Long adminId, NoticeDTO.StatusRequest request) {
+    public void changeStatus(Long adminId, NoticeDTO.NoticeStatusRequest request) {
         adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST_NOTICE));
+        Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
         notice.statusUpdate(request.getStatus());
         noticeRepository.save(notice);
     }
