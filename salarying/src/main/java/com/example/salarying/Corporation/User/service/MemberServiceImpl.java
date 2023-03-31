@@ -67,6 +67,10 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
+    /**
+     * 관리자 자동 배정을 위한 관리자 찾는 함수
+     * @return : 담당 기업의 수가 5개가 넘지 않는 관리자 혹은 슈퍼관리자
+     */
     public Admin findAdmin(){
         List<Admin> adminList = adminRepository.findAllByRole("ADMIN");
         for(Admin admin : adminList){

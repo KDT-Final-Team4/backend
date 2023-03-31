@@ -3,6 +3,7 @@ package com.example.salarying.Corporation.User.repository;
 import com.example.salarying.Corporation.User.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -12,4 +13,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findById(Long Id);
 
     Long countByAdmin_Id(Long Id);
+
+    List<Member> findByAdmin_Id(Long Id);
+
+    List<Member> findAll();
 }

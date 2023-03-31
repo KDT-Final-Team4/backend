@@ -7,10 +7,7 @@ import com.example.salarying.global.jwt.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -40,5 +37,16 @@ public class AdminController {
     @PutMapping("/admin/password")
     public ResponseDTO<?> changePassword(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody AdminDTO.ChangeRequest request) {
         return new ResponseDTO<>().ok(null, adminService.changePassword(customUserDetails.getUserId(), request));
+    }
+
+    /**
+     * 관리자 별 담당 기업 리스트 확인 API
+     * @param customUserDetails : 사용자 정보를 위한 userDetails
+     * @return : 담당 기업 리스트
+     */
+    @Operation(summary = "관리자 별 담당 기업 리스트 출력", description = "관리자 담당 기업 리스트 FOR ADMIN, SUPERADMIN")
+    @GetMapping("/corporations")
+    public ResponseDTO<?> manageList(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return new ResponseDTO<>().ok(adminService.manageList(customUserDetails.getUserId()), "출력 완료");
     }
 }

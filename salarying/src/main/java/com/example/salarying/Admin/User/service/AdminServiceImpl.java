@@ -5,6 +5,7 @@ import com.example.salarying.Admin.User.entity.Admin;
 import com.example.salarying.Admin.User.repository.AdminRepository;
 import com.example.salarying.Corporation.User.exception.UserException;
 import com.example.salarying.Corporation.User.exception.UserExceptionType;
+import com.example.salarying.Corporation.User.repository.MemberRepository;
 import com.example.salarying.global.jwt.auth.AuthToken;
 import com.example.salarying.global.jwt.auth.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -21,6 +25,7 @@ public class AdminServiceImpl implements AdminService{
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthTokenProvider authTokenProvider;
+    private final MemberRepository memberRepository;
 
 
     /**
@@ -89,6 +94,34 @@ public class AdminServiceImpl implements AdminService{
         else{
             throw new UserException(UserExceptionType.EMPTY_PASSWORD);
         }
+    }
+
+    /**
+     * 담당기업 리스트 출력 함수
+     * 관리자의 경우 담당 기업의 리스트, 슈퍼관리자의 경우 모든 기업의 리스트를 출력
+     * @param Id : 사용자 정보
+     * @return : 담당 기업 리스트
+     */
+    @Override
+    public List<AdminDTO.ListResponse> manageList(Long Id) {
+
+        Admin admin = adminRepository.findAdminById(Id)
+                .orElseThrow(()-> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        List<AdminDTO.ListResponse> listResponses = new ArrayList<>();
+        if(admin.getRole().equals("SUPERADMIN")){
+            listResponses = memberRepository.findAll()
+                    .stream()
+                    .map(entity -> new AdminDTO.ListResponse(entity))
+                    .collect(Collectors.toList());
+        }
+        else {
+            listResponses = memberRepository.findByAdmin_Id(Id)
+                    .stream()
+                    .map(entity -> new AdminDTO.ListResponse(entity))
+                    .collect(Collectors.toList());
+        }
+
+        return listResponses;
     }
 
 }
