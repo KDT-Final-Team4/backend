@@ -139,4 +139,18 @@ public class RecruitingServiceImpl implements RecruitingService {
         }
     }
 
+    /**
+     * 채용공고 상세 출력
+     * @param userId: 로그인 기업 id
+     * @param recruitingId: 채용공고 id
+     * @return 해당 채용공고 정보가진 DTO
+     */
+    @Override
+    public RecruitingDTO.DetailResponse detailRecruiting(Long userId, Long recruitingId) {
+        Recruiting recruiting = recruitingRepository.findRecruitingByIdAndAndMember_Id(recruitingId,userId)
+                .orElseThrow(()->new RecruitingException(RecruitingExceptionType.NOT_EXIST));
+
+        return new RecruitingDTO.DetailResponse(recruiting);
+    }
+
 }
