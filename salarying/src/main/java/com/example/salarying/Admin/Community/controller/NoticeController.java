@@ -24,7 +24,7 @@ public class NoticeController {
      * @return : 등록된 공지사항 DTO
      */
     @Operation(summary = "공지사항 등록")
-    @PostMapping("/admin/notice")
+    @PostMapping("/notice")
     public ResponseDTO<?> insertNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.NoticeRequest request) {
         NoticeDTO.NoticeResponse responseDTO = noticeService.insertNotice(userDetails.getUserId(), request);
         return new ResponseDTO<>().ok(responseDTO, "공지사항 등록 완료");
@@ -73,7 +73,7 @@ public class NoticeController {
      * @return : 수정 성공 메시지
      */
     @Operation(summary = "공지사항 수정")
-    @PutMapping("/notice/{id}")
+    @PutMapping("/notice")
     public ResponseDTO<?> updateNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.UpdateRequest request) {
         noticeService.updateNotice(userDetails.getUserId(), request);
         return new ResponseDTO<>().ok(null, "공지사항 수정 되었습니다.");
@@ -85,7 +85,8 @@ public class NoticeController {
      * @param request     : 수정하는 공지사항 상태 DTO
      * @return : 수정 성공 메시지
      */
-    @PatchMapping("/notice/status")
+    @Operation(summary = "공지사항 상태 수정")
+    @PutMapping("/notice/status")
     public ResponseDTO<?> changeStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.StatusRequest request) {
         noticeService.changeStatus(userDetails.getUserId(), request);
         return new ResponseDTO<>().ok(null, "수정 되었습니다.");
