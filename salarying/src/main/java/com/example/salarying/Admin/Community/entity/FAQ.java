@@ -20,7 +20,7 @@ public class FAQ {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="FAQ_id")
+    @Column(name = "FAQ_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,19 +28,23 @@ public class FAQ {
     private Admin admin;
 
     @NotNull
-    @Column(name="question")
+    @Column(name = "question")
     private String question;
 
     @NotNull
-    @Column(name="answer")
+    @Column(name = "answer")
     private String answer;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date postDate;
 
-    @Column(name="status")
+    @Column(name = "status")
     private Boolean status;
 
-    @Column(name = " category")
+    @Column(name = "category")
     private String category;
+
+    public void statusUpdate(Boolean status) {
+        this.status = status;
+    }
 }
