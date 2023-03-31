@@ -47,4 +47,9 @@ public class FAQ {
     public void statusUpdate(Boolean status) {
         this.status = status;
     }
+
+    public void updateFaq(String question,String answer) {
+        this.question = question;
+        this.answer = answer;
+    }
 }

@@ -96,7 +96,7 @@ public class NoticeServiceImpl implements NoticeService {
         adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
         Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
         if (checkUpdateDTO(request)) {
-            notice.update(
+            notice.updateNotice(
                     request.getTitle(),
                     request.getContent()
             );

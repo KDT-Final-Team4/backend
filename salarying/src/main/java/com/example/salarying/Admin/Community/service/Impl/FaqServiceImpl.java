@@ -12,6 +12,7 @@ import com.example.salarying.Corporation.User.exception.UserException;
 import com.example.salarying.Corporation.User.exception.UserExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,8 +64,54 @@ public class FaqServiceImpl implements FaqService {
     }
 
     /**
+     * FAQ 상세 내용 가져오는 함수
+     * @param id : FAQ Id
+     * @return : FAQ 상세 내용 (질문, 답변, 작성자, 작성날짜)
+     */
+    @Override
+    public FaqDTO.DetailResponse faqDetail(Long id) {
+        FAQ faq = faqRepository.findById(id).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        return new FaqDTO.DetailResponse(faq);
+    }
+
+    /**
+     * FAQ 수정 하는 함수
+     * @param adminId : 관리자 id
+     * @param request : 변경된 FAQ
+     */
+    @Override
+    @Transactional
+    public void updateFaq(Long adminId, FaqDTO.UpdateFaqRequest request) {
+        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        FAQ faq = faqRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        faq.updateFaq(
+                request.getQuestion(),
+                request.getAnswer()
+        );
+        if (request.getQuestion() == null || request.getQuestion().equals("")) {
+            throw new CommunityException(CommunityExceptionType.NOT_EXIST_QUESTION);
+        } else if (request.getAnswer() == null || request.getAnswer().equals("")) {
+            throw new CommunityException(CommunityExceptionType.NOT_EXIST_ANSWER);
+        } else {
+            faqRepository.save(faq);
+        }
+    }
+
+    /**
+     * FAQ 삭제하는 함수
+     * @param adminId : 관리자 id
+     * @param FaqId : FAQ Id
+     */
+    @Override
+    @Transactional
+    public void deleteFaq(Long adminId, Long FaqId) {
+        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        FAQ faq = faqRepository.findById(FaqId).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        faqRepository.delete(faq);
+    }
+
+    /**
      * DTO 형식 체크 메서드
-     *
      * @param request : 등록 하고자 하는 FAQ 정보 DTO
      * @return : FAQ 질문,답변,카테고리 없으면 false / 있으면 true
      */
