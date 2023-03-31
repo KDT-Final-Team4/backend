@@ -44,6 +44,7 @@ public class FaqDTO {
             this.category = faq.getCategory();
         }
     }
+
     @Getter
     @Setter
     @AllArgsConstructor
@@ -52,5 +53,23 @@ public class FaqDTO {
     public static class FaqStatusRequest {
         private Long id;
         private Boolean status;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DetailResponse {
+        private String question;
+        private String answer;
+        private Date postDate;
+        private String adminName;
+
+        public DetailResponse(FAQ faq) {
+            this.question = faq.getQuestion();
+            this.answer = faq.getAnswer();
+            this.postDate = faq.getPostDate();
+            this.adminName = faq.getAdmin().getAdminName();
+        }
     }
 }
