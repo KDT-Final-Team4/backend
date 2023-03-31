@@ -22,7 +22,7 @@ public class FaqController {
      * @param request     : 등록할 공지사항 정보 DTO
      * @return : FAQ 등록 성공 여부
      */
-    @Operation(summary = "FAQ 등록 ")
+    @Operation(summary = "FAQ 등록", description = "새로운 FAQ 등록 FOR ADMIN, SUPERADMIN")
     @PostMapping("/faq")
     public ResponseDTO<?> insertFaq(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody FaqDTO.InsertFaqRequest request) {
         faqService.insertFaq(userDetails.getUserId(), request);
@@ -33,7 +33,7 @@ public class FaqController {
      * FAQ 목록 조회 API
      * @return : FAQ 전체 목록
      */
-    @Operation(summary = "FAQ 리스트 출력")
+    @Operation(summary = "FAQ 리스트 출력", description = "FAQ 리스트 출력 FOR ADMIN, SUPERADMIN, USER")
     @GetMapping("/faq")
     public ResponseDTO<?> faqList() {
         List<FaqDTO.FAQListResponse> faqListResponses = faqService.faqList();
@@ -46,7 +46,7 @@ public class FaqController {
      * @param request     : 수정하는 FAQ 상태 DTO
      * @return : 수정 성공 메시지
      */
-    @Operation(summary = "FAQ 상태 수정")
+    @Operation(summary = "FAQ 상태 수정", description = "FAQ 공개 여부 상태 변경 FOR ADMIN, SUPERADMIN")
     @PutMapping("/faq/status")
     public ResponseDTO<?> changeStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody FaqDTO.FaqStatusRequest request) {
         faqService.changeStatus(userDetails.getUserId(), request);

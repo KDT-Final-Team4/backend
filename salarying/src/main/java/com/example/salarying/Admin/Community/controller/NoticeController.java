@@ -23,7 +23,7 @@ public class NoticeController {
      * @param request     : 등록할 공지사항 정보 DTO
      * @return : 등록된 공지사항 DTO
      */
-    @Operation(summary = "공지사항 등록")
+    @Operation(summary = "공지사항 등록", description = "새로운 공지사항 등록 FOR ADMIN, SUPERADMIN")
     @PostMapping("/notice")
     public ResponseDTO<?> insertNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.NoticeRequest request) {
         NoticeDTO.NoticeResponse responseDTO = noticeService.insertNotice(userDetails.getUserId(), request);
@@ -34,7 +34,7 @@ public class NoticeController {
      * 공지사항 목록 조회 API
      * @return : 공지사항 전체 목록
      */
-    @Operation(summary = "공지사항 리스트 조회")
+    @Operation(summary = "공지사항 리스트 조회", description = "공지사항 리스트 출력 FOR ADMIN, SUPERADMIN, USER")
     @GetMapping("/notice")
     public ResponseDTO<?> noticeList() {
         List<NoticeDTO.NoticeList> noticeResponse = noticeService.noticeList();
@@ -42,11 +42,11 @@ public class NoticeController {
     }
 
     /**
-     * 공지사항 정보 조회 API
+     * 공지사항 상세정보 조회 API
      * @param id : 공지사항 id
      * @return : 공지사항 id를 포함한 공지사항 상세 정보 + "정상 출력"
      */
-    @Operation(summary = "공지사항 정보 조회")
+    @Operation(summary = "공지사항 상세정보 조회", description = "공지사항 상세 보기  FOR ADMIN, SUPERADMIN, USER")
     @GetMapping("/notice/{id}")
     public ResponseDTO<?> noticeDetail(@PathVariable("id") Long id) {
         NoticeDTO.NoticeResponse response = noticeService.noticeDetail(id);
@@ -59,7 +59,7 @@ public class NoticeController {
      * @param request     : 삭제하고자 하는 공지사항 ID DTO
      * @return : 삭제 성공 메시지
      */
-    @Operation(summary = "공지사항 삭제")
+    @Operation(summary = "공지사항 삭제", description = "공지사학 삭제 FOR ADMIN, SUPERADMIN")
     @DeleteMapping("/notice")
     public ResponseDTO<?> deleteNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.DeleteRequest request) {
         noticeService.deleteNotice(userDetails.getUserId(), request.getId());
@@ -72,7 +72,7 @@ public class NoticeController {
      * @param request     : 수정 하는 공지사항 DTO
      * @return : 수정 성공 메시지
      */
-    @Operation(summary = "공지사항 수정")
+    @Operation(summary = "공지사항 수정", description = "공지사항 내용 변경 FOR ADMIN, SUPERADMIN")
     @PutMapping("/notice")
     public ResponseDTO<?> updateNotice(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.UpdateRequest request) {
         noticeService.updateNotice(userDetails.getUserId(), request);
@@ -85,7 +85,7 @@ public class NoticeController {
      * @param request     : 수정하는 공지사항 상태 DTO
      * @return : 수정 성공 메시지
      */
-    @Operation(summary = "공지사항 상태 수정")
+    @Operation(summary = "공지사항 상태 수정", description = "공지사항 공개 여부 상태 변경 FOR ADMIN, SUPERADMIN")
     @PutMapping("/notice/status")
     public ResponseDTO<?> changeStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody NoticeDTO.NoticeStatusRequest request) {
         noticeService.changeStatus(userDetails.getUserId(), request);
