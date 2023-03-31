@@ -72,8 +72,9 @@ public class Member {
         this.role = role;
     }
 
-    public void encodePassword(PasswordEncoder passwordEncoder) {
+    public void encodePassword(PasswordEncoder passwordEncoder, Admin admin) {
         password = passwordEncoder.encode(password);
+        this.admin = admin;
         this.lastModified = new Date();
     }
 
