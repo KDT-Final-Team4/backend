@@ -14,4 +14,8 @@ public interface ApplicantService {
 
     Boolean checkApplicantRequestDTO(ApplicantDTO.ApplicantRequest request);
 
+    ApplicantDTO.ApplicantResponse updateApplicant(Long userId,ApplicantDTO.ResultRequest request);
+
+    Boolean checkResultRequestDTO(ApplicantDTO.ResultRequest request);
+
 }

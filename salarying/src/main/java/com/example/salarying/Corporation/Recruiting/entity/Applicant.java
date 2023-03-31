@@ -42,4 +42,9 @@ public class Applicant {
 
     @Column(name="status")
     private String status;
+
+    public void update(String progress, String status){
+        this.progress = progress;
+        this.status = status;
+    }
 }

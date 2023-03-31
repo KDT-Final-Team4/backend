@@ -2,6 +2,7 @@ package com.example.salarying.Corporation.Recruiting.service.impl;
 
 
 import com.example.salarying.Corporation.Recruiting.dto.ApplicantDTO;
+import com.example.salarying.Corporation.Recruiting.entity.Applicant;
 import com.example.salarying.Corporation.Recruiting.entity.Recruiting;
 import com.example.salarying.Corporation.Recruiting.exception.*;
 import com.example.salarying.Corporation.Recruiting.repository.ApplicantRepository;
@@ -9,6 +10,7 @@ import com.example.salarying.Corporation.Recruiting.repository.RecruitingReposit
 import com.example.salarying.Corporation.Recruiting.service.ApplicantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -97,6 +99,51 @@ public class ApplicantServiceImpl implements ApplicantService {
             throw new ApplicantException(ApplicantExceptionType.NOT_EXIST_EMAIL);
         } else if (!request.getEmail().matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
             throw new ApplicantException(ApplicantExceptionType.NOT_EMAIL_FORMAT);
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 지원자 progress,status 수정
+     * @param userId: 기업 회원 id
+     * @param request: 수정 요청 DTO
+     * @return: 수정된 지원자 정보
+     */
+    @Transactional
+    @Override
+    public ApplicantDTO.ApplicantResponse updateApplicant(Long userId, ApplicantDTO.ResultRequest request) {
+        Recruiting recruiting = recruitingRepository.findRecruitingByIdAndAndMember_Id(request.getRecruitingId(),userId)
+                                                    .orElseThrow(()->new RecruitingException(RecruitingExceptionType.NOT_EXIST));
+
+        Applicant applicant = applicantRepository.findApplicantByApplicantEmailAndRecruiting(request.getEmail(),recruiting)
+                                                    .orElseThrow(()->new ApplicantException(ApplicantExceptionType.NOT_EXIST));
+
+        if(checkResultRequestDTO(request)&&recruiting.getStatus().equals(request.getProgress())){
+            applicant.update(request.getProgress(),request.getStatus());
+            return new ApplicantDTO.ApplicantResponse(applicantRepository.save(applicant));
+        }else{
+            throw new ApplicantException(ApplicantExceptionType.NOT_MATCH_PROGRESS);
+        }
+    }
+
+    /**
+     * 수정요청 DTO 형식 체크
+     * @param request: 수정 요청 DTO
+     * @return: 올바른 형식-true/ 아니면 예외처리
+     */
+    @Override
+    public Boolean checkResultRequestDTO(ApplicantDTO.ResultRequest request) {
+        if (request.getRecruitingId()==null) {
+            throw new ApplicantException(ApplicantExceptionType.NOT_EXIST_RECRUITING);
+        } else if (!request.getEmail().matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
+            throw new ApplicantException(ApplicantExceptionType.NOT_EMAIL_FORMAT);
+        } else if (request.getEmail().isEmpty()) {
+            throw new ApplicantException(ApplicantExceptionType.NOT_EXIST_EMAIL);
+        } else if(request.getProgress().isEmpty()||!(request.getProgress().equals("서류전형")||request.getProgress().equals("1차전형")||request.getProgress().equals("2차전형")||request.getProgress().equals("최종전형"))){
+            throw new ApplicantException(ApplicantExceptionType.NOT_PROGRESS);
+        } else if (request.getStatus().isEmpty()||!(request.getStatus().equals("합격")||request.getStatus().equals("불합격"))) {
+            throw new ApplicantException(ApplicantExceptionType.NOT_MATCH_STATUS);
         } else {
             return true;
         }

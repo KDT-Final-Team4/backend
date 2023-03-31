@@ -26,7 +26,7 @@ public class RecruitingController {
      * @param customUserDetails: 로그인한 기업회원
      * @return: 기업별 채용공고 리스트 출력
      */
-    @Operation(summary = "채용공고 리스트 출력")
+    @Operation(summary = "채용공고 리스트 출력",description = "채용공고 리스트 출력 FOR USER")
     @GetMapping("/recruiting")
     public ResponseDTO<?> showRecruitingList(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         List<RecruitingDTO.RecruitingResponse> recruitingResponseList = recruitingService.findRecruitingByMemberId(customUserDetails.getUserId());
@@ -39,7 +39,7 @@ public class RecruitingController {
      * @param request: 등록하고자 하는 채용공고 정보 DTO
      * @return: 등록된 채용공고 DTO
      */
-    @Operation(summary = "기업별 채용공고 등록")
+    @Operation(summary = "기업별 채용공고 등록",description = "채용공고 등록 FOR USER")
     @PostMapping("/recruiting")
     public ResponseDTO<?> insertRecruiting(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody RecruitingDTO.RecruitingRequest request){
         RecruitingDTO.RecruitingResponse responseDTO = recruitingService.insertRecruiting(customUserDetails.getUserId(),request);
@@ -52,7 +52,7 @@ public class RecruitingController {
      * @param request: 변경하고자하는 status 정보 DTO
      * @return: 수정된 채용공고 DTO
      */
-    @Operation(summary = "채용공고 status 변경")
+    @Operation(summary = "채용공고 status 변경", description = "채용공고 전형 변경 FOR USER")
     @PutMapping("/recruiting")
     public ResponseDTO<?> updateStatus(@AuthenticationPrincipal CustomUserDetails customUserDetails, RecruitingDTO.StatusRequest request){
         RecruitingDTO.RecruitingResponse responseDTO = recruitingService.updateStatus(customUserDetails.getUserId(),request);
@@ -65,7 +65,7 @@ public class RecruitingController {
      * @param id: 채용공고id
      * @return: 해당 채용공고 정보가진 DTO
      */
-    @Operation(summary = "채용공고 상세")
+    @Operation(summary = "채용공고 상세",description = "채용공고 상세 FOR USER")
     @GetMapping("/recruiting/{id}")
     public ResponseDTO<?> showRecruiting(@AuthenticationPrincipal CustomUserDetails customUserDetails,@PathVariable Long id){
         RecruitingDTO.DetailResponse detailResponse = recruitingService.detailRecruiting(customUserDetails.getUserId(), id);

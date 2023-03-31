@@ -24,7 +24,7 @@ public class ProgressController {
      * @param id: 채용공고 id
      * @return 채용공고별 전형단계
      */
-    @Operation(summary = "채용공고별 전형단계 출력")
+    @Operation(summary = "채용공고별 전형단계 출력",description = "채용공고별 전형단계 출력 FOR USER")
     @PostMapping("/recruiting/progress/{id}")
     public ResponseDTO<?> showRecruitingProgress(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long id){
         ProgressDTO.ProgressResponse progressResponse = progressService.findProgressRecruitingIdAndUserId(customUserDetails.getUserId(),id);
