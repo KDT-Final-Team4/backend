@@ -26,7 +26,6 @@ public class FaqDTO {
                     .postDate(new Date())
                     .status(true)
                     .build();
-
         }
     }
 
@@ -71,5 +70,15 @@ public class FaqDTO {
             this.postDate = faq.getPostDate();
             this.adminName = faq.getAdmin().getAdminName();
         }
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    public static class UpdateFaqRequest {
+        private Long id;
+        private String question;
+        private String answer;
     }
 }
