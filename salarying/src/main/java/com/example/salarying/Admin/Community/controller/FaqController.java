@@ -65,6 +65,12 @@ public class FaqController {
         return new ResponseDTO<>().ok(response, "정상 출력");
     }
 
+    /**
+     * FAQ 내용 수정 API
+     * @param userDetails : 로그인한 관리자
+     * @param request : 변경 요청 DTO
+     * @return : 수정 완료
+     */
     @Operation(summary = "FAQ 정보 수정", description = "FAQ 내용 수정 FOR ADMIN, SUPERADMIN")
     @PutMapping("/faq")
     public ResponseDTO<?> updateFaq(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody FaqDTO.UpdateFaqRequest request) {
@@ -72,6 +78,12 @@ public class FaqController {
         return new ResponseDTO<>().ok(null, "수정 완료");
     }
 
+    /**
+     * FAQ 삭제 API
+     * @param userDetails : 로그인한 관리자
+     * @param request : 삭제할 FAQ DTO
+     * @return : 삭제 완료
+     */
     @Operation(summary = "FAQ 삭제", description = "FAQ 삭제 FOR ADMIN, SUPERADMIN")
     @DeleteMapping("/faq")
     public ResponseDTO<?> deleteFaq(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody FaqDTO.DeleteFaqRequest request) {

@@ -74,6 +74,11 @@ public class FaqServiceImpl implements FaqService {
         return new FaqDTO.DetailResponse(faq);
     }
 
+    /**
+     * FAQ 수정 하는 함수
+     * @param adminId : 관리자 id
+     * @param request : 변경된 FAQ
+     */
     @Override
     @Transactional
     public void updateFaq(Long adminId, FaqDTO.UpdateFaqRequest request) {
@@ -92,6 +97,11 @@ public class FaqServiceImpl implements FaqService {
         }
     }
 
+    /**
+     * FAQ 삭제하는 함수
+     * @param adminId : 관리자 id
+     * @param FaqId : FAQ Id
+     */
     @Override
     @Transactional
     public void deleteFaq(Long adminId, Long FaqId) {
