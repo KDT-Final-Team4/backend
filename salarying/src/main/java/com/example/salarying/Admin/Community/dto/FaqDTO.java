@@ -44,4 +44,13 @@ public class FaqDTO {
             this.category = faq.getCategory();
         }
     }
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class FaqStatusRequest {
+        private Long id;
+        private Boolean status;
+    }
 }
