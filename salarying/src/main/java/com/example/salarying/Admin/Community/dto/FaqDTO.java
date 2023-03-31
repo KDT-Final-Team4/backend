@@ -81,4 +81,12 @@ public class FaqDTO {
         private String question;
         private String answer;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DeleteFaqRequest {
+        private Long id;
+    }
 }
