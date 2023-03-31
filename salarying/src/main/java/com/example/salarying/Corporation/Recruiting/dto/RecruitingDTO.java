@@ -92,6 +92,27 @@ public class RecruitingDTO {
 
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DetailResponse {
+
+        private String title;
+
+        private Date postDate;
+
+        private String task;
+
+        private String status;
+
+        public DetailResponse(Recruiting recruiting) {
+            this.title = recruiting.getTitle();
+            this.postDate = recruiting.getPostDate();
+            this.task = recruiting.getTask();
+            this.status = recruiting.getStatus();
+        }
+    }
     }
 
 

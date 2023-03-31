@@ -58,4 +58,17 @@ public class RecruitingController {
         RecruitingDTO.RecruitingResponse responseDTO = recruitingService.updateStatus(customUserDetails.getUserId(),request);
         return new ResponseDTO<>().ok(responseDTO,"수정완료");
     }
+
+    /**
+     * 채용공고 상세 출력하는 API
+     * @param customUserDetails: 로그인한 기업회원
+     * @param id: 채용공고id
+     * @return: 해당 채용공고 정보가진 DTO
+     */
+    @Operation(summary = "채용공고 상세")
+    @GetMapping("/recruiting/{id}")
+    public ResponseDTO<?> showRecruiting(@AuthenticationPrincipal CustomUserDetails customUserDetails,@PathVariable Long id){
+        RecruitingDTO.DetailResponse detailResponse = recruitingService.detailRecruiting(customUserDetails.getUserId(), id);
+        return new ResponseDTO<>().ok(detailResponse,"정상출력 데이터");
+    }
 }
