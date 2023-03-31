@@ -1,5 +1,7 @@
 package com.example.salarying.Corporation.User.service;
 
+import com.example.salarying.Admin.User.entity.Admin;
+import com.example.salarying.Admin.User.repository.AdminRepository;
 import com.example.salarying.Corporation.User.dto.MemberDTO;
 import com.example.salarying.Corporation.User.entity.Member;
 import com.example.salarying.Corporation.User.exception.UserException;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthTokenProvider authTokenProvider;
+    private final AdminRepository adminRepository;
 
     /**
      * 사용자 정보를 확인하여 비밀번호 암호화 수행 후 DB에 저장
@@ -34,7 +38,8 @@ public class MemberServiceImpl implements MemberService{
 
         if(checkFormat(request) && memberRepository.findByEmail(request.getEmail()).isEmpty()){
             Member newMember = request.toEntity();
-            newMember.encodePassword(passwordEncoder);
+            Admin admin = findAdmin();
+            newMember.encodePassword(passwordEncoder, admin);
             memberRepository.save(newMember);
             return newMember;
         }
@@ -60,6 +65,17 @@ public class MemberServiceImpl implements MemberService{
         } else{
             return true;
         }
+    }
+
+    public Admin findAdmin(){
+        List<Admin> adminList = adminRepository.findAllByRole("ADMIN");
+        for(Admin admin : adminList){
+            if(memberRepository.countByAdmin_Id(admin.getId()) < 5){
+                return admin;
+            }
+        }
+        Admin superAdmin = adminRepository.findByRole("SUPERADMIN");
+        return superAdmin;
     }
 
 
