@@ -43,6 +43,13 @@ public class FaqServiceImpl implements FaqService {
                 .map(FaqDTO.FAQListResponse::new)
                 .collect(Collectors.toList());
     }
+    @Override
+    public void changeStatus(Long adminId, FaqDTO.FaqStatusRequest request) {
+        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        FAQ faq = faqRepository.findById(request.getId()).orElseThrow(()->new CommunityException(CommunityExceptionType.NOT_EXIST));
+        faq.statusUpdate(request.getStatus());
+        faqRepository.save(faq);
+    }
 
     /**
      * DTO 형식 체크 메서드

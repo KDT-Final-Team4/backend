@@ -7,10 +7,7 @@ import com.example.salarying.global.jwt.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +18,6 @@ public class FaqController {
 
     /**
      * FAQ 등록 API
-     *
      * @param userDetails : 로그인한 관리자
      * @param request     : 등록할 공지사항 정보 DTO
      * @return : FAQ 등록 성공 여부
@@ -38,5 +34,12 @@ public class FaqController {
     public ResponseDTO<?> faqList() {
         List<FaqDTO.FAQListResponse> faqListResponses = faqService.faqList();
         return new ResponseDTO<>().ok(faqListResponses, "정상 출력");
+    }
+
+    @Operation(summary = "FAQ 상태 수정")
+    @PutMapping("/faq/status")
+    public ResponseDTO<?> changeStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody FaqDTO.FaqStatusRequest request) {
+        faqService.changeStatus(userDetails.getUserId(), request);
+        return new ResponseDTO<>().ok(null, "수정 되었습니다.");
     }
 }
