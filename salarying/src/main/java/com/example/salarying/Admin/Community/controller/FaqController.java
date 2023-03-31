@@ -29,6 +29,10 @@ public class FaqController {
         return new ResponseDTO<>().ok(null, "FAQ 등록 완료");
     }
 
+    /**
+     * FAQ 목록 조회 API
+     * @return : FAQ 전체 목록
+     */
     @Operation(summary = "FAQ 리스트 출력")
     @GetMapping("/faq")
     public ResponseDTO<?> faqList() {
@@ -36,6 +40,12 @@ public class FaqController {
         return new ResponseDTO<>().ok(faqListResponses, "정상 출력");
     }
 
+    /**
+     * FAQ 상태 수정 API
+     * @param userDetails : 로그인한 관리자
+     * @param request     : 수정하는 FAQ 상태 DTO
+     * @return : 수정 성공 메시지
+     */
     @Operation(summary = "FAQ 상태 수정")
     @PutMapping("/faq/status")
     public ResponseDTO<?> changeStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody FaqDTO.FaqStatusRequest request) {
