@@ -20,7 +20,7 @@ public class LoginController {
      * @param request : 이메일, 비밀번호, 회사명, 회사번호를 가진 DTO
      * @return 회원가입 성공 시 HttpsStatus를 200번으로 반환, 이외의 예외들은 각각의 메세지와 함께 400번 반환
      */
-    @Operation(summary = "회원가입 API", description = "회사 관련 모든 정보 받아오기")
+    @Operation(summary = "회원가입 API", description = "회사 관련 모든 정보 받아오기 FOR USER")
     @PostMapping("/signup")
     public ResponseDTO<?> singUp(@RequestBody MemberDTO.SignUpRequest request){
         memberService.signUp(request);
@@ -32,7 +32,7 @@ public class LoginController {
      * @param request : 이메일, 비밀번호를 가진 DTO
      * @return 로그인 성공 시 access token 반환
      */
-    @Operation(summary = "로그인 API", description = "이메일과 비밀번호로 로그인하기")
+    @Operation(summary = "로그인 API", description = "이메일과 비밀번호로 로그인하기 FOR USER")
     @PostMapping("/users/login")
     public ResponseDTO<?> login(@RequestBody MemberDTO.LoginRequest request){
         return new ResponseDTO<>().ok(memberService.login(request), "로그인 성공");
