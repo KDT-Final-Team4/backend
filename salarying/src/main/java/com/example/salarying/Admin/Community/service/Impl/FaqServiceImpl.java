@@ -92,6 +92,14 @@ public class FaqServiceImpl implements FaqService {
         }
     }
 
+    @Override
+    @Transactional
+    public void deleteFaq(Long adminId, Long FaqId) {
+        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        FAQ faq = faqRepository.findById(FaqId).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        faqRepository.delete(faq);
+    }
+
     /**
      * DTO 형식 체크 메서드
      * @param request : 등록 하고자 하는 FAQ 정보 DTO

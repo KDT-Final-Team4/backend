@@ -72,4 +72,10 @@ public class FaqController {
         return new ResponseDTO<>().ok(null, "수정 완료");
     }
 
+    @Operation(summary = "FAQ 삭제", description = "FAQ 삭제 FOR ADMIN, SUPERADMIN")
+    @DeleteMapping("/faq")
+    public ResponseDTO<?> deleteFaq(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody FaqDTO.DeleteFaqRequest request) {
+        faqService.deleteFaq(userDetails.getUserId(), request.getId());
+        return new ResponseDTO<>().ok(null, "삭제 완료.");
+    }
 }

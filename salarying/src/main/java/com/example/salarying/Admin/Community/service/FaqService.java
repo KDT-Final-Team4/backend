@@ -14,4 +14,6 @@ public interface FaqService {
     FaqDTO.DetailResponse faqDetail(Long id);
 
     void updateFaq(Long adminId, FaqDTO.UpdateFaqRequest request);
+
+    void deleteFaq(Long adminId, Long FaqId);
 }
