@@ -13,6 +13,9 @@ import com.example.salarying.Corporation.User.exception.UserExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class FaqServiceImpl implements FaqService {
@@ -32,6 +35,13 @@ public class FaqServiceImpl implements FaqService {
         if (checkRequestDTO(request)) {
             faqRepository.save(faq);
         }
+    }
+    @Override
+    public List<FaqDTO.FAQListResponse> faqList() {
+        List<FAQ> faqList = faqRepository.findAll();
+        return faqList.stream()
+                .map(FaqDTO.FAQListResponse::new)
+                .collect(Collectors.toList());
     }
 
     /**
