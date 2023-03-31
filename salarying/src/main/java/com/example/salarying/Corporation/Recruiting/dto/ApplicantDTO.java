@@ -71,7 +71,27 @@ public class ApplicantDTO {
                     .applicantPhoneNumber(number)
                     .applicantEmail(email)
                     .progress("서류전형")
+                    .status("불합격")
                     .build();
         }
+    }
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ResultRequest {
+
+
+        private Long recruitingId;
+
+        private String email;
+
+        private String progress;
+
+        private String status;
+
+
+
     }
 }
