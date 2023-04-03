@@ -111,12 +111,8 @@ public class RecruitingServiceImpl implements RecruitingService {
     @Transactional
     @Override
     public RecruitingDTO.RecruitingResponse updateStatus(Long userId, RecruitingDTO.StatusRequest request) {
-
         checkStatusDTO(request);
-
-        Recruiting recruiting = recruitingRepository.findRecruitingByIdAndAndMember_Id(request.getRecruitingId(), userId)
-                            .orElseThrow(()->new RecruitingException(RecruitingExceptionType.NOT_EXIST));
-
+        Recruiting recruiting = findRecruitingByIdAndAndMember_Id(request.getRecruitingId(),userId);
         recruiting.update(request.getStatus());
         return new RecruitingDTO.RecruitingResponse(recruitingRepository.save(recruiting));
 
@@ -147,10 +143,27 @@ public class RecruitingServiceImpl implements RecruitingService {
      */
     @Override
     public RecruitingDTO.DetailResponse detailRecruiting(Long userId, Long recruitingId) {
-        Recruiting recruiting = recruitingRepository.findRecruitingByIdAndAndMember_Id(recruitingId,userId)
-                .orElseThrow(()->new RecruitingException(RecruitingExceptionType.NOT_EXIST));
-
+        Recruiting recruiting = findRecruitingByIdAndAndMember_Id(recruitingId,userId);
         return new RecruitingDTO.DetailResponse(recruiting);
+    }
+
+    /**
+     *
+     * @param recruitingId
+     * @param userId
+     * @return
+     */
+    @Override
+    public Recruiting findRecruitingByIdAndAndMember_Id(Long recruitingId, Long userId) {
+
+        Optional<Recruiting> recruiting = recruitingRepository.findRecruitingByIdAndAndMember_Id(recruitingId,userId);
+
+        if(recruiting.isPresent()){
+            return recruiting.get();
+        }else{
+            throw  new RecruitingException(RecruitingExceptionType.NOT_EXIST);
+        }
+
     }
 
 }
