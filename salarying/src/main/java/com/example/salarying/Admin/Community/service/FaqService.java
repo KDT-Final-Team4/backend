@@ -7,7 +7,7 @@ import java.util.List;
 public interface FaqService {
     void insertFaq(Long adminId, FaqDTO.InsertFaqRequest request);
 
-    List<FaqDTO.FAQListResponse> faqList();
+    List<FaqDTO.FAQListResponse> faqList(Long adminId);
 
     void changeStatus(Long adminId, FaqDTO.FaqStatusRequest request);
 

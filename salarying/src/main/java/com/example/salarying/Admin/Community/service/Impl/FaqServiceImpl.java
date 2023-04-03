@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,14 +41,23 @@ public class FaqServiceImpl implements FaqService {
 
     /**
      * FAQ 목록 조회
+     *
      * @return FAQ 목록
      */
     @Override
-    public List<FaqDTO.FAQListResponse> faqList() {
+    public List<FaqDTO.FAQListResponse> faqList(Long adminId) {
         List<FAQ> faqList = faqRepository.findAll();
-        return faqList.stream()
-                .map(FaqDTO.FAQListResponse::new)
-                .collect(Collectors.toList());
+        Optional<Admin> admin = adminRepository.findById(adminId);
+        if (admin.isPresent()) {
+            return faqList.stream()
+                    .map(FaqDTO.FAQListResponse::new)
+                    .collect(Collectors.toList());
+        } else {
+            return faqList.stream()
+                    .map(FaqDTO.FAQListResponse::new)
+                    .filter(FaqDTO.FAQListResponse::getStatus)
+                    .collect(Collectors.toList());
+        }
     }
 
     /**
@@ -100,7 +110,7 @@ public class FaqServiceImpl implements FaqService {
     /**
      * FAQ 삭제하는 함수
      * @param adminId : 관리자 id
-     * @param FaqId : FAQ Id
+     * @param FaqId   : FAQ Id
      */
     @Override
     @Transactional
