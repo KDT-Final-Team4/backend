@@ -1,6 +1,7 @@
 package com.example.salarying.Corporation.User.entity;
 
 import com.example.salarying.Admin.User.entity.Admin;
+import com.example.salarying.Corporation.User.dto.MemberDTO;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -85,5 +86,14 @@ public class Member {
 
     public void updateLoginDate(){
         this.lastSignIn = new Date();
+    }
+
+    public void updateMyPage(MemberDTO.updateRequest request){
+        this.companyName = request.getCompanyName();
+        this.companyPhoneNumber = request.getCompanyPhoneNumber();
+        this.name = request.getName();
+        this.position = request.getPosition();
+        this.email = request.getEmail();
+
     }
 }
