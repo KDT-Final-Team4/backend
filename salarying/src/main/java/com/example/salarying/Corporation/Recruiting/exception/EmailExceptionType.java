@@ -11,7 +11,11 @@ public enum EmailExceptionType implements CustomExceptionType {
 
     NOT_EMAIL_FORMAT(-404, HttpStatus.BAD_REQUEST, "올바른 이메일형식이 아닙니다."),
 
-    NOT_EXIST_APPLICANT(-404, HttpStatus.BAD_REQUEST, "해당 지원자가 없습니다.")
+    NOT_EXIST_APPLICANT(-405, HttpStatus.BAD_REQUEST, "해당 지원자가 없습니다."),
+
+    NOT_MATCH_PROGRESS(-406, HttpStatus.BAD_REQUEST, "채용전형을 확인해주세요."),
+
+    NOT_MATCH_STATUS(-407, HttpStatus.BAD_REQUEST, "합격여부를 확인해주세요.")
 
 
 
