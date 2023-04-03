@@ -90,5 +90,43 @@ public class MemberDTO {
         private String password;
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MyPageResponse{
+        private String companyName;
+        private String companyPhoneNumber;
+        private String email;
+        private String name;
+        private String position;
+        private Date lastSignIn;
+        private Date lastModified;
+        private String status;
+
+        public MyPageResponse(Member member) {
+            this.companyName = member.getCompanyName();
+            this.companyPhoneNumber = member.getCompanyPhoneNumber();
+            this.email = member.getEmail();
+            this.name = member.getName();
+            this.position = member.getPosition();
+            this.lastSignIn = member.getLastSignIn();
+            this.lastModified = member.getLastModified();
+            this.status = member.getStatus();
+        }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class updateRequest{
+        private String companyName;
+        private String companyPhoneNumber;
+        private String email;
+        private String name;
+        private String position;
+    }
+
 
 }
