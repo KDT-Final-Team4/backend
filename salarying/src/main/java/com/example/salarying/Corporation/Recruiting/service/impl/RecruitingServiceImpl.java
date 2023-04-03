@@ -104,9 +104,9 @@ public class RecruitingServiceImpl implements RecruitingService {
 
     /**
      * 채용공고 전형 수정
-     * @param userId
-     * @param request
-     * @return
+     * @param userId: 기업회원 id
+     * @param request: 수정 요청 DTO
+     * @return: 수정된 채용공고 정보 DTO
      */
     @Transactional
     @Override
