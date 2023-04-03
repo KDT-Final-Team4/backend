@@ -8,6 +8,7 @@ import com.example.salarying.Corporation.Recruiting.exception.*;
 import com.example.salarying.Corporation.Recruiting.repository.ApplicantRepository;
 import com.example.salarying.Corporation.Recruiting.repository.RecruitingRepository;
 import com.example.salarying.Corporation.Recruiting.service.ApplicantService;
+import com.example.salarying.Corporation.Recruiting.service.RecruitingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 public class ApplicantServiceImpl implements ApplicantService {
 
     private final ApplicantRepository applicantRepository;
+
+    private final RecruitingService recruitingService;
 
     private final RecruitingRepository recruitingRepository;
 
@@ -113,8 +116,7 @@ public class ApplicantServiceImpl implements ApplicantService {
     @Transactional
     @Override
     public ApplicantDTO.ApplicantResponse updateApplicant(Long userId, ApplicantDTO.ResultRequest request) {
-        Recruiting recruiting = recruitingRepository.findRecruitingByIdAndAndMember_Id(request.getRecruitingId(),userId)
-                                                    .orElseThrow(()->new RecruitingException(RecruitingExceptionType.NOT_EXIST));
+        Recruiting recruiting = recruitingService.findRecruitingByIdAndAndMember_Id(request.getRecruitingId(),userId);
 
         Applicant applicant = applicantRepository.findApplicantByApplicantEmailAndRecruiting(request.getEmail(),recruiting)
                                                     .orElseThrow(()->new ApplicantException(ApplicantExceptionType.NOT_EXIST));

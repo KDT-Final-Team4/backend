@@ -44,8 +44,6 @@ public class EmailServiceImpl implements EmailService {
 
         for (EmailDTO.EmailRequest request : requestList) {
             Recruiting recruiting = recruitingService.findById(request.getRecruitingId());
-//            Applicant applicant = applicantRepository.findApplicantByApplicantEmailAndRecruitingAndProgressAndStatus(request.getApplicantEmail(),recruiting, request.getProgress(), request.getStatus())
-//                    .orElseThrow(()->new ApplicantException(ApplicantExceptionType.NOT_EXIST));
 
             if (checkEmailDTO(request)&&recruiting.getMember().getId().equals(userId)) {
                 Applicant applicant = applicantRepository.findApplicantByApplicantEmailAndRecruitingAndProgressAndStatus(request.getApplicantEmail(),recruiting, request.getProgress(), request.getStatus())
