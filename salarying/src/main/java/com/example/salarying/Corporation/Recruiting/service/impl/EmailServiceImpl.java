@@ -4,8 +4,7 @@ import com.example.salarying.Corporation.Recruiting.dto.EmailDTO;
 import com.example.salarying.Corporation.Recruiting.entity.Applicant;
 import com.example.salarying.Corporation.Recruiting.entity.Email;
 import com.example.salarying.Corporation.Recruiting.entity.Recruiting;
-import com.example.salarying.Corporation.Recruiting.exception.EmailException;
-import com.example.salarying.Corporation.Recruiting.exception.EmailExceptionType;
+import com.example.salarying.Corporation.Recruiting.exception.*;
 import com.example.salarying.Corporation.Recruiting.repository.ApplicantRepository;
 import com.example.salarying.Corporation.Recruiting.repository.EmailRepository;
 import com.example.salarying.Corporation.Recruiting.service.EmailService;
@@ -45,16 +44,19 @@ public class EmailServiceImpl implements EmailService {
 
         for (EmailDTO.EmailRequest request : requestList) {
             Recruiting recruiting = recruitingService.findById(request.getRecruitingId());
-            Optional<Applicant> applicant = applicantRepository.findApplicantByApplicantEmailAndRecruitingAndProgressAndStatus(request.getApplicantEmail(),recruiting, request.getProgress(), request.getStatus());
+//            Applicant applicant = applicantRepository.findApplicantByApplicantEmailAndRecruitingAndProgressAndStatus(request.getApplicantEmail(),recruiting, request.getProgress(), request.getStatus())
+//                    .orElseThrow(()->new ApplicantException(ApplicantExceptionType.NOT_EXIST));
 
             if (checkEmailDTO(request)&&recruiting.getMember().getId().equals(userId)) {
+                Applicant applicant = applicantRepository.findApplicantByApplicantEmailAndRecruitingAndProgressAndStatus(request.getApplicantEmail(),recruiting, request.getProgress(), request.getStatus())
+                        .orElseThrow(()->new ApplicantException(ApplicantExceptionType.NOT_EXIST));
                 SimpleMailMessage mailMessage = new SimpleMailMessage();
                 mailMessage.setSubject(request.getTitle());
                 mailMessage.setText(request.getContent());
                 mailMessage.setFrom(recruiting.getMember().getEmail());
-                mailMessage.setTo(applicant.get().getApplicantEmail());
+                mailMessage.setTo(applicant.getApplicantEmail());
                 javaMailSender.send(mailMessage);
-                Email email = Email.builder().applicant(applicant.get()).recruiting(recruiting).progress(request.getProgress())
+                Email email = Email.builder().applicant(applicant).recruiting(recruiting).progress(request.getProgress())
                         .sendDate(new Date()).status(request.getStatus()).build();
                 emailRepository.save(email);
             }else{
@@ -80,7 +82,11 @@ public class EmailServiceImpl implements EmailService {
             throw new EmailException(EmailExceptionType.NOT_EXIST_EMAIL);
         } else if (!request.getApplicantEmail().matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
             throw new EmailException(EmailExceptionType.NOT_EMAIL_FORMAT);
-        } else {
+        } else if(request.getProgress().isEmpty()||!(request.getProgress().equals("서류전형")||request.getProgress().equals("1차전형")||request.getProgress().equals("2차전형")||request.getProgress().equals("최종전형"))){
+            throw new EmailException(EmailExceptionType.NOT_MATCH_PROGRESS);
+        } else if(request.getStatus().isEmpty()||!((request.getStatus()).equals("합격")||request.getStatus().equals("불합격"))){
+            throw new EmailException(EmailExceptionType.NOT_MATCH_STATUS);
+        }else {
             return true;
         }
     }
