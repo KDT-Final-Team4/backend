@@ -15,7 +15,8 @@ public enum UserExceptionType implements CustomExceptionType {
     UNMATCHED_PASSWORD(-107, HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
     NOT_LOGGED_IN (-108,HttpStatus.BAD_REQUEST, "로그인이 되어있지 않습니다."),
     ALREADY_USED (-109,HttpStatus.BAD_REQUEST, "이미 사용중인 비밀번호 입니다."),
-    EMPTY_PASSWORD (-110,HttpStatus.BAD_REQUEST, "입력된 비밀번호가 없습니다.")
+    EMPTY_PASSWORD (-110,HttpStatus.BAD_REQUEST, "입력된 비밀번호가 없습니다."),
+    EMPTY_UPDATE (-111,HttpStatus.BAD_REQUEST, "빈 값이 들어올 수 없습니다.")
     ;
 
     private int errorCode;
