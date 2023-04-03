@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -144,5 +143,57 @@ public class MemberServiceImpl implements MemberService{
         else{
             throw new UserException(UserExceptionType.EMPTY_PASSWORD);
         }
+    }
+
+    /**
+     * 기업 마이페이지 정보 출력 함수
+     * @param Id : 사용자 Id
+     * @return : 사용자 정보
+     */
+    @Override
+    public MemberDTO.MyPageResponse showMyPage(Long Id) {
+        Member member = memberRepository.findById(Id)
+                .orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+
+        MemberDTO.MyPageResponse response = new MemberDTO.MyPageResponse(member);
+        return response;
+    }
+
+    /**
+     * 마이페이지 정보 변경 함수
+     * @param Id : 사용자 정보
+     * @param request : 변경 요청 DTO
+     * @return : 변경 완료
+     */
+    @Override
+    @Transactional
+    public String updateMyPage(Long Id, MemberDTO.updateRequest request) {
+        Member member = memberRepository.findById(Id)
+                .orElseThrow(()-> new UserException(UserExceptionType.NOT_LOGGED_IN));
+
+        if(checkUpdate(request)){
+            member.updateMyPage(request);
+            memberRepository.save(member);
+        }
+        return "변경 완료";
+    }
+
+    /**
+     * 사용자 변경 요청 DTO 유효성 검사
+     * @param request : 사용자 변경 요청 DTO
+     * @return : true
+     */
+    public Boolean checkUpdate(MemberDTO.updateRequest request){
+        if(request.getCompanyName() == "" || request.getCompanyPhoneNumber() == "" || request.getName() == ""
+        || request.getEmail() == "" || request.getPosition()== ""){
+            throw new UserException(UserExceptionType.EMPTY_UPDATE);
+        }
+        else if (!request.getCompanyPhoneNumber().matches("\\d{3}-?\\d{4}-?\\d{4}")) {
+            throw new UserException(UserExceptionType.NOT_NUMBER_FORMAT);
+        }
+        else if(!request.getEmail().matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
+            throw new UserException(UserExceptionType.NOT_EMAIL_FORMAT);
+        }
+        else return true;
     }
 }
