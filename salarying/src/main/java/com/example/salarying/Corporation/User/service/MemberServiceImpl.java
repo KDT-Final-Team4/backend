@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -109,8 +110,8 @@ public class MemberServiceImpl implements MemberService{
      */
     @Override
     public String checkPassword(Long Id, MemberDTO.CheckRequest request) {
-        Member member = memberRepository.findById(Id)
-                .orElseThrow(()-> new UserException(UserExceptionType.NOT_LOGGED_IN));
+
+        Member member = findById(Id);
 
         if(passwordEncoder.matches(request.getPassword(), member.getPassword())){
             return "비밀번호가 일치합니다.";
@@ -128,8 +129,7 @@ public class MemberServiceImpl implements MemberService{
      */
     @Override
     public String changePassword(Long Id, MemberDTO.ChangeRequest request) {
-        Member member = memberRepository.findById(Id)
-                .orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Member member = findById(Id);
 
         if(passwordEncoder.matches(request.getPassword(),member.getPassword())){
             throw new UserException(UserExceptionType.ALREADY_USED);
@@ -152,8 +152,7 @@ public class MemberServiceImpl implements MemberService{
      */
     @Override
     public MemberDTO.MyPageResponse showMyPage(Long Id) {
-        Member member = memberRepository.findById(Id)
-                .orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Member member = findById(Id);
 
         MemberDTO.MyPageResponse response = new MemberDTO.MyPageResponse(member);
         return response;
@@ -168,8 +167,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     @Transactional
     public String updateMyPage(Long Id, MemberDTO.updateRequest request) {
-        Member member = memberRepository.findById(Id)
-                .orElseThrow(()-> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Member member = findById(Id);
 
         if(checkUpdate(request)){
             member.updateMyPage(request);
@@ -195,5 +193,17 @@ public class MemberServiceImpl implements MemberService{
             throw new UserException(UserExceptionType.NOT_EMAIL_FORMAT);
         }
         else return true;
+    }
+
+    /**
+     * Id로 멤버 찾는 함수
+     * @param Id : 사용자 정보 Id
+     * @return : 해당 Id를 가진 Member
+     */
+    public Member findById(Long Id){
+        Optional<Member> member = memberRepository.findById(Id);
+        if(member.isPresent())
+            return member.get();
+        else throw new UserException(UserExceptionType.NOT_LOGGED_IN);
     }
 }
