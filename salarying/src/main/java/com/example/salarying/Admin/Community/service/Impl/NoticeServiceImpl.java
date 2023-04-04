@@ -36,6 +36,7 @@ public class NoticeServiceImpl implements NoticeService {
     public NoticeDTO.NoticeResponse insertNotice(Long adminId, NoticeDTO.NoticeRequest request) {
         Admin admin = adminService.findAdminById(adminId);
         Notice notice = request.toEntity(admin);
+        if (checkRequestDTO(request.getTitle(), request.getContent()))
             noticeRepository.save(notice);
         return new NoticeDTO.NoticeResponse(notice);
     }
