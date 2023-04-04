@@ -1,6 +1,7 @@
 package com.example.salarying.Admin.User.service;
 
 import com.example.salarying.Admin.User.dto.AdminDTO;
+import com.example.salarying.Admin.User.entity.Admin;
 
 import java.util.List;
 
@@ -13,5 +14,7 @@ public interface AdminService {
     String changePassword(Long Id, AdminDTO.ChangeRequest request);
 
     List<AdminDTO.ListResponse> manageList(Long Id);
+
+    Admin findAdminById(Long Id);
 
 }
