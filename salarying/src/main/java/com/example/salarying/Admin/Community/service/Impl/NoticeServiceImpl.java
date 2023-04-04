@@ -7,9 +7,7 @@ import com.example.salarying.Admin.Community.exception.CommunityExceptionType;
 import com.example.salarying.Admin.Community.repository.NoticeRepository;
 import com.example.salarying.Admin.Community.service.NoticeService;
 import com.example.salarying.Admin.User.entity.Admin;
-import com.example.salarying.Admin.User.repository.AdminRepository;
-import com.example.salarying.Corporation.User.exception.UserException;
-import com.example.salarying.Corporation.User.exception.UserExceptionType;
+import com.example.salarying.Admin.User.service.AdminService;
 import com.example.salarying.global.jwt.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeRepository noticeRepository;
-    private final AdminRepository adminRepository;
+    private final AdminService adminService;
 
     /**
      * 관리자 공지사항 등록
@@ -36,14 +34,11 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public NoticeDTO.NoticeResponse insertNotice(Long adminId, NoticeDTO.NoticeRequest request) {
-        Optional<Admin> admin = adminRepository.findById(adminId);
-        if (admin.isPresent()) {
-            Notice notice = request.toEntity(admin.get());
+        Admin admin = adminService.findAdminById(adminId);
+        Notice notice = request.toEntity(admin);
+        if (checkRequestDTO(request.getTitle(), request.getContent()))
             noticeRepository.save(notice);
-            return new NoticeDTO.NoticeResponse(notice);
-        } else {
-            throw new UserException(UserExceptionType.NOT_LOGGED_IN);
-        }
+        return new NoticeDTO.NoticeResponse(notice);
     }
 
     /**
@@ -72,10 +67,7 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Override
     public NoticeDTO.NoticeResponse noticeDetail(Long id) {
-        Notice notice = noticeRepository.findNoticeById(id);
-        if (notice == null) {
-            throw new CommunityException(CommunityExceptionType.NOT_EXIST);
-        }
+        Notice notice = findNoticeId(id);
         return new NoticeDTO.NoticeResponse(notice);
     }
 
@@ -87,8 +79,8 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public void deleteNotice(Long adminId, Long noticeId) {
-        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        Notice notice = noticeRepository.findById(noticeId).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        adminService.findAdminById(adminId);
+        Notice notice = findNoticeId(noticeId);
         noticeRepository.delete(notice);
     }
 
@@ -100,10 +92,9 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public void updateNotice(Long adminId, NoticeDTO.UpdateRequest request) {
-
-        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
-        if (checkUpdateDTO(request)) {
+        adminService.findAdminById(adminId);
+        Notice notice = findNoticeId(request.getId());
+        if (checkRequestDTO(request.getTitle(), request.getContent())) {
             notice.updateNotice(
                     request.getTitle(),
                     request.getContent()
@@ -119,21 +110,34 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Override
     public void changeStatus(Long adminId, NoticeDTO.NoticeStatusRequest request) {
-        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        adminService.findAdminById(adminId);
+        Notice notice = findNoticeId(request.getId());
         notice.statusUpdate(request.getStatus());
         noticeRepository.save(notice);
     }
 
     /**
-     * DTO 형식 체크 메서드
-     * @param request : 수정 하고자 하는 공지사항 정보 DTO
-     * @return : 공지사항 제목,내용 없으면 false / 있으면 true
+     * Notice Id로 약관 찾는 함수
+     * @param noticeId : Notice id
+     * @return : 해당 Id를 가진 약관
      */
-    public Boolean checkUpdateDTO(NoticeDTO.UpdateRequest request) {
-        if (request.getTitle() == null || request.getTitle().equals("")) {
+    @Override
+    public Notice findNoticeId(Long noticeId) {
+        Optional<Notice> notice = noticeRepository.findById(noticeId);
+        if (notice.isPresent()) return notice.get();
+        else throw new CommunityException(CommunityExceptionType.NOT_EXIST);
+    }
+
+    /**
+     * DTO 형식 체크 함수
+     * @param title   : 공지사항 제목
+     * @param content : 공지사항 내용
+     * @return
+     */
+    public Boolean checkRequestDTO(String title, String content) {
+        if (title == null || title.equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_TITLE);
-        } else if (request.getContent() == null || request.getContent().equals("")) {
+        } else if (content == null || content.equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_CONTENT);
         } else {
             return true;
