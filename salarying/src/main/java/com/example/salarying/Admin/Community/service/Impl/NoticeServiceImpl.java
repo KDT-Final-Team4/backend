@@ -127,14 +127,15 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     /**
-     * DTO 형식 체크 메서드
-     * @param request : 수정 하고자 하는 공지사항 정보 DTO
-     * @return : 공지사항 제목,내용 없으면 false / 있으면 true
+     * DTO 형식 체크 함수
+     * @param title : 공지사항 제목
+     * @param content : 공지사항 내용
+     * @return
      */
-    public Boolean checkUpdateDTO(NoticeDTO.UpdateRequest request) {
-        if (request.getTitle() == null || request.getTitle().equals("")) {
+    public Boolean checkUpdateDTO(String title, String content) {
+        if (title == null || title.equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_TITLE);
-        } else if (request.getContent() == null || request.getContent().equals("")) {
+        } else if (content == null || content.equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_CONTENT);
         } else {
             return true;
