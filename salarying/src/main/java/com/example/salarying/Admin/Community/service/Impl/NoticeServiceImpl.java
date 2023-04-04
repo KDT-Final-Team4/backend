@@ -35,9 +35,9 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public NoticeDTO.NoticeResponse insertNotice(Long adminId, NoticeDTO.NoticeRequest request) {
         Admin admin = adminService.findAdminById(adminId);
-            Notice notice = request.toEntity(admin);
+        Notice notice = request.toEntity(admin);
             noticeRepository.save(notice);
-            return new NoticeDTO.NoticeResponse(notice);
+        return new NoticeDTO.NoticeResponse(notice);
     }
 
     /**
@@ -93,7 +93,7 @@ public class NoticeServiceImpl implements NoticeService {
     public void updateNotice(Long adminId, NoticeDTO.UpdateRequest request) {
         adminService.findAdminById(adminId);
         Notice notice = findNoticeId(request.getId());
-        if (checkUpdateDTO(request)) {
+        if (checkRequestDTO(request.getTitle(), request.getContent())) {
             notice.updateNotice(
                     request.getTitle(),
                     request.getContent()
@@ -114,6 +114,7 @@ public class NoticeServiceImpl implements NoticeService {
         notice.statusUpdate(request.getStatus());
         noticeRepository.save(notice);
     }
+
     /**
      * Notice Id로 약관 찾는 함수
      * @param noticeId : Notice id
@@ -128,11 +129,11 @@ public class NoticeServiceImpl implements NoticeService {
 
     /**
      * DTO 형식 체크 함수
-     * @param title : 공지사항 제목
+     * @param title   : 공지사항 제목
      * @param content : 공지사항 내용
      * @return
      */
-    public Boolean checkUpdateDTO(String title, String content) {
+    public Boolean checkRequestDTO(String title, String content) {
         if (title == null || title.equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_TITLE);
         } else if (content == null || content.equals("")) {
