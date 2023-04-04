@@ -72,10 +72,7 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Override
     public NoticeDTO.NoticeResponse noticeDetail(Long id) {
-        Notice notice = noticeRepository.findNoticeById(id);
-        if (notice == null) {
-            throw new CommunityException(CommunityExceptionType.NOT_EXIST);
-        }
+        Notice notice = findNoticeId(id);
         return new NoticeDTO.NoticeResponse(notice);
     }
 
@@ -88,7 +85,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional
     public void deleteNotice(Long adminId, Long noticeId) {
         adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        Notice notice = noticeRepository.findById(noticeId).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        Notice notice = findNoticeId(noticeId);
         noticeRepository.delete(notice);
     }
 
@@ -102,7 +99,7 @@ public class NoticeServiceImpl implements NoticeService {
     public void updateNotice(Long adminId, NoticeDTO.UpdateRequest request) {
 
         adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        Notice notice = findNoticeId(request.getId());
         if (checkUpdateDTO(request)) {
             notice.updateNotice(
                     request.getTitle(),
@@ -120,7 +117,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public void changeStatus(Long adminId, NoticeDTO.NoticeStatusRequest request) {
         adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        Notice notice = noticeRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        Notice notice = findNoticeId(request.getId());
         notice.statusUpdate(request.getStatus());
         noticeRepository.save(notice);
     }
