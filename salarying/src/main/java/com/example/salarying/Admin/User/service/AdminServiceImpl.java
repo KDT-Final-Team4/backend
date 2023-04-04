@@ -126,6 +126,7 @@ public class AdminServiceImpl implements AdminService{
      * @param Id : 사용자 ID
      * @return : 해당 ID를 가진 관리자
      */
+    @Override
     public Admin findAdminById(Long Id){
 
         Optional<Admin> admin = adminRepository.findAdminById(Id);

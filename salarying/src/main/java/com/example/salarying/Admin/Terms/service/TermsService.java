@@ -1,6 +1,7 @@
 package com.example.salarying.Admin.Terms.service;
 
 import com.example.salarying.Admin.Terms.dto.TermsDTO;
+import com.example.salarying.Admin.Terms.entity.Terms;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface TermsService {
     String updateTerm(Long adminId, TermsDTO.UpdateRequest request);
 
     String deleteTerm(Long userId, Long termId);
+
+    Terms findById(Long Id);
 }

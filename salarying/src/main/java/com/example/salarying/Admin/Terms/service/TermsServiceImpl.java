@@ -6,14 +6,13 @@ import com.example.salarying.Admin.Terms.exception.TermsException;
 import com.example.salarying.Admin.Terms.exception.TermsExceptionType;
 import com.example.salarying.Admin.Terms.repository.TermsRepository;
 import com.example.salarying.Admin.User.entity.Admin;
-import com.example.salarying.Admin.User.repository.AdminRepository;
-import com.example.salarying.Corporation.User.exception.UserException;
-import com.example.salarying.Corporation.User.exception.UserExceptionType;
+import com.example.salarying.Admin.User.service.AdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 public class TermsServiceImpl implements TermsService{
 
     private final TermsRepository termsRepository;
-    private final AdminRepository adminRepository;
+    private final AdminService adminService;
 
     /**
      * 약관 타입 별 버전 비교 후 등록하는 함수
@@ -38,8 +37,7 @@ public class TermsServiceImpl implements TermsService{
 
         if(!termsRepository.existsTermsByTypeAndVersion(type, request.getVersion())){
 
-            Admin admin = adminRepository.findAdminById(Id)
-                    .orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+            Admin admin = adminService.findAdminById(Id);
 
             Terms newTerms = request.toEntity(admin);
             termsRepository.save(newTerms);
@@ -79,8 +77,7 @@ public class TermsServiceImpl implements TermsService{
     @Transactional
     public String changeStatus(TermsDTO.StatusRequest request) {
 
-        Terms terms = termsRepository.findById(request.getId())
-                .orElseThrow(()-> new TermsException(TermsExceptionType.NOT_EXIST));
+        Terms terms = findById(request.getId());
 
         if(request.getStatus().equals(terms.getStatus())) throw new TermsException(TermsExceptionType.CHECK_STATUS);
 
@@ -116,8 +113,8 @@ public class TermsServiceImpl implements TermsService{
      */
     @Override
     public TermsDTO.DetailResponse showDetail(Long Id) {
-        Terms terms = termsRepository.findById(Id)
-                .orElseThrow(()-> new TermsException(TermsExceptionType.NOT_EXIST));
+
+        Terms terms = findById(Id);
 
         TermsDTO.DetailResponse response = new TermsDTO.DetailResponse(terms);
         return response;
@@ -133,11 +130,9 @@ public class TermsServiceImpl implements TermsService{
     @Transactional
     public String updateTerm(Long adminId, TermsDTO.UpdateRequest request) {
 
-        Admin admin = adminRepository.findAdminById(adminId)
-                .orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Admin admin = adminService.findAdminById(adminId);
 
-        Terms terms = termsRepository.findById(request.getId())
-                .orElseThrow(() -> new TermsException(TermsExceptionType.NOT_EXIST));
+        Terms terms = findById(request.getId());
 
         terms.modify(admin, request);
 
@@ -156,10 +151,9 @@ public class TermsServiceImpl implements TermsService{
     @Override
     public String deleteTerm(Long userId, Long termId) {
 
-        Admin admin = adminRepository.findAdminById(userId)
-                .orElseThrow(()->new UserException(UserExceptionType.NOT_LOGGED_IN));
-        Terms terms = termsRepository.findById(termId)
-                .orElseThrow(()-> new TermsException(TermsExceptionType.NOT_EXIST));
+        Admin admin = adminService.findAdminById(userId);
+
+        Terms terms = findById(termId);
 
         if(terms.getStatus().equals("공개")) throw new TermsException(TermsExceptionType.IS_OPENED);
 
@@ -170,6 +164,19 @@ public class TermsServiceImpl implements TermsService{
         else {
             throw new TermsException(TermsExceptionType.NO_AUTHORITY);
         }
+    }
+
+    /**
+     * 약관 Id로 약관 찾는 함수
+     * @param Id : 약관 Id
+     * @return : 해당 Id를 가진 약관
+     */
+    @Override
+    public Terms findById(Long Id) {
+        Optional<Terms> terms = termsRepository.findById(Id);
+        if(terms.isPresent())
+            return terms.get();
+        else throw new TermsException(TermsExceptionType.NOT_EXIST);
     }
 
 
