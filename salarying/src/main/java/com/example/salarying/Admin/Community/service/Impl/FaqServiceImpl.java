@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -119,7 +120,17 @@ public class FaqServiceImpl implements FaqService {
         FAQ faq = faqRepository.findById(FaqId).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
         faqRepository.delete(faq);
     }
-
+    /**
+     * FAQ Id로 약관 찾는 함수
+     * @param faqId : FAQ Id
+     * @return : 해당 Id를 가진 약관
+     */
+    @Override
+    public FAQ findFaqId(Long faqId) {
+        Optional<FAQ> faq = faqRepository.findById(faqId);
+        if (faq.isPresent()) return faq.get();
+        else throw new CommunityException(CommunityExceptionType.NOT_EXIST);
+    }
     /**
      * DTO 형식 체크 메서드
      * @param request : 등록 하고자 하는 FAQ 정보 DTO

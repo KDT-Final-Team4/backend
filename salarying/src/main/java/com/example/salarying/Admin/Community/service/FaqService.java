@@ -1,6 +1,7 @@
 package com.example.salarying.Admin.Community.service;
 
 import com.example.salarying.Admin.Community.dto.FaqDTO;
+import com.example.salarying.Admin.Community.entity.FAQ;
 import com.example.salarying.global.jwt.CustomUserDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
@@ -18,4 +19,6 @@ public interface FaqService {
     void updateFaq(Long adminId, FaqDTO.UpdateFaqRequest request);
 
     void deleteFaq(Long adminId, Long faqId);
+
+    FAQ findFaqId(Long faqId);
 }
