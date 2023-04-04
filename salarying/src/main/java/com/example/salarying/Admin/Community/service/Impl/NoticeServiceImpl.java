@@ -7,9 +7,7 @@ import com.example.salarying.Admin.Community.exception.CommunityExceptionType;
 import com.example.salarying.Admin.Community.repository.NoticeRepository;
 import com.example.salarying.Admin.Community.service.NoticeService;
 import com.example.salarying.Admin.User.entity.Admin;
-import com.example.salarying.Admin.User.repository.AdminRepository;
-import com.example.salarying.Corporation.User.exception.UserException;
-import com.example.salarying.Corporation.User.exception.UserExceptionType;
+import com.example.salarying.Admin.User.service.AdminService;
 import com.example.salarying.global.jwt.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeRepository noticeRepository;
-    private final AdminRepository adminRepository;
+    private final AdminService adminService;
 
     /**
      * 관리자 공지사항 등록
@@ -36,14 +34,10 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public NoticeDTO.NoticeResponse insertNotice(Long adminId, NoticeDTO.NoticeRequest request) {
-        Optional<Admin> admin = adminRepository.findById(adminId);
-        if (admin.isPresent()) {
-            Notice notice = request.toEntity(admin.get());
+        Admin admin = adminService.findAdminById(adminId);
+            Notice notice = request.toEntity(admin);
             noticeRepository.save(notice);
             return new NoticeDTO.NoticeResponse(notice);
-        } else {
-            throw new UserException(UserExceptionType.NOT_LOGGED_IN);
-        }
     }
 
     /**
@@ -84,7 +78,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public void deleteNotice(Long adminId, Long noticeId) {
-        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        adminService.findAdminById(adminId);
         Notice notice = findNoticeId(noticeId);
         noticeRepository.delete(notice);
     }
@@ -97,8 +91,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public void updateNotice(Long adminId, NoticeDTO.UpdateRequest request) {
-
-        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        adminService.findAdminById(adminId);
         Notice notice = findNoticeId(request.getId());
         if (checkUpdateDTO(request)) {
             notice.updateNotice(
@@ -116,7 +109,7 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Override
     public void changeStatus(Long adminId, NoticeDTO.NoticeStatusRequest request) {
-        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        adminService.findAdminById(adminId);
         Notice notice = findNoticeId(request.getId());
         notice.statusUpdate(request.getStatus());
         noticeRepository.save(notice);
