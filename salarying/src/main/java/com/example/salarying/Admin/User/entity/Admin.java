@@ -2,6 +2,7 @@ package com.example.salarying.Admin.User.entity;
 
 import com.sun.istack.NotNull;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -42,5 +43,14 @@ public class Admin {
 
     @Column(name="admin_role")
     private String role;
+
+    public void updateLoginDate(){
+        this.lastSignIn = new Date();
+    }
+
+    public void updatePassword(PasswordEncoder passwordEncoder, String newPassword) {
+        this.adminPassword = passwordEncoder.encode(newPassword);
+        this.lastModified = new Date();
+    }
 
 }
