@@ -7,9 +7,7 @@ import com.example.salarying.Admin.Community.exception.CommunityExceptionType;
 import com.example.salarying.Admin.Community.repository.FaqRepository;
 import com.example.salarying.Admin.Community.service.FaqService;
 import com.example.salarying.Admin.User.entity.Admin;
-import com.example.salarying.Admin.User.repository.AdminRepository;
-import com.example.salarying.Corporation.User.exception.UserException;
-import com.example.salarying.Corporation.User.exception.UserExceptionType;
+import com.example.salarying.Admin.User.service.AdminService;
 import com.example.salarying.global.jwt.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 public class FaqServiceImpl implements FaqService {
 
     private final FaqRepository faqRepository;
-    private final AdminRepository adminRepository;
+    private final AdminService adminService;
 
     /**
      * FAQ 등록
@@ -34,7 +32,7 @@ public class FaqServiceImpl implements FaqService {
      */
     @Override
     public void insertFaq(Long adminId, FaqDTO.InsertFaqRequest request) {
-        Admin admin = adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Admin admin = adminService.findAdminById(adminId);
         FAQ faq = request.toEntity(admin);
         if (checkRequestDTO(request)) {
             faqRepository.save(faq);
@@ -68,8 +66,8 @@ public class FaqServiceImpl implements FaqService {
      */
     @Override
     public void changeStatus(Long adminId, FaqDTO.FaqStatusRequest request) {
-        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        FAQ faq = faqRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        adminService.findAdminById(adminId);
+        FAQ faq = findFaqId(request.getId());
         faq.statusUpdate(request.getStatus());
         faqRepository.save(faq);
     }
@@ -81,7 +79,7 @@ public class FaqServiceImpl implements FaqService {
      */
     @Override
     public FaqDTO.DetailResponse faqDetail(Long id) {
-        FAQ faq = faqRepository.findById(id).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        FAQ faq = findFaqId(id);
         return new FaqDTO.DetailResponse(faq);
     }
 
@@ -93,8 +91,8 @@ public class FaqServiceImpl implements FaqService {
     @Override
     @Transactional
     public void updateFaq(Long adminId, FaqDTO.UpdateFaqRequest request) {
-        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        FAQ faq = faqRepository.findById(request.getId()).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+        adminService.findAdminById(adminId);
+        FAQ faq = findFaqId(request.getId());
         faq.updateFaq(
                 request.getQuestion(),
                 request.getAnswer()
@@ -111,13 +109,13 @@ public class FaqServiceImpl implements FaqService {
     /**
      * FAQ 삭제하는 함수
      * @param adminId : 관리자 id
-     * @param FaqId   : FAQ Id
+     * @param faqId   : FAQ Id
      */
     @Override
     @Transactional
-    public void deleteFaq(Long adminId, Long FaqId) {
-        adminRepository.findById(adminId).orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
-        FAQ faq = faqRepository.findById(FaqId).orElseThrow(() -> new CommunityException(CommunityExceptionType.NOT_EXIST));
+    public void deleteFaq(Long adminId, Long faqId) {
+        adminService.findAdminById(adminId);
+        FAQ faq = findFaqId(faqId);
         faqRepository.delete(faq);
     }
     /**
@@ -131,6 +129,7 @@ public class FaqServiceImpl implements FaqService {
         if (faq.isPresent()) return faq.get();
         else throw new CommunityException(CommunityExceptionType.NOT_EXIST);
     }
+
     /**
      * DTO 형식 체크 메서드
      * @param request : 등록 하고자 하는 FAQ 정보 DTO
