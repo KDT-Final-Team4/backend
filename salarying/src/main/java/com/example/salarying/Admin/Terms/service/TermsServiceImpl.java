@@ -77,8 +77,7 @@ public class TermsServiceImpl implements TermsService{
     @Transactional
     public String changeStatus(TermsDTO.StatusRequest request) {
 
-        Terms terms = termsRepository.findById(request.getId())
-                .orElseThrow(()-> new TermsException(TermsExceptionType.NOT_EXIST));
+        Terms terms = findById(request.getId());
 
         if(request.getStatus().equals(terms.getStatus())) throw new TermsException(TermsExceptionType.CHECK_STATUS);
 
@@ -114,8 +113,8 @@ public class TermsServiceImpl implements TermsService{
      */
     @Override
     public TermsDTO.DetailResponse showDetail(Long Id) {
-        Terms terms = termsRepository.findById(Id)
-                .orElseThrow(()-> new TermsException(TermsExceptionType.NOT_EXIST));
+
+        Terms terms = findById(Id);
 
         TermsDTO.DetailResponse response = new TermsDTO.DetailResponse(terms);
         return response;
@@ -133,8 +132,7 @@ public class TermsServiceImpl implements TermsService{
 
         Admin admin = adminService.findAdminById(adminId);
 
-        Terms terms = termsRepository.findById(request.getId())
-                .orElseThrow(() -> new TermsException(TermsExceptionType.NOT_EXIST));
+        Terms terms = findById(request.getId());
 
         terms.modify(admin, request);
 
@@ -155,8 +153,7 @@ public class TermsServiceImpl implements TermsService{
 
         Admin admin = adminService.findAdminById(userId);
 
-        Terms terms = termsRepository.findById(termId)
-                .orElseThrow(()-> new TermsException(TermsExceptionType.NOT_EXIST));
+        Terms terms = findById(termId);
 
         if(terms.getStatus().equals("공개")) throw new TermsException(TermsExceptionType.IS_OPENED);
 
