@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -166,6 +167,19 @@ public class TermsServiceImpl implements TermsService{
         else {
             throw new TermsException(TermsExceptionType.NO_AUTHORITY);
         }
+    }
+
+    /**
+     * 약관 Id로 약관 찾는 함수
+     * @param Id : 약관 Id
+     * @return : 해당 Id를 가진 약관
+     */
+    @Override
+    public Terms findById(Long Id) {
+        Optional<Terms> terms = termsRepository.findById(Id);
+        if(terms.isPresent())
+            return terms.get();
+        else throw new TermsException(TermsExceptionType.NOT_EXIST);
     }
 
 
