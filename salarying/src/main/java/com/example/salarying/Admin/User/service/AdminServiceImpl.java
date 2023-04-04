@@ -121,6 +121,11 @@ public class AdminServiceImpl implements AdminService{
         return listResponses;
     }
 
+    /**
+     * ID값으로 관리자 찾기
+     * @param Id : 사용자 ID
+     * @return : 해당 ID를 가진 관리자
+     */
     public Admin findAdminById(Long Id){
 
         Optional<Admin> admin = adminRepository.findAdminById(Id);
