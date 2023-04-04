@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -57,8 +57,7 @@ public class AdminServiceImpl implements AdminService{
      */
     @Override
     public String checkPassword(Long Id, AdminDTO.CheckRequest request) {
-        Admin admin = adminRepository.findAdminById(Id)
-                .orElseThrow(()-> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Admin admin = findAdminById(Id);
 
         if(passwordEncoder.matches(request.getPassword(), admin.getAdminPassword())){
             return "비밀번호가 일치합니다.";
@@ -77,8 +76,8 @@ public class AdminServiceImpl implements AdminService{
     @Override
     @Transactional
     public String changePassword(Long Id, AdminDTO.ChangeRequest request) {
-        Admin admin = adminRepository.findAdminById(Id)
-                .orElseThrow(() -> new UserException(UserExceptionType.NOT_LOGGED_IN));
+
+        Admin admin = findAdminById(Id);
 
         if(passwordEncoder.matches(request.getPassword(),admin.getAdminPassword())){
             throw new UserException(UserExceptionType.ALREADY_USED);
@@ -103,8 +102,8 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public List<AdminDTO.ListResponse> manageList(Long Id) {
 
-        Admin admin = adminRepository.findAdminById(Id)
-                .orElseThrow(()-> new UserException(UserExceptionType.NOT_LOGGED_IN));
+        Admin admin = findAdminById(Id);
+
         List<AdminDTO.ListResponse> listResponses = new ArrayList<>();
         if(admin.getRole().equals("SUPERADMIN")){
             listResponses = memberRepository.findAll()
@@ -120,6 +119,15 @@ public class AdminServiceImpl implements AdminService{
         }
 
         return listResponses;
+    }
+
+    public Admin findAdminById(Long Id){
+
+        Optional<Admin> admin = adminRepository.findAdminById(Id);
+        if(admin.isPresent())
+            return admin.get();
+        else throw new UserException(UserExceptionType.NOT_LOGGED_IN);
+
     }
 
 }
