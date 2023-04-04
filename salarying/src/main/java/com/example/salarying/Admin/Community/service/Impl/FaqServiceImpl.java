@@ -10,12 +10,13 @@ import com.example.salarying.Admin.User.entity.Admin;
 import com.example.salarying.Admin.User.repository.AdminRepository;
 import com.example.salarying.Corporation.User.exception.UserException;
 import com.example.salarying.Corporation.User.exception.UserExceptionType;
+import com.example.salarying.global.jwt.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,10 +46,9 @@ public class FaqServiceImpl implements FaqService {
      * @return FAQ 목록
      */
     @Override
-    public List<FaqDTO.FAQListResponse> faqList(Long adminId) {
+    public List<FaqDTO.FAQListResponse> faqList(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         List<FAQ> faqList = faqRepository.findAll();
-        Optional<Admin> admin = adminRepository.findById(adminId);
-        if (admin.isPresent()) {
+        if (customUserDetails.getRole().equals("ADMIN") || customUserDetails.getRole().equals("SUPERADMIN")) {
             return faqList.stream()
                     .map(FaqDTO.FAQListResponse::new)
                     .collect(Collectors.toList());
