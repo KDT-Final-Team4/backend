@@ -41,7 +41,7 @@ public class AdminServiceImpl implements AdminService{
                 .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_ACCOUNT));
 
         if(passwordEncoder.matches(request.getPassword(),admin.getAdminPassword())){
-            admin.setLastSignIn(new Date());
+            admin.updateLoginDate();
             AuthToken authToken = authTokenProvider.issueAdminAccessToken(admin);
             adminRepository.save(admin);
             AdminDTO.LoginResponse response = new AdminDTO.LoginResponse(authToken.getToken(), admin);
@@ -85,9 +85,7 @@ public class AdminServiceImpl implements AdminService{
         }
 
         if(request.getPassword() != null && !request.getPassword().equals("")){
-            String newPw = passwordEncoder.encode(request.getPassword());
-            admin.setAdminPassword(newPw);
-            admin.setLastModified(new Date());
+            admin.updatePassword(passwordEncoder, request.getPassword());
             adminRepository.save(admin);
             return "비밀번호 변경 성공";
         }
