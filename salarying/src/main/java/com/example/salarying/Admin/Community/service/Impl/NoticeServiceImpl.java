@@ -10,7 +10,9 @@ import com.example.salarying.Admin.User.entity.Admin;
 import com.example.salarying.Admin.User.repository.AdminRepository;
 import com.example.salarying.Corporation.User.exception.UserException;
 import com.example.salarying.Corporation.User.exception.UserExceptionType;
+import com.example.salarying.global.jwt.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,10 +51,9 @@ public class NoticeServiceImpl implements NoticeService {
      * @return 공지사항 목록
      */
     @Override
-    public List<NoticeDTO.NoticeList> noticeList(Long adminId) {
+    public List<NoticeDTO.NoticeList> noticeList(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         List<Notice> noticeList = noticeRepository.findAll();
-        Optional<Admin> admin = adminRepository.findById(adminId);
-        if (admin.isPresent()) {
+        if (customUserDetails.getRole().equals("ADMIN") || customUserDetails.getRole().equals("SUPERADMIN")) {
             return noticeList.stream()
                     .map(NoticeDTO.NoticeList::new)
                     .collect(Collectors.toList());
@@ -71,7 +72,6 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Override
     public NoticeDTO.NoticeResponse noticeDetail(Long id) {
-
         Notice notice = noticeRepository.findNoticeById(id);
         if (notice == null) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST);
