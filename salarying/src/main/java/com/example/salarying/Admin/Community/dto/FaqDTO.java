@@ -33,14 +33,18 @@ public class FaqDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class FAQListResponse {
+        private Long id;
         private String question;
         private String answer;
         private String category;
+        private Boolean status;
 
         public FAQListResponse(FAQ faq) {
+            this.id = faq.getId();
             this.question = faq.getQuestion();
             this.answer = faq.getAnswer();
             this.category = faq.getCategory();
+            this.status = faq.getStatus();
         }
     }
 

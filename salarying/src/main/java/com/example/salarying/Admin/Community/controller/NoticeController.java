@@ -36,8 +36,8 @@ public class NoticeController {
      */
     @Operation(summary = "공지사항 리스트 조회", description = "공지사항 리스트 출력 FOR ADMIN, SUPERADMIN, USER")
     @GetMapping("/notice")
-    public ResponseDTO<?> noticeList() {
-        List<NoticeDTO.NoticeList> noticeResponse = noticeService.noticeList();
+    public ResponseDTO<?> noticeList(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<NoticeDTO.NoticeList> noticeResponse = noticeService.noticeList(userDetails.getUserId());
         return new ResponseDTO<>().ok(noticeResponse, "정상 출력");
     }
 

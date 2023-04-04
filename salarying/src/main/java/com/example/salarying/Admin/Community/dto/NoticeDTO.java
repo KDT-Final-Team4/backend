@@ -57,15 +57,15 @@ public class NoticeDTO {
     @NoArgsConstructor
     @Builder
     public static class NoticeList {
+        private Long id;
         private String title;
         private String adminName;
-        private String role;
         private Boolean status;
 
         public NoticeList(Notice notice) {
+            this.id = notice.getId();
             this.title = notice.getTitle();
             this.adminName = notice.getAdmin().getAdminName();
-            this.role = notice.getAdmin().getRole();
             this.status = notice.getStatus();
         }
     }

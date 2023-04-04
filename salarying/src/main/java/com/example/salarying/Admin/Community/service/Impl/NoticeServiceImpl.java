@@ -49,11 +49,19 @@ public class NoticeServiceImpl implements NoticeService {
      * @return 공지사항 목록
      */
     @Override
-    public List<NoticeDTO.NoticeList> noticeList() {
+    public List<NoticeDTO.NoticeList> noticeList(Long adminId) {
         List<Notice> noticeList = noticeRepository.findAll();
-        return noticeList.stream()
-                .map(NoticeDTO.NoticeList::new)
-                .collect(Collectors.toList());
+        Optional<Admin> admin = adminRepository.findById(adminId);
+        if (admin.isPresent()) {
+            return noticeList.stream()
+                    .map(NoticeDTO.NoticeList::new)
+                    .collect(Collectors.toList());
+        } else {
+            return noticeList.stream()
+                    .map(NoticeDTO.NoticeList::new)
+                    .filter(NoticeDTO.NoticeList::getStatus)
+                    .collect(Collectors.toList());
+        }
     }
 
     /**
@@ -117,7 +125,8 @@ public class NoticeServiceImpl implements NoticeService {
         noticeRepository.save(notice);
     }
 
-    /** DTO 형식 체크 메서드
+    /**
+     * DTO 형식 체크 메서드
      * @param request : 수정 하고자 하는 공지사항 정보 DTO
      * @return : 공지사항 제목,내용 없으면 false / 있으면 true
      */
