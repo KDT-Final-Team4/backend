@@ -124,6 +124,17 @@ public class NoticeServiceImpl implements NoticeService {
         notice.statusUpdate(request.getStatus());
         noticeRepository.save(notice);
     }
+    /**
+     * Notice Id로 약관 찾는 함수
+     * @param noticeId : Notice id
+     * @return : 해당 Id를 가진 약관
+     */
+    @Override
+    public Notice findNoticeId(Long noticeId) {
+        Optional<Notice> notice = noticeRepository.findById(noticeId);
+        if (notice.isPresent()) return notice.get();
+        else throw new CommunityException(CommunityExceptionType.NOT_EXIST);
+    }
 
     /**
      * DTO 형식 체크 메서드
