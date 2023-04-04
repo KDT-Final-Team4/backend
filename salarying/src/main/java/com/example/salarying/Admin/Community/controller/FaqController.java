@@ -36,7 +36,7 @@ public class FaqController {
     @Operation(summary = "FAQ 리스트 출력", description = "FAQ 리스트 출력 FOR ADMIN, SUPERADMIN, USER")
     @GetMapping("/faq")
     public ResponseDTO<?> faqList(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<FaqDTO.FAQListResponse> faqListResponses = faqService.faqList(userDetails.getUserId());
+        List<FaqDTO.FAQListResponse> faqListResponses = faqService.faqList(userDetails);
         return new ResponseDTO<>().ok(faqListResponses, "정상 출력");
     }
 

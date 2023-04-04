@@ -48,8 +48,9 @@ public class FAQ {
         this.status = status;
     }
 
-    public void updateFaq(String question,String answer) {
+    public void updateFaq(String question, String answer, String category) {
         this.question = question;
         this.answer = answer;
+        this.category = category;
     }
 }
