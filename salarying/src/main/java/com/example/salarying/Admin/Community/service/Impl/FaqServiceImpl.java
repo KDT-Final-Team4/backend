@@ -7,10 +7,7 @@ import com.example.salarying.Admin.Community.exception.CommunityExceptionType;
 import com.example.salarying.Admin.Community.repository.FaqRepository;
 import com.example.salarying.Admin.Community.service.FaqService;
 import com.example.salarying.Admin.User.entity.Admin;
-import com.example.salarying.Admin.User.repository.AdminRepository;
 import com.example.salarying.Admin.User.service.AdminService;
-import com.example.salarying.Corporation.User.exception.UserException;
-import com.example.salarying.Corporation.User.exception.UserExceptionType;
 import com.example.salarying.global.jwt.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,7 +34,7 @@ public class FaqServiceImpl implements FaqService {
     public void insertFaq(Long adminId, FaqDTO.InsertFaqRequest request) {
         Admin admin = adminService.findAdminById(adminId);
         FAQ faq = request.toEntity(admin);
-        if (checkRequestDTO(request)) {
+        if (checkRequestDTO(request.getQuestion(), request.getAnswer(), request.getCategory())) {
             faqRepository.save(faq);
         }
     }
@@ -101,14 +98,7 @@ public class FaqServiceImpl implements FaqService {
                 request.getAnswer(),
                 request.getCategory()
         );
-
-        if (request.getQuestion() == null || request.getQuestion().equals("")) {
-            throw new CommunityException(CommunityExceptionType.NOT_EXIST_QUESTION);
-        } else if (request.getAnswer() == null || request.getAnswer().equals("")) {
-            throw new CommunityException(CommunityExceptionType.NOT_EXIST_ANSWER);
-        } else if (request.getCategory() == null || request.getCategory().equals("")) {
-            throw new CommunityException(CommunityExceptionType.NOT_EXIST_CATEGORY);
-        } else {
+        if (checkRequestDTO(request.getQuestion(), request.getAnswer(), request.getCategory())) {
             faqRepository.save(faq);
         }
     }
@@ -138,16 +128,18 @@ public class FaqServiceImpl implements FaqService {
     }
 
     /**
-     * DTO 형식 체크 메서드
-     * @param request : 등록 하고자 하는 FAQ 정보 DTO
-     * @return : FAQ 질문,답변,카테고리 없으면 false / 있으면 true
+     * DTO 체크
+     * @param question : FAQ 질문
+     * @param answer : FAQ 답변
+     * @param category : FAQ 카테고리
+     * @return :
      */
-    public Boolean checkRequestDTO(FaqDTO.InsertFaqRequest request) {
-        if (request.getQuestion() == null || request.getQuestion().equals("")) {
+    public Boolean checkRequestDTO(String question, String answer, String category) {
+        if (question == null || question.equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_QUESTION);
-        } else if (request.getAnswer() == null || request.getAnswer().equals("")) {
+        } else if (answer == null || answer.equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_ANSWER);
-        } else if (request.getCategory() == null || request.getCategory().equals("")) {
+        } else if (category== null || category.equals("")) {
             throw new CommunityException(CommunityExceptionType.NOT_EXIST_CATEGORY);
         } else {
             return true;
