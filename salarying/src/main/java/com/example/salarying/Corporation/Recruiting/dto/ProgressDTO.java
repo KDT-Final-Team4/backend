@@ -16,15 +16,15 @@ public class ProgressDTO {
     @Schema(name = "전형 응답 DTO",description = "해당하는 전형 출력")
     public static class ProgressResponse {
 
-        @Schema(description = "채용공고 id")
+
         private Long id;
-        @Schema(description = "서류전형", allowableValues = {"true","false"})
+
         private Boolean hasDocument;
-        @Schema(description = "1차전형", allowableValues = {"true","false"})
+
         private Boolean hasFirst;
-        @Schema(description = "2차전형", allowableValues = {"true","false"})
+
         private Boolean hasSecond;
-        @Schema(description = "최종전형", allowableValues = {"true","false"})
+
         private Boolean hasFinal;
 
 
